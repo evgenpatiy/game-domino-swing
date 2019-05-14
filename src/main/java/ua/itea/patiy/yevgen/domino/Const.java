@@ -11,50 +11,50 @@ package ua.itea.patiy.yevgen.domino;
  */
 public class Const {
 
-    protected static final byte MAXDOTS = 6;
-    protected static final byte MAXBONES = MAXDOTS + 1;
+    public static final byte MAXDOTS = 6;
+    public static final byte MAXBONES = MAXDOTS + 1;
     protected static final int TOTALBONES = (MAXDOTS + 1) * (MAXDOTS + 2) / 2;
 
     protected static final int SIZEX = 1366; // размеры окна
     protected static final int SIZEY = 750;
 
-    protected static final int BONEX = 46; // размеры костей
-    protected static final int BONEY = 20;
-    protected static final int MOVEJBX = 1060;
-    protected static final int MOVEJBY = 40;
+    public static final int BONEX = 46; // размеры костей
+    public static final int BONEY = 20;
+    public static final int MOVEJBX = 1060;
+    public static final int MOVEJBY = 40;
 
-    protected static final int OFFSET = 4;
-    protected static final int PLAYERSHIFT = 10;
-    protected static final int SHIFT = 5;
-    protected static final int SPACELIMIT = 150;
+    public static final int OFFSET = 4;
+    public static final int PLAYERSHIFT = 10;
+    public static final int SHIFT = 5;
+    public static final int SPACELIMIT = 150;
 
-    protected static final boolean TOLEFT = false;
-    protected static final boolean TORIGHT = true;
+    public static final boolean TOLEFT = false;
+    public static final boolean TORIGHT = true;
 
-    protected static final boolean FRAME = true;
-    protected static final boolean NOFRAME = false;
+    public static final boolean FRAME = true;
+    public static final boolean NOFRAME = false;
 
-    protected static final int XSHIFT = 25; // Начальное смещение костей на панели
-    protected static final int YSHIFT = 25;
+    public static final int XSHIFT = 25; // Начальное смещение костей на панели
+    public static final int YSHIFT = 25;
 
     protected static final boolean SHOW = true;
     protected static final boolean HIDE = !SHOW;
     protected static final boolean DUPLET = true;
     protected static final boolean NOTDUPLET = !DUPLET;
-    protected static final boolean HUMAN = true;
-    protected static final boolean ROBOT = !HUMAN;
-    protected static final boolean SELECTED = true;
-    protected static final boolean NOTSELECTED = !SELECTED;
+    public static final boolean HUMAN = true;
+    public static final boolean ROBOT = !HUMAN;
+    public static final boolean SELECTED = true;
+    public static final boolean NOTSELECTED = !SELECTED;
 
     protected static final byte ENDGAME = 1;
     protected static final byte ENDGAMEFISH = 2;
     protected static final byte ENDGAMEGOAT = 3;
     protected static final byte ENDGAMESKINGOAT = 4;
 
-    protected static final int A0 = 0;
-    protected static final int A90 = 90;
-    protected static final int A180 = 180;
-    protected static final int A270 = 270;
+    public static final int A0 = 0;
+    public static final int A90 = 90;
+    public static final int A180 = 180;
+    public static final int A270 = 270;
 
     protected static final String VERSION = "| JAVA Basic";
     protected static final String[] RIVALS = { "Windows", "Linux", "OS/2", "Solaris", "FreeBSD", "QNX", "OS X",

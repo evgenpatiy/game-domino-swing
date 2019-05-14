@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.panels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JPanel;
+
+import ua.itea.patiy.yevgen.domino.Bone;
+import ua.itea.patiy.yevgen.domino.Const;
 
 /**
  *
@@ -20,11 +23,11 @@ public abstract class GamePanel extends JPanel {
      * 
      */
     private static final long serialVersionUID = 2803579325914353051L;
-    protected Bone selectedleft;
-    protected Bone selectedright;
+    public Bone selectedleft;
+    public Bone selectedright;
     protected List<Bone> bones = new ArrayList<Bone>(); // камни на текущей панели
 
-    protected int boneQty() {
+    public int boneQty() {
         return bones.size();
     }
 
@@ -42,7 +45,7 @@ public abstract class GamePanel extends JPanel {
         }
     }
 
-    protected void showBones() {
+    public void showBones() {
         for (Bone B : bones) {
             B.showBone();
             B.repaint();
@@ -58,7 +61,7 @@ public abstract class GamePanel extends JPanel {
         repaint();
     }
 
-    protected void fromBones(Bone b) {
+    public void fromBones(Bone b) {
         bones.remove(b);
         remove(b);
         if (b.isSelected == Const.SELECTED) {

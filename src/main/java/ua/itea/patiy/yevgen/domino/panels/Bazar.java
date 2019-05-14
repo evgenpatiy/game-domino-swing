@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.panels;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +16,9 @@ import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
+
+import ua.itea.patiy.yevgen.domino.Bone;
+import ua.itea.patiy.yevgen.domino.Const;
 
 /**
  *
@@ -59,11 +62,11 @@ public class Bazar extends GamePanel {
         Collections.shuffle(b);
     }
 
-    protected boolean empty() { // базар пуст
+    public boolean empty() { // базар пуст
         return bones.isEmpty();
     }
 
-    protected Bone randomFromBones() { // произвольный камень с базара
+    public Bone randomFromBones() { // произвольный камень с базара
         Random r = new Random();
         Bone returnbone = null;
 
@@ -103,11 +106,11 @@ public class Bazar extends GamePanel {
         repaint();
     }
 
-    protected void enableBazar() {
+    public void enableBazar() {
         rebuildBonesLine(Const.FRAME);
     }
 
-    protected void disableBazar() {
+    public void disableBazar() {
         rebuildBonesLine(Const.NOFRAME);
     }
 }

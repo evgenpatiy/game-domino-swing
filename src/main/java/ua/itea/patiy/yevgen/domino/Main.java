@@ -15,11 +15,15 @@ import javax.swing.JFrame;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+import ua.itea.patiy.yevgen.domino.panels.Bazar;
+import ua.itea.patiy.yevgen.domino.panels.Field;
+import ua.itea.patiy.yevgen.domino.panels.Player;
+
 /**
  *
  * @author yevgen
  */
-public class Domino extends JFrame {
+public class Main extends JFrame {
 
     /**
      * 
@@ -82,7 +86,7 @@ public class Domino extends JFrame {
      * Creates new form Domino
      *
      */
-    public Domino() {
+    public Main() {
 
         URL iconURL = getClass().getResource("/img/logos/domino.png"); // иконка приложения
         ImageIcon icon = new ImageIcon(iconURL);
@@ -111,7 +115,7 @@ public class Domino extends JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Domino().setVisible(true);
+                new Main().setVisible(true);
             }
         });
     }

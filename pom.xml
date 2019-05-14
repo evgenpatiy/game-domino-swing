@@ -36,7 +36,7 @@
     <configuration>
      <archive>
       <manifest>
-       <mainClass>ua.itea.patiy.yevgen.domino.Domino</mainClass>
+       <mainClass>ua.itea.patiy.yevgen.domino.Main</mainClass>
       </manifest>
      </archive>
      <descriptorRefs>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.panels;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,6 +17,10 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
+import ua.itea.patiy.yevgen.domino.Bone;
+import ua.itea.patiy.yevgen.domino.Const;
+import ua.itea.patiy.yevgen.domino.Game;
+
 /**
  *
  * @author yevgen
@@ -27,11 +31,11 @@ public class Player extends GamePanel {
      * 
      */
     private static final long serialVersionUID = -7224818727640107326L;
-    protected String name;
-    protected boolean isHuman;
+    public String name;
+    public boolean isHuman;
     protected boolean readytogo;
-    protected boolean nobonestogo;
-    protected boolean gopressed;
+    public boolean nobonestogo;
+    public boolean gopressed;
     protected JButton go;
 
     protected MouseAdapter mouseAdapterGo = new MouseAdapter() {
@@ -55,7 +59,7 @@ public class Player extends GamePanel {
         go = new JButton(); // кнопка хода
     }
 
-    protected int endScore() { // сколько суммарно глаз осталось
+    public int endScore() { // сколько суммарно глаз осталось
         int sum = 0;
         for (Bone b : bones) {
             sum += b.sum;
@@ -63,7 +67,7 @@ public class Player extends GamePanel {
         return sum;
     }
 
-    protected void addGoButton() { // показать кнопку хода
+    public void addGoButton() { // показать кнопку хода
         go.setText("Пішов!");
         go.setLocation(Const.MOVEJBX, Const.MOVEJBY);
         go.addMouseListener(mouseAdapterGo);
@@ -73,12 +77,12 @@ public class Player extends GamePanel {
         repaint();
     }
 
-    protected void showGoButton() {
+    public void showGoButton() {
         go.setVisible(true);
         repaint();
     }
 
-    protected void hideGoButton() { // убрать кнопку хода
+    public void hideGoButton() { // убрать кнопку хода
         go.setVisible(false);
         repaint();
     }
@@ -90,7 +94,7 @@ public class Player extends GamePanel {
         repaint();
     }
 
-    protected void disableGoButton(String s) {
+    public void disableGoButton(String s) {
         go.setText(s);
         go.setEnabled(false);
         go.removeMouseListener(mouseAdapterGo);
@@ -132,7 +136,7 @@ public class Player extends GamePanel {
         repaint();
     }
 
-    protected void selectPlayerBones(Bone bone, Bone leftbone, Bone rightbone) { // Выбираем камень у игрока
+    public void selectPlayerBones(Bone bone, Bone leftbone, Bone rightbone) { // Выбираем камень у игрока
         selectedleft = null;
         selectedright = null;
         readytogo = false;
@@ -153,7 +157,7 @@ public class Player extends GamePanel {
         enableGoButton("Пішов!");
     }
 
-    protected String properScoreString(int i) {
+    public String properScoreString(int i) {
         String s = "глаз";
 
         if (((i > 1) && (i < 5)) || ((i > 20) && (((i % 10) > 1) && ((i % 10) < 5)))) {
@@ -162,7 +166,7 @@ public class Player extends GamePanel {
         return Integer.toString(i) + " " + s;
     }
 
-    protected String properBoneQtyString(int i) {
+    public String properBoneQtyString(int i) {
         String s = "кам";
         if ((i == 1) || (i == 21)) {
             s += "інь";
@@ -174,8 +178,8 @@ public class Player extends GamePanel {
         return Integer.toString(i) + " " + s;
     }
 
-    protected Bone firstBoneToStart() { // с какого камня заходит первый игрок (минимальный дупль больше голого, либо
-                                        // минимальный камень)
+    public Bone firstBoneToStart() { // с какого камня заходит первый игрок (минимальный дупль больше голого, либо
+                                     // минимальный камень)
         return hasDupletsAboveZero() ? minDupletAboveZero() : minBone();
     }
 
@@ -198,7 +202,7 @@ public class Player extends GamePanel {
         return (i == 2);
     }
 
-    protected boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
+    public boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
         for (Bone b : bones) {
             if ((b.isDuplet) && (b.sum > 0)) {
                 return true;
@@ -226,7 +230,7 @@ public class Player extends GamePanel {
         return min;
     }
 
-    protected Bone minDupletAboveZero() {
+    public Bone minDupletAboveZero() {
         Bone min = null;
 
         if (hasDuplets()) {
@@ -246,7 +250,7 @@ public class Player extends GamePanel {
         return min;
     }
 
-    protected Bone minBone() {
+    public Bone minBone() {
         Bone min = bones.get(0); // берем первую кость как минимум
 
         for (Bone b : bones) {
@@ -308,7 +312,7 @@ public class Player extends GamePanel {
         return max;
     }
 
-    protected Bone[] bonesToPut(Bone leftbone, Bone rightbone) { // возвращаем массив двух камней, левый и правый
+    public Bone[] bonesToPut(Bone leftbone, Bone rightbone) { // возвращаем массив двух камней, левый и правый
         byte left, right; // левые и правые части на поле для хода
         Bone[] togo = new Bone[2]; // массив двух камней
 
@@ -356,15 +360,15 @@ public class Player extends GamePanel {
         return togo;
     }
 
-    protected boolean less7Bones() { // есть ли 7 камней на борту
+    public boolean less7Bones() { // есть ли 7 камней на борту
         return this.boneQty() < Const.MAXBONES;
     }
 
-    protected boolean has7Bones() {
+    public boolean has7Bones() {
         return this.boneQty() == Const.MAXBONES;
     }
 
-    protected String playerMsg() { // Сообщение на панель поля
+    public String playerMsg() { // Сообщение на панель поля
         String s = "Ходить " + name + ". ";
         if (isHuman == Const.HUMAN) {
             s += "Оберіть камені на полі та свої камені, і зробіть хід";
@@ -407,12 +411,12 @@ public class Player extends GamePanel {
         repaint();
     }
 
-    protected void disableBonesSelect() {
+    public void disableBonesSelect() {
         rebuildBonesLine(Const.NOFRAME);
     }
 
     @Override
-    protected void toBones(Bone b) {
+    public void toBones(Bone b) {
         b.removeMouseListener(b.mouseAdapterBazar); // отменяем базарные нажатия мышкой
         b.drawBone(Const.A90, Const.NOTSELECTED);
         bones.add(b);
@@ -421,19 +425,19 @@ public class Player extends GamePanel {
     }
 
     @Override
-    protected void fromBones(Bone b) { // вызываем папин метод и обновляем заголовок панели
+    public void fromBones(Bone b) { // вызываем папин метод и обновляем заголовок панели
         super.fromBones(b);
         disableBonesSelect();
         setTitle(" " + name + " має " + properBoneQtyString(boneQty()) + " "); // обновляем заголовок панели
     }
 
     @Override
-    protected void setTitle(String title) {
+    public void setTitle(String title) {
         this.setBorder(BorderFactory.createTitledBorder(null, title, TitledBorder.DEFAULT_JUSTIFICATION,
                 TitledBorder.DEFAULT_POSITION, new Font("Dialog", 1, 10), new Color(255, 255, 255)));
     }
 
-    protected void setPlayerName(String name, boolean isHuman) {
+    public void setPlayerName(String name, boolean isHuman) {
         this.name = name;
         this.isHuman = isHuman;
     }

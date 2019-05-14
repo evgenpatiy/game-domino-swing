@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.panels;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,6 +13,9 @@ import javax.swing.BorderFactory;
 import javax.swing.border.TitledBorder;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
+
+import ua.itea.patiy.yevgen.domino.Bone;
+import ua.itea.patiy.yevgen.domino.Const;
 
 /**
  *
@@ -54,7 +57,7 @@ public class Field extends GamePanel {
         return bones.get(bones.size() - 1);
     }
 
-    protected void selectFieldBones(Player p, Bone bone) { // Выбираем камень на поле
+    public void selectFieldBones(Player p, Bone bone) { // Выбираем камень на поле
         selectedleft = null;
         selectedright = null;
 
@@ -91,11 +94,11 @@ public class Field extends GamePanel {
         }
     }
 
-    protected void disableBonesSelect() {
+    public void disableBonesSelect() {
         rebuildBonesLine(Const.NOFRAME);
     }
 
-    protected void enableFieldSelect(Player p) {
+    public void enableFieldSelect(Player p) {
         Bone temp;
 
         if (boneQty() == 1) { // если одна кость на поле, цепляем к ней мышку
@@ -497,7 +500,7 @@ public class Field extends GamePanel {
     }
 
     @Override
-    protected void setTitle(String title) {
+    public void setTitle(String title) {
         this.setBorder(BorderFactory.createTitledBorder(null, title, TitledBorder.DEFAULT_JUSTIFICATION,
                 TitledBorder.DEFAULT_POSITION, new Font("Dialog", 1, 12), new Color(255, 255, 255)));
     }

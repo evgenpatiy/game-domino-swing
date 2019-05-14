@@ -27,22 +27,22 @@ public class Bone extends JButton { // класс описания камней,
      * 
      */
     private static final long serialVersionUID = -8252578197977268541L;
-    protected byte left; // левая часть кости
-    protected byte right; // правая часть кости
-    protected byte workside; // сторона, к которой ставим камни
-    protected int sum;
-    protected boolean isFirst;
-    protected boolean isDuplet;
-    protected boolean isSelected;
+    public byte left; // левая часть кости
+    public byte right; // правая часть кости
+    public byte workside; // сторона, к которой ставим камни
+    public int sum;
+    public boolean isFirst;
+    public boolean isDuplet;
+    public boolean isSelected;
 
-    protected int angle;
+    public int angle;
 
     private BufferedImage faceimage = null;
     private BufferedImage backimage = null;
     private ImageIcon face;
     private ImageIcon back;
 
-    protected MouseAdapter mouseAdapterBazar = new MouseAdapter() {
+    public MouseAdapter mouseAdapterBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             Game.bazarselectedbone = (Bone) evt.getSource(); // нажатая костяшка;
@@ -56,21 +56,21 @@ public class Bone extends JButton { // класс описания камней,
         }
     };
 
-    protected MouseAdapter mouseAdapterHumanPlayer = new MouseAdapter() {
+    public MouseAdapter mouseAdapterHumanPlayer = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             Game.playerselectedbone = (Bone) evt.getSource(); // нажатая костяшка;
-            Game.currentplayer.selectPlayerBones(Game.playerselectedbone, Domino.field.selectedleft,
-                    Domino.field.selectedright);
+            Game.currentplayer.selectPlayerBones(Game.playerselectedbone, Main.field.selectedleft,
+                    Main.field.selectedright);
             evt.consume();
         }
     };
 
-    protected MouseAdapter mouseAdapterField = new MouseAdapter() {
+    public MouseAdapter mouseAdapterField = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             Game.fieldselectedbone = (Bone) evt.getSource(); // нажатая костяшка;
-            Domino.field.selectFieldBones(Game.currentplayer, Game.fieldselectedbone);
+            Main.field.selectFieldBones(Game.currentplayer, Game.fieldselectedbone);
             evt.consume();
         }
     };
@@ -86,11 +86,11 @@ public class Bone extends JButton { // класс описания камней,
         return s + left + ":" + right;
     }
 
-    protected final boolean dupletIsApplicable(byte boneside) { // подходит ли дупль для хода
+    public final boolean dupletIsApplicable(byte boneside) { // подходит ли дупль для хода
         return (isDuplet == true) && (left == boneside) && (right == boneside);
     }
 
-    protected final boolean boneIsApplicable(byte boneside) { // можно ли ходить костью
+    public final boolean boneIsApplicable(byte boneside) { // можно ли ходить костью
         return ((left == boneside) || (right == boneside));
     }
 
@@ -153,7 +153,7 @@ public class Bone extends JButton { // класс описания камней,
         return boneimg;
     }
 
-    protected final void drawBone(int ang, boolean selected) { // отрисовываем камень
+    public final void drawBone(int ang, boolean selected) { // отрисовываем камень
 
         String prefix = ""; // путь к картинкам камней
 
@@ -211,13 +211,13 @@ public class Bone extends JButton { // класс описания камней,
         showBone();
     }
 
-    protected final void unselectBone() {
+    public final void unselectBone() {
         drawBone(angle, Const.NOTSELECTED);
         isSelected = Const.NOTSELECTED;
         showBone();
     }
 
-    protected final void selectUnselectBone() {
+    public final void selectUnselectBone() {
         if (isSelected) {
             unselectBone();
         } else {
@@ -225,19 +225,19 @@ public class Bone extends JButton { // класс описания камней,
         }
     }
 
-    protected final void showFrame() {
+    public final void showFrame() {
         setBorderPainted(true);
     }
 
-    protected final void hideFrame() {
+    public final void hideFrame() {
         setBorderPainted(false);
     }
 
-    protected final void showBone() { // костями вверх
+    public final void showBone() { // костями вверх
         setIcon(face);
     }
 
-    protected final void hideBone() { // костями вниз
+    public final void hideBone() { // костями вниз
         setIcon(back);
     }
 
@@ -247,7 +247,7 @@ public class Bone extends JButton { // класс описания камней,
                 + this.isSelected;
     }
 
-    protected Bone(byte left, byte right) { // конструктор класса, прописываем значения свойств
+    public Bone(byte left, byte right) { // конструктор класса, прописываем значения свойств
         Random r = new Random();
 
         if (r.nextBoolean()) { // костяшки переворачиваются случайным образом, не 0:3, а 3:0 например
