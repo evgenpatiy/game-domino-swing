@@ -8,6 +8,7 @@ package ua.itea.patiy.yevgen.domino.panels;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +34,16 @@ public class Player extends GamePanel {
     private static final long serialVersionUID = -7224818727640107326L;
     public String name;
     public boolean isHuman;
-    protected boolean readytogo;
-    public boolean nobonestogo;
-    public boolean gopressed;
+    protected boolean readyToGo;
+    public boolean noBonesToGo;
+    public boolean goPressed;
     protected JButton go;
 
     protected MouseAdapter mouseAdapterGo = new MouseAdapter() {
         @Override
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            gopressed = true;
-            if (Game.firststep == true) {
+        public void mouseClicked(MouseEvent evt) {
+            goPressed = true;
+            if (Game.firstStep == true) {
                 Game.firstMove();
             } else {
                 Game.nextMove();
@@ -51,8 +52,8 @@ public class Player extends GamePanel {
         }
     };
 
-    private int xplayer;
-    private int yplayer;
+    private int xPlayer;
+    private int yPlayer;
 
     public Player() {
         name = "";
@@ -101,45 +102,45 @@ public class Player extends GamePanel {
         repaint();
     }
 
-    protected void enableBonesSelect(Bone leftbone, Bone rightbone) { // разрешаем нажимать только подходящие камни
-        xplayer = Const.XSHIFT;
-        yplayer = Const.YSHIFT + Const.SHIFT;
+    protected void enableBonesSelect(Bone leftBone, Bone rightBone) { // разрешаем нажимать только подходящие камни
+        xPlayer = Const.XSHIFT;
+        yPlayer = Const.YSHIFT + Const.SHIFT;
 
-        boolean goodforleft;
-        boolean goodforright;
-        boolean isFirst = ((leftbone != null) && (rightbone != null)) && ((leftbone.isFirst) && (rightbone.isFirst)); // если
+        boolean goodForLeft;
+        boolean goodForRight;
+        boolean isFirst = ((leftBone != null) && (rightBone != null)) && ((leftBone.isFirst) && (rightBone.isFirst)); // если
                                                                                                                       // передан
                                                                                                                       // первый
                                                                                                                       // камень
 
         for (Bone b : bones) {
-            if (leftbone == null) {
-                goodforleft = false;
+            if (leftBone == null) {
+                goodForLeft = false;
             } else {
-                goodforleft = isFirst ? b.boneIsApplicable(leftbone.left) : b.boneIsApplicable(leftbone.workside);
+                goodForLeft = isFirst ? b.boneIsApplicable(leftBone.left) : b.boneIsApplicable(leftBone.workSide);
             }
-            if (rightbone == null) {
-                goodforright = false;
+            if (rightBone == null) {
+                goodForRight = false;
             } else {
-                goodforright = isFirst ? b.boneIsApplicable(rightbone.right) : b.boneIsApplicable(rightbone.workside);
+                goodForRight = isFirst ? b.boneIsApplicable(rightBone.right) : b.boneIsApplicable(rightBone.workSide);
             }
 
-            if (goodforleft || goodforright) { // разрешаем нажимать только те камни, что подходят по ситуации
+            if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
                 b.showFrame();
                 b.addMouseListener(b.mouseAdapterHumanPlayer);
             }
 
-            b.setLocation(xplayer, yplayer);
-            add(b, new AbsoluteConstraints(xplayer, yplayer, b.getWidth(), b.getHeight()));
-            xplayer += b.getWidth() + Const.PLAYERSHIFT;
+            b.setLocation(xPlayer, yPlayer);
+            add(b, new AbsoluteConstraints(xPlayer, yPlayer, b.getWidth(), b.getHeight()));
+            xPlayer += b.getWidth() + Const.PLAYERSHIFT;
         }
         repaint();
     }
 
-    public void selectPlayerBones(Bone bone, Bone leftbone, Bone rightbone) { // Выбираем камень у игрока
-        selectedleft = null;
-        selectedright = null;
-        readytogo = false;
+    public void selectPlayerBones(Bone bone, Bone leftBone, Bone rightBone) { // Выбираем камень у игрока
+        selectedLeft = null;
+        selectedRight = null;
+        readyToGo = false;
 
         for (Bone b : bones) {
             if ((!compareBones(b, bone) && (b.isSelected))) {
@@ -147,10 +148,10 @@ public class Player extends GamePanel {
             } else if (compareBones(b, bone)) {
                 b.selectUnselectBone();
 
-                if (b.isSelected && (leftbone != null) && b.boneIsApplicable(leftbone.workside)) {
-                    selectedleft = b;
-                } else if ((b.isSelected && (rightbone != null) && b.boneIsApplicable(rightbone.workside))) {
-                    selectedright = b;
+                if (b.isSelected && (leftBone != null) && b.boneIsApplicable(leftBone.workSide)) {
+                    selectedLeft = b;
+                } else if ((b.isSelected && (rightBone != null) && b.boneIsApplicable(rightBone.workSide))) {
+                    selectedRight = b;
                 }
             }
         }
@@ -192,10 +193,10 @@ public class Player extends GamePanel {
         return false;
     }
 
-    protected boolean has2ProperDuplets(Bone leftbone, Bone rightbone) {
+    protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
         byte i = 0;
         for (Bone b : bones) {
-            if ((b.dupletIsApplicable(leftbone.workside)) || (b.dupletIsApplicable(rightbone.workside))) {
+            if ((b.dupletIsApplicable(leftBone.workSide)) || (b.dupletIsApplicable(rightBone.workSide))) {
                 i++;
             }
         }
@@ -268,20 +269,20 @@ public class Player extends GamePanel {
         return min;
     }
 
-    protected boolean hasProperDuplet(byte boneside) { // есть ли годные дупли
+    protected boolean hasProperDuplet(byte boneSide) { // есть ли годные дупли
         for (Bone b : bones) {
-            if (b.dupletIsApplicable(boneside)) {
+            if (b.dupletIsApplicable(boneSide)) {
                 return true;
             }
         }
         return false;
     }
 
-    protected Bone properDuplet(byte boneside) { // годный дупль
+    protected Bone properDuplet(byte boneSide) { // годный дупль
         Bone duplet = null;
 
         for (Bone b : bones) {
-            if (b.dupletIsApplicable(boneside)) {
+            if (b.dupletIsApplicable(boneSide)) {
                 duplet = b;
             }
         }
@@ -289,12 +290,12 @@ public class Player extends GamePanel {
         return duplet;
     }
 
-    protected Bone hasMaxProperBone(byte boneside) { // максимально годный не-дупль для хода
+    protected Bone hasMaxProperBone(byte boneSide) { // максимально годный не-дупль для хода
         List<Bone> temp = new ArrayList<Bone>();
         Bone max = null;
 
         for (Bone b : bones) {
-            if (b.boneIsApplicable(boneside)) { // если подходящий не-дупль, добавляем в список
+            if (b.boneIsApplicable(boneSide)) { // если подходящий не-дупль, добавляем в список
                 temp.add(b);
             }
         }
@@ -312,22 +313,22 @@ public class Player extends GamePanel {
         return max;
     }
 
-    public Bone[] bonesToPut(Bone leftbone, Bone rightbone) { // возвращаем массив двух камней, левый и правый
+    public Bone[] bonesToPut(Bone leftBone, Bone rightBone) { // возвращаем массив двух камней, левый и правый
         byte left, right; // левые и правые части на поле для хода
         Bone[] togo = new Bone[2]; // массив двух камней
 
-        if ((leftbone.isFirst) && (rightbone.isFirst)) { // если идем от первого камня
-            left = leftbone.left;
-            right = rightbone.right;
-        } else if ((leftbone.isFirst) && (!rightbone.isFirst)) { // если левый камень самый первый
-            left = leftbone.left;
-            right = rightbone.workside;
-        } else if ((!leftbone.isFirst) && (rightbone.isFirst)) { // если правый камень самый первый
-            left = leftbone.workside;
-            right = rightbone.right;
+        if ((leftBone.isFirst) && (rightBone.isFirst)) { // если идем от первого камня
+            left = leftBone.left;
+            right = rightBone.right;
+        } else if ((leftBone.isFirst) && (!rightBone.isFirst)) { // если левый камень самый первый
+            left = leftBone.left;
+            right = rightBone.workSide;
+        } else if ((!leftBone.isFirst) && (rightBone.isFirst)) { // если правый камень самый первый
+            left = leftBone.workSide;
+            right = rightBone.right;
         } else { // если минимум три камня, левый, первый, и правый
-            left = leftbone.workside;
-            right = rightbone.workside;
+            left = leftBone.workSide;
+            right = rightBone.workSide;
         }
 
         togo[0] = hasMaxProperBone(left);
@@ -387,8 +388,8 @@ public class Player extends GamePanel {
 
     @Override
     protected void rebuildBonesLine(boolean frame) { // выстраиваем камни в рядок
-        xplayer = Const.XSHIFT;
-        yplayer = Const.YSHIFT + Const.SHIFT;
+        xPlayer = Const.XSHIFT;
+        yPlayer = Const.YSHIFT + Const.SHIFT;
 
         for (Bone b : bones) {
             b.removeMouseListener(b.mouseAdapterHumanPlayer);
@@ -404,9 +405,9 @@ public class Player extends GamePanel {
                 b.hideBone();
             }
 
-            b.setLocation(xplayer, yplayer);
-            add(b, new org.netbeans.lib.awtextra.AbsoluteConstraints(xplayer, yplayer, b.getWidth(), b.getHeight()));
-            xplayer += b.getWidth() + Const.PLAYERSHIFT;
+            b.setLocation(xPlayer, yPlayer);
+            add(b, new org.netbeans.lib.awtextra.AbsoluteConstraints(xPlayer, yPlayer, b.getWidth(), b.getHeight()));
+            xPlayer += b.getWidth() + Const.PLAYERSHIFT;
         }
         repaint();
     }

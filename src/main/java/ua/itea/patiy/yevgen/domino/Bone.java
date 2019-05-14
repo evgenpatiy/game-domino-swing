@@ -29,7 +29,7 @@ public class Bone extends JButton { // класс описания камней,
     private static final long serialVersionUID = -8252578197977268541L;
     public byte left; // левая часть кости
     public byte right; // правая часть кости
-    public byte workside; // сторона, к которой ставим камни
+    public byte workSide; // сторона, к которой ставим камни
     public int sum;
     public boolean isFirst;
     public boolean isDuplet;
@@ -37,19 +37,19 @@ public class Bone extends JButton { // класс описания камней,
 
     public int angle;
 
-    private BufferedImage faceimage = null;
-    private BufferedImage backimage = null;
+    private BufferedImage faceImage = null;
+    private BufferedImage backImage = null;
     private ImageIcon face;
     private ImageIcon back;
 
     public MouseAdapter mouseAdapterBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            Game.bazarselectedbone = (Bone) evt.getSource(); // нажатая костяшка;
+            Game.bazarSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
             if (Game.get7bones == true) {
                 Game.getStart_7_BonesFromBazar();
             }
-            if (Game.needmorebones == true) {
+            if (Game.needMoreBones == true) {
                 Game.getMoreBonesFromBazar();
             }
             evt.consume();
@@ -59,9 +59,9 @@ public class Bone extends JButton { // класс описания камней,
     public MouseAdapter mouseAdapterHumanPlayer = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            Game.playerselectedbone = (Bone) evt.getSource(); // нажатая костяшка;
-            Game.currentplayer.selectPlayerBones(Game.playerselectedbone, Main.field.selectedleft,
-                    Main.field.selectedright);
+            Game.playerSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
+            Game.currentPlayer.selectPlayerBones(Game.playerSelectedBone, Main.field.selectedLeft,
+                    Main.field.selectedRight);
             evt.consume();
         }
     };
@@ -69,8 +69,8 @@ public class Bone extends JButton { // класс описания камней,
     public MouseAdapter mouseAdapterField = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            Game.fieldselectedbone = (Bone) evt.getSource(); // нажатая костяшка;
-            Main.field.selectFieldBones(Game.currentplayer, Game.fieldselectedbone);
+            Game.fieldSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
+            Main.field.selectFieldBones(Game.currentPlayer, Game.fieldSelectedBone);
             evt.consume();
         }
     };
@@ -191,18 +191,18 @@ public class Bone extends JButton { // класс описания камней,
             BufferedImage img2 = ImageIO.read(img2url);
 
             if (selected == Const.NOTSELECTED) {
-                faceimage = createFaceImg(img1, img2);
+                faceImage = createFaceImg(img1, img2);
             } else {
-                faceimage = invertImg(createFaceImg(img1, img2));
+                faceImage = invertImg(createFaceImg(img1, img2));
             }
 
-            backimage = ImageIO.read(backurl);
+            backImage = ImageIO.read(backurl);
         } catch (IOException ex) {
             Logger.getLogger(Bone.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        face = new ImageIcon(faceimage);
-        back = new ImageIcon(backimage);
+        face = new ImageIcon(faceImage);
+        back = new ImageIcon(backImage);
     }
 
     protected final void selectBone() {
@@ -243,7 +243,7 @@ public class Bone extends JButton { // класс описания камней,
 
     protected final String toolTipText() {
         this.revalidate();
-        return this.toString() + " поворот " + this.angle + " workside: " + this.workside + " selected:"
+        return this.toString() + " поворот " + this.angle + " workside: " + this.workSide + " selected:"
                 + this.isSelected;
     }
 

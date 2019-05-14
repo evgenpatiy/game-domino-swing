@@ -7,10 +7,15 @@ package ua.itea.patiy.yevgen.domino;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
@@ -47,7 +52,7 @@ public class Main extends JFrame {
         me = new Player();
         field = new Field();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(0, 204, 102));
         setMinimumSize(new Dimension(1300, 720));
         setName("window"); // NOI18N
@@ -61,20 +66,20 @@ public class Main extends JFrame {
         bazar.initBazar();
 
         you.setBackground(new Color(0, 102, 51));
-        you.setTitle(" Поле гравця " + Game.enemyname + " ");
-        you.setPlayerName(Game.enemyname, Const.ROBOT);
+        you.setTitle(" Поле гравця " + Game.enemyName + " ");
+        you.setPlayerName(Game.enemyName, Const.ROBOT);
         you.setLayout(new AbsoluteLayout());
         getContentPane().add(you, new AbsoluteConstraints(0, 0, 1200, 100));
 
         me.setBackground(new Color(0, 102, 51));
-        me.setTitle(" Поле гравця " + Game.myname + " ");
-        me.setPlayerName(Game.myname, Const.HUMAN);
+        me.setTitle(" Поле гравця " + Game.myName + " ");
+        me.setPlayerName(Game.myName, Const.HUMAN);
         me.setLayout(new AbsoluteLayout());
         getContentPane().add(me, new AbsoluteConstraints(0, 620, 1200, 100));
 
         field.setBackground(new Color(0, 102, 51));
         field.setTitle(" Це ігрове поле. Для початку беріть з базара 7 каменів. Те ж саме зробить і супротивник "
-                + Game.enemyname + " ");
+                + Game.enemyName + " ");
         field.setLayout(new AbsoluteLayout());
         getContentPane().add(field, new AbsoluteConstraints(0, 100, 1200, 520));
 
@@ -99,7 +104,7 @@ public class Main extends JFrame {
 
     public static void main(String args[]) {
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -108,11 +113,10 @@ public class Main extends JFrame {
         } catch (ClassNotFoundException ex) {
         } catch (InstantiationException ex) {
         } catch (IllegalAccessException ex) {
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (UnsupportedLookAndFeelException ex) {
         }
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new Main().setVisible(true);
@@ -120,10 +124,8 @@ public class Main extends JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     protected static Bazar bazar;
     protected static Field field;
     protected static Player me;
     protected static Player you;
-    // End of variables declaration//GEN-END:variables
 }

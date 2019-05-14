@@ -27,27 +27,27 @@ public class Field extends GamePanel {
      * 
      */
     private static final long serialVersionUID = 8185038222875756793L;
-    private int xline;
-    private int yline;
+    private int xLine;
+    private int yLine;
 
-    private int fieldwidth;
-    private int fieldheight;
+    private int fieldWidth;
+    private int fieldHeight;
 
-    private boolean turntopleft;
-    private boolean turntopright;
-    private boolean turnbottomleft;
-    private boolean turnbottomright;
+    private boolean turnTopLeft;
+    private boolean turnTopRight;
+    private boolean turnBottomLeft;
+    private boolean turnBottomRight;
 
-    private int spaceleft;
-    private int spaceright;
-    private int spaceup;
-    private int spacedown;
+    private int spaceLeft;
+    private int spaceRight;
+    private int spaceUp;
+    private int spaceDown;
 
-    private int xcenter;
-    private int ycenter;
+    private int xCenter;
+    private int yCenter;
 
     private Random r = new Random();
-    private boolean randomchoice;
+    private boolean randomChoice;
 
     public Bone leftBone() { // левый камень на панели
         return bones.get(0);
@@ -58,8 +58,8 @@ public class Field extends GamePanel {
     }
 
     public void selectFieldBones(Player p, Bone bone) { // Выбираем камень на поле
-        selectedleft = null;
-        selectedright = null;
+        selectedLeft = null;
+        selectedRight = null;
 
         p.disableBonesSelect();
         for (Bone b : bones) {
@@ -71,14 +71,14 @@ public class Field extends GamePanel {
 
             if (b.isSelected) {
                 if (compareBones(leftBone(), b)) {
-                    selectedleft = b;
+                    selectedLeft = b;
                 } else if (compareBones(rightBone(), b)) {
-                    selectedright = b;
+                    selectedRight = b;
                 }
             }
 
         }
-        p.enableBonesSelect(selectedleft, selectedright);
+        p.enableBonesSelect(selectedLeft, selectedRight);
         repaint();
     }
 
@@ -123,7 +123,7 @@ public class Field extends GamePanel {
 
             temp = bones.get(0); // к левой
             for (Bone b : p.bones) {
-                if (b.boneIsApplicable(temp.workside)) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                if (b.boneIsApplicable(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
                                                          // левому камню на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();
@@ -134,7 +134,7 @@ public class Field extends GamePanel {
 
             temp = bones.get(bones.size() - 1); // к правой
             for (Bone b : p.bones) {
-                if (b.boneIsApplicable(temp.workside)) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                if (b.boneIsApplicable(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
                                                          // левому камню на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();
@@ -165,50 +165,50 @@ public class Field extends GamePanel {
 
         if (b.isDuplet == true) {
             angle = Const.A90;
-            b.workside = b.right;
+            b.workSide = b.right;
         }
 
         b.drawBone(angle, Const.NOTSELECTED);
 
-        fieldwidth = this.getWidth();
-        fieldheight = this.getHeight();
+        fieldWidth = this.getWidth();
+        fieldHeight = this.getHeight();
 
-        xcenter = fieldwidth / 2;
-        ycenter = fieldheight / 2;
+        xCenter = fieldWidth / 2;
+        yCenter = fieldHeight / 2;
 
-        xline = xcenter - b.getWidth() / 2;
-        yline = ycenter - b.getHeight() / 2;
+        xLine = xCenter - b.getWidth() / 2;
+        yLine = yCenter - b.getHeight() / 2;
 
         b.isFirst = true;
-        putAtPosition(Const.TORIGHT, b, xline, yline);
+        putAtPosition(Const.TORIGHT, b, xLine, yLine);
 
-        spaceleft = (fieldwidth - b.getWidth()) / 2; // свободное пространство слева
-        spaceright = (fieldwidth - b.getWidth()) / 2; // свободное пространство справа
+        spaceLeft = (fieldWidth - b.getWidth()) / 2; // свободное пространство слева
+        spaceRight = (fieldWidth - b.getWidth()) / 2; // свободное пространство справа
 
-        spaceup = (fieldheight - b.getHeight()) / 2; // свободное пространство сверху
-        spacedown = (fieldheight - b.getHeight()) / 2; // свободное пространство снизу
-        randomchoice = r.nextBoolean();
+        spaceUp = (fieldHeight - b.getHeight()) / 2; // свободное пространство сверху
+        spaceDown = (fieldHeight - b.getHeight()) / 2; // свободное пространство снизу
+        randomChoice = r.nextBoolean();
 
-        turntopleft = false;
-        turntopright = false;
-        turnbottomleft = false;
-        turnbottomright = false;
+        turnTopLeft = false;
+        turnTopRight = false;
+        turnBottomLeft = false;
+        turnBottomRight = false;
     }
 
     private void addRightToLeft(Bone previous, Bone b) {
         int angle = Const.A0; // если просто камень, горизонтально
 
-        boolean turnfromhorizontalduplet = (previous.isDuplet == true)
+        boolean turnFromHorizontalDuplet = (previous.isDuplet == true)
                 && ((previous.angle == Const.A0) || (previous.angle == Const.A180));
-        boolean turnfromverticalbone = (previous.isDuplet == false)
+        boolean turnFromVerticalBone = (previous.isDuplet == false)
                 && ((previous.angle == Const.A90) || (previous.angle == Const.A270));
-        boolean prevverticalduplet = (previous.isDuplet == true)
+        boolean prevVerticalDuplet = (previous.isDuplet == true)
                 && ((previous.angle == Const.A90) || (previous.angle == Const.A270));
-        boolean prevhorizontalbone = (previous.isDuplet == false)
+        boolean prevHorizontalBone = (previous.isDuplet == false)
                 && ((previous.angle == Const.A0) || (previous.angle == Const.A180));
 
         if (b.isDuplet == false) {
-            if (previous.workside == b.left) {
+            if (previous.workSide == b.left) {
                 angle += 180; // переворачиваем камень наоборот
             }
         } else {
@@ -217,43 +217,43 @@ public class Field extends GamePanel {
 
         b.drawBone(angle, Const.NOTSELECTED); // отрисовываем
 
-        xline = previous.getX() - b.getWidth() - Const.OFFSET;
+        xLine = previous.getX() - b.getWidth() - Const.OFFSET;
 
-        if ((prevverticalduplet) || (prevhorizontalbone) || (turnfromhorizontalduplet)) {
-            yline = previous.getY() + (previous.getHeight() / 2) - (b.getHeight() / 2);
+        if ((prevVerticalDuplet) || (prevHorizontalBone) || (turnFromHorizontalDuplet)) {
+            yLine = previous.getY() + (previous.getHeight() / 2) - (b.getHeight() / 2);
         }
 
-        if (turnfromverticalbone) {
-            if (turntopright == true) {
+        if (turnFromVerticalBone) {
+            if (turnTopRight == true) {
                 if (b.isDuplet == false) {
-                    yline = previous.getY();
+                    yLine = previous.getY();
                 } else {
-                    yline = previous.getY() - (b.getHeight() / 2) - (Const.OFFSET / 2);
+                    yLine = previous.getY() - (b.getHeight() / 2) - (Const.OFFSET / 2);
                 }
-                turntopright = false;
+                turnTopRight = false;
             }
-            if (turnbottomright == true) {
+            if (turnBottomRight == true) {
                 if (b.isDuplet == false) {
-                    yline = previous.getY() + previous.getHeight() - b.getHeight();
+                    yLine = previous.getY() + previous.getHeight() - b.getHeight();
                 } else {
-                    yline = previous.getY() + previous.getHeight() - (b.getHeight() / 2);
+                    yLine = previous.getY() + previous.getHeight() - (b.getHeight() / 2);
                 }
-                turnbottomright = false;
+                turnBottomRight = false;
             }
         }
 
-        b.workside = b.left; // рабочая часть камня левая
+        b.workSide = b.left; // рабочая часть камня левая
 
         if (bones.size() == 1) { // в начале игры ставим камень слева
-            putAtPosition(Const.TOLEFT, b, xline, yline);
+            putAtPosition(Const.TOLEFT, b, xLine, yLine);
         } else {
             if (compareBones(previous, leftBone()) == true) { // если работаем с левым концом, ставим камень слева
-                putAtPosition(Const.TOLEFT, b, xline, yline);
+                putAtPosition(Const.TOLEFT, b, xLine, yLine);
             } else {
-                putAtPosition(Const.TORIGHT, b, xline, yline); // если с правым то справа
+                putAtPosition(Const.TORIGHT, b, xLine, yLine); // если с правым то справа
             }
         }
-        spaceleft -= b.getWidth();
+        spaceLeft -= b.getWidth();
     }
 
     private void addLeftToRight(Bone previous, Bone b) {
@@ -269,7 +269,7 @@ public class Field extends GamePanel {
                 && ((previous.angle == Const.A0) || (previous.angle == Const.A180));
 
         if (b.isDuplet == false) {
-            if (previous.workside == b.right) {
+            if (previous.workSide == b.right) {
                 angle = Const.A180; // переворачиваем камень наоборот
             }
         } else {
@@ -278,43 +278,43 @@ public class Field extends GamePanel {
 
         b.drawBone(angle, Const.NOTSELECTED); // отрисовываем
 
-        xline = previous.getX() + previous.getWidth() + Const.OFFSET;
+        xLine = previous.getX() + previous.getWidth() + Const.OFFSET;
 
         if ((prevverticalduplet) || (prevhorizontalbone) || (turnfromhorizontalduplet)) {
-            yline = previous.getY() + (previous.getHeight() / 2) - (b.getHeight() / 2);
+            yLine = previous.getY() + (previous.getHeight() / 2) - (b.getHeight() / 2);
         }
 
         if (turnfromverticalbone) {
-            if (turntopleft == true) {
+            if (turnTopLeft == true) {
                 if (b.isDuplet == false) {
-                    yline = previous.getY();
+                    yLine = previous.getY();
                 } else {
-                    yline = previous.getY() - (b.getHeight() / 2) - Const.OFFSET;
+                    yLine = previous.getY() - (b.getHeight() / 2) - Const.OFFSET;
                 }
-                turntopleft = false;
+                turnTopLeft = false;
             }
-            if (turnbottomleft == true) {
+            if (turnBottomLeft == true) {
                 if (b.isDuplet == false) {
-                    yline = previous.getY() + previous.getHeight() - b.getHeight();
+                    yLine = previous.getY() + previous.getHeight() - b.getHeight();
                 } else {
-                    yline = previous.getY() + previous.getHeight() - (b.getHeight() / 2);
+                    yLine = previous.getY() + previous.getHeight() - (b.getHeight() / 2);
                 }
-                turnbottomleft = false;
+                turnBottomLeft = false;
             }
         }
 
-        b.workside = b.right; // рабочая часть камня правая
+        b.workSide = b.right; // рабочая часть камня правая
 
         if (bones.size() == 1) { // в начале игры ставим камень справа
-            putAtPosition(Const.TORIGHT, b, xline, yline);
+            putAtPosition(Const.TORIGHT, b, xLine, yLine);
         } else {
             if (compareBones(previous, leftBone()) == true) { // если работаем с левым концом, ставим камень слева
-                putAtPosition(Const.TOLEFT, b, xline, yline);
+                putAtPosition(Const.TOLEFT, b, xLine, yLine);
             } else {
-                putAtPosition(Const.TORIGHT, b, xline, yline); // если с правым то справа
+                putAtPosition(Const.TORIGHT, b, xLine, yLine); // если с правым то справа
             }
         }
-        spaceright -= b.getWidth();
+        spaceRight -= b.getWidth();
     }
 
     private void addDownToUp(Bone previous, Bone b) {
@@ -338,51 +338,51 @@ public class Field extends GamePanel {
         }
         b.drawBone(angle, Const.NOTSELECTED); // отрисовываем
 
-        yline = previous.getY() - b.getHeight() - Const.OFFSET;
+        yLine = previous.getY() - b.getHeight() - Const.OFFSET;
 
         if (compareBones(previous, rightBone()) == true) { // если работаем с правым концом
 
             if (turnfromhorizontalbone) { // от не дупля по горизонтали поворачиваем вертикально
-                xline = previous.getX() + previous.getWidth() / 2 + Const.OFFSET;
+                xLine = previous.getX() + previous.getWidth() / 2 + Const.OFFSET;
             }
 
             if ((turnfromhorizontalduplet) && (b.isDuplet == false)) { // от дупля по горизонтали поворачиваем
                                                                        // вертикально
-                xline = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
+                xLine = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
             }
 
             if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
-                xline = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
+                xLine = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
             }
-            b.workside = b.left;
-            putAtPosition(Const.TORIGHT, b, xline, yline);
+            b.workSide = b.left;
+            putAtPosition(Const.TORIGHT, b, xLine, yLine);
         }
 
         if (compareBones(previous, leftBone()) == true) { // если работаем с левым концом
 
             if ((turnfromhorizontalbone) && (b.isDuplet == false)) { // от не дупля по горизонтали поворачиваем
                                                                      // вертикально и ставим не дупль
-                xline = previous.getX();
+                xLine = previous.getX();
             }
 
             if ((turnfromhorizontalbone) && (b.isDuplet == true)) { // от не дупля по горизонтали поворачиваем
                                                                     // вертикально и ставим дупль
-                xline = previous.getX() - (b.getWidth() / 2) - Const.OFFSET;
+                xLine = previous.getX() - (b.getWidth() / 2) - Const.OFFSET;
             }
 
             if ((turnfromhorizontalduplet) && (b.isDuplet == false)) { // от дупля по горизонтали поворачиваем
                                                                        // вертикально
-                xline = previous.getX();
+                xLine = previous.getX();
             }
 
             if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
-                xline = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
+                xLine = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
             }
 
-            b.workside = b.left;
-            putAtPosition(Const.TOLEFT, b, xline, yline);
+            b.workSide = b.left;
+            putAtPosition(Const.TOLEFT, b, xLine, yLine);
         }
-        spaceup -= b.getHeight();
+        spaceUp -= b.getHeight();
     }
 
     private void addUpToDown(Bone previous, Bone b) {
@@ -406,71 +406,71 @@ public class Field extends GamePanel {
         }
         b.drawBone(angle, Const.NOTSELECTED); // отрисовываем
 
-        yline = previous.getY() + previous.getHeight() + Const.OFFSET;
+        yLine = previous.getY() + previous.getHeight() + Const.OFFSET;
 
         if (compareBones(previous, rightBone()) == true) { // если работаем с правым концом
 
             if (turnfromhorizontalbone) { // от не дупля по горизонтали поворачиваем вертикально
-                xline = previous.getX() + previous.getWidth() / 2 + Const.OFFSET;
+                xLine = previous.getX() + previous.getWidth() / 2 + Const.OFFSET;
             }
 
             if ((turnfromhorizontalduplet) && (b.isDuplet == false)) { // от дупля по горизонтали поворачиваем
                                                                        // вертикально
-                xline = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
+                xLine = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
             }
 
             if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
-                xline = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
+                xLine = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
             }
 
-            b.workside = b.right;
-            putAtPosition(Const.TORIGHT, b, xline, yline);
+            b.workSide = b.right;
+            putAtPosition(Const.TORIGHT, b, xLine, yLine);
         }
 
         if (compareBones(previous, leftBone()) == true) { // если работаем с левым концом
 
             if ((turnfromhorizontalbone) && (b.isDuplet == false)) { // от не дупля по горизонтали поворачиваем
                                                                      // вертикально и ставим не дупль
-                xline = previous.getX();
+                xLine = previous.getX();
             }
 
             if ((turnfromhorizontalbone) && (b.isDuplet == true)) { // от не дупля по горизонтали поворачиваем
                                                                     // вертикально и ставим дупль
-                xline = previous.getX() - (b.getWidth() / 2) - Const.OFFSET;
+                xLine = previous.getX() - (b.getWidth() / 2) - Const.OFFSET;
             }
 
             if ((turnfromhorizontalduplet) && (b.isDuplet == false)) { // от дупля по горизонтали поворачиваем
                                                                        // вертикально
-                xline = previous.getX();
+                xLine = previous.getX();
             }
 
             if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
-                xline = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
+                xLine = previous.getX() + (previous.getWidth() / 2) - (b.getWidth() / 2);
             }
 
-            b.workside = b.right;
-            putAtPosition(Const.TOLEFT, b, xline, yline);
+            b.workSide = b.right;
+            putAtPosition(Const.TOLEFT, b, xLine, yLine);
         }
-        spacedown -= b.getHeight();
+        spaceDown -= b.getHeight();
 
     }
 
     public void addToLeft(Bone b) {
-        if (spaceleft > Const.SPACELIMIT) {
+        if (spaceLeft > Const.SPACELIMIT) {
             addRightToLeft(leftBone(), b); // справа налево
         } else {
-            if (randomchoice == true) {
-                if (spaceup > Const.SPACELIMIT) {
+            if (randomChoice == true) {
+                if (spaceUp > Const.SPACELIMIT) {
                     addDownToUp(leftBone(), b); // снизу вверх
                 } else {
-                    turntopleft = true;
+                    turnTopLeft = true;
                     addLeftToRight(leftBone(), b); // слева направо
                 }
             } else {
-                if (spacedown > Const.SPACELIMIT) {
+                if (spaceDown > Const.SPACELIMIT) {
                     addUpToDown(leftBone(), b); // сверху вниз
                 } else {
-                    turnbottomleft = true;
+                    turnBottomLeft = true;
                     addLeftToRight(leftBone(), b); // слева направо
                 }
             }
@@ -478,21 +478,21 @@ public class Field extends GamePanel {
     }
 
     public void addToRight(Bone b) {
-        if (spaceright > Const.SPACELIMIT) {
+        if (spaceRight > Const.SPACELIMIT) {
             addLeftToRight(rightBone(), b);
         } else {
-            if (randomchoice == false) {
-                if (spaceup > Const.SPACELIMIT) {
+            if (randomChoice == false) {
+                if (spaceUp > Const.SPACELIMIT) {
                     addDownToUp(rightBone(), b);
                 } else {
-                    turntopright = true;
+                    turnTopRight = true;
                     addRightToLeft(rightBone(), b);
                 }
             } else {
-                if (spacedown > Const.SPACELIMIT) {
+                if (spaceDown > Const.SPACELIMIT) {
                     addUpToDown(rightBone(), b);
                 } else {
-                    turnbottomright = true;
+                    turnBottomRight = true;
                     addRightToLeft(rightBone(), b);
                 }
             }
@@ -507,7 +507,5 @@ public class Field extends GamePanel {
 
     @Override
     protected void toBones(Bone b) {
-        throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-                                                                       // Tools | Templates.
     }
 }

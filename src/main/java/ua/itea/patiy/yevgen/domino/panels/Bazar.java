@@ -30,12 +30,12 @@ public class Bazar extends GamePanel {
      * 
      */
     private static final long serialVersionUID = -4485166148555484926L;
-    private int xbazar;
-    private int ybazar;
+    private int xBazar;
+    private int yBazar;
 
     public Bazar() {
-        xbazar = Const.XSHIFT;
-        ybazar = Const.YSHIFT - 2 * Const.SHIFT;
+        xBazar = Const.XSHIFT;
+        yBazar = Const.YSHIFT - 2 * Const.SHIFT;
         setTitle(" Базар ");
     }
 
@@ -44,7 +44,7 @@ public class Bazar extends GamePanel {
         flushBones(bones);
         for (byte i = 0; i < bones.size(); i++) {
             toBones(bones.get(i));
-            ybazar += Const.BONEY + Const.SHIFT;
+            yBazar += Const.BONEY + Const.SHIFT;
         }
     }
 
@@ -80,9 +80,9 @@ public class Bazar extends GamePanel {
 
     @Override
     protected void toBones(Bone b) {
-        b.setLocation(xbazar, ybazar);
+        b.setLocation(xBazar, yBazar);
         b.addMouseListener(b.mouseAdapterBazar); // обработчик нажатий
-        add(b, new AbsoluteConstraints(xbazar, ybazar, Const.BONEX, Const.BONEY));
+        add(b, new AbsoluteConstraints(xBazar, yBazar, Const.BONEX, Const.BONEY));
         repaint();
     }
 

@@ -23,8 +23,8 @@ public abstract class GamePanel extends JPanel {
      * 
      */
     private static final long serialVersionUID = 2803579325914353051L;
-    public Bone selectedleft;
-    public Bone selectedright;
+    public Bone selectedLeft;
+    public Bone selectedRight;
     protected List<Bone> bones = new ArrayList<Bone>(); // камни на текущей панели
 
     public int boneQty() {
