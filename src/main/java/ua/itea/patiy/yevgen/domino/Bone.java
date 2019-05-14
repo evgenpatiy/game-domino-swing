@@ -14,19 +14,13 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class Bone extends JButton { // класс описания камней, которые будут кнопки :)
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -8252578197977268541L;
+public class Bone extends JButton {
+    private static final long serialVersionUID = 1756065351166502914L;
     public byte left; // левая часть кости
     public byte right; // правая часть кости
     public byte workSide; // сторона, к которой ставим камни
@@ -34,7 +28,6 @@ public class Bone extends JButton { // класс описания камней,
     public boolean isFirst;
     public boolean isDuplet;
     public boolean isSelected;
-
     public int angle;
 
     private BufferedImage faceImage = null;
@@ -47,7 +40,7 @@ public class Bone extends JButton { // класс описания камней,
         public void mouseClicked(MouseEvent evt) {
             Game.bazarSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
             if (Game.get7bones == true) {
-                Game.getStart_7_BonesFromBazar();
+                Game.getStart7BonesFromBazar();
             }
             if (Game.needMoreBones == true) {
                 Game.getMoreBonesFromBazar();
@@ -106,7 +99,6 @@ public class Bone extends JButton { // класс описания камней,
         BufferedImage invimg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB); // картинка
                                                                                                                 // как и
                                                                                                                 // исходная
-
         for (int i = 0; i < img.getWidth(); i++) {
             for (int j = 0; j < img.getHeight(); j++) {
                 int rgba = img.getRGB(i, j);
@@ -117,29 +109,28 @@ public class Bone extends JButton { // класс описания камней,
                 invimg.setRGB(i, j, color.getRGB());
             }
         }
-
         return invimg;
     }
 
     private BufferedImage createFaceImg(BufferedImage img1, BufferedImage img2) { // склеиваем две картинки в одну
-        int imgwidth = 0;
-        int imgheight = 0;
+        int imgWidth = 0;
+        int imgHeight = 0;
 
         if ((angle == Const.A0) || (angle == Const.A180)) { // камень горизонтально, размер
-            imgwidth = (2 * img1.getWidth()) + Const.OFFSET;
-            imgheight = img1.getHeight();
+            imgWidth = (2 * img1.getWidth()) + Const.OFFSET;
+            imgHeight = img1.getHeight();
         } else if ((angle == Const.A90) || (angle == Const.A270)) { // камень вертикально, размер
-            imgwidth = img1.getWidth();
-            imgheight = (2 * img1.getHeight()) + Const.OFFSET;
+            imgWidth = img1.getWidth();
+            imgHeight = (2 * img1.getHeight()) + Const.OFFSET;
         }
 
-        BufferedImage boneimg = new BufferedImage(imgwidth, imgheight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage boneImg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
 
-        Graphics2D g = boneimg.createGraphics();
-        Color oldcolor = g.getColor();
+        Graphics2D g = boneImg.createGraphics();
+        Color oldColor = g.getColor();
         g.setPaint(Color.WHITE);
-        g.fillRect(0, 0, imgwidth, imgheight);
-        g.setColor(oldcolor);
+        g.fillRect(0, 0, imgWidth, imgHeight);
+        g.setColor(oldColor);
 
         if ((angle == Const.A0) || (angle == Const.A180)) { // камень горизонтально
             g.drawImage(img1, null, 0, 0);
@@ -150,13 +141,11 @@ public class Bone extends JButton { // класс описания камней,
         }
 
         g.dispose();
-        return boneimg;
+        return boneImg;
     }
 
     public final void drawBone(int ang, boolean selected) { // отрисовываем камень
-
         String prefix = ""; // путь к картинкам камней
-
         int width = Const.BONEX; // по умолчанию камень горизонтально
         int height = Const.BONEY;
         angle = ang;
@@ -171,7 +160,7 @@ public class Bone extends JButton { // класс описания камней,
             height = temp;
         }
 
-        String backpath = prefix + "back.png";
+        String backPath = prefix + "back.png";
 
         if ((angle == Const.A270) || (angle == Const.A180)) { // при перевороте камней меняем местами лево-право
             invertBone();
@@ -179,16 +168,16 @@ public class Bone extends JButton { // класс описания камней,
 
         setSize(new Dimension(width, height)); // ставим размеры камня
 
-        String leftpath = prefix + left + ".png";
-        String rightpath = prefix + right + ".png";
+        String leftPath = prefix + left + ".png";
+        String rightPath = prefix + right + ".png";
 
-        URL img1url = getClass().getResource(leftpath);
-        URL img2url = getClass().getResource(rightpath);
-        URL backurl = getClass().getResource(backpath);
+        URL img1Url = getClass().getResource(leftPath);
+        URL img2Url = getClass().getResource(rightPath);
+        URL backUrl = getClass().getResource(backPath);
 
         try {
-            BufferedImage img1 = ImageIO.read(img1url);
-            BufferedImage img2 = ImageIO.read(img2url);
+            BufferedImage img1 = ImageIO.read(img1Url);
+            BufferedImage img2 = ImageIO.read(img2Url);
 
             if (selected == Const.NOTSELECTED) {
                 faceImage = createFaceImg(img1, img2);
@@ -196,9 +185,8 @@ public class Bone extends JButton { // класс описания камней,
                 faceImage = invertImg(createFaceImg(img1, img2));
             }
 
-            backImage = ImageIO.read(backurl);
+            backImage = ImageIO.read(backUrl);
         } catch (IOException ex) {
-            Logger.getLogger(Bone.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         face = new ImageIcon(faceImage);
@@ -239,12 +227,6 @@ public class Bone extends JButton { // класс описания камней,
 
     public final void hideBone() { // костями вниз
         setIcon(back);
-    }
-
-    protected final String toolTipText() {
-        this.revalidate();
-        return this.toString() + " поворот " + this.angle + " workside: " + this.workSide + " selected:"
-                + this.isSelected;
     }
 
     public Bone(byte left, byte right) { // конструктор класса, прописываем значения свойств

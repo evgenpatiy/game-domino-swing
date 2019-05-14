@@ -35,16 +35,6 @@ public abstract class GamePanel extends JPanel {
         return ((b1.left == b2.left) && (b1.right == b2.right)) || ((b1.left == b2.right) && (b1.right == b2.left));
     }
 
-    protected void listBones() {
-        System.out.println("\n>>>>> Камни на панели " + getClass());
-        int i = 1;
-
-        for (Bone B : bones) {
-            System.out.println(i + ": " + B);
-            i++;
-        }
-    }
-
     public void showBones() {
         for (Bone B : bones) {
             B.showBone();

@@ -381,12 +381,6 @@ public class Player extends GamePanel {
     }
 
     @Override
-    protected void listBones() {
-        System.out.println("\n==  Камни игрока == " + this.name);
-        super.listBones();
-    }
-
-    @Override
     protected void rebuildBonesLine(boolean frame) { // выстраиваем камни в рядок
         xPlayer = Const.XSHIFT;
         yPlayer = Const.YSHIFT + Const.SHIFT;

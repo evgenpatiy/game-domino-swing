@@ -6,6 +6,7 @@
 package ua.itea.patiy.yevgen.domino;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -20,7 +21,7 @@ import ua.itea.patiy.yevgen.domino.panels.Player;
 public class Game {
 
     protected int enemy = 0; // ваш противник
-    protected static String myName = "Yevgen";
+    protected static String myName = "%username%";
     protected static String enemyName = "";
 
     public static boolean firstStep;
@@ -41,7 +42,7 @@ public class Game {
         get7bones = true;
     }
 
-    protected static void getStart_7_BonesFromBazar() {
+    protected static void getStart7BonesFromBazar() {
         if ((Main.me.less7Bones()) && (Main.you.less7Bones())) { // набираем кости с базара
             // берем камень от клика мыши
             Main.me.toBones(bazarSelectedBone);
@@ -51,8 +52,8 @@ public class Game {
             Main.you.toBones(bazarSelectedBone);
             Main.bazar.fromBones(bazarSelectedBone);
 
-            Main.field.setTitle(
-                    " Візьміть ще " + Main.me.properBoneQtyString(Const.MAXBONES - Main.me.boneQty()) + " ");
+            Main.field
+                    .setTitle(" Візьміть ще " + Main.me.properBoneQtyString(Const.MAXBONES - Main.me.boneQty()) + " ");
         }
 
         if ((Main.me.has7Bones()) && (Main.you.has7Bones())) { // набрали
@@ -167,8 +168,7 @@ public class Game {
                     currentPlayer.noBonesToGo = true;
                     System.out.println(currentPlayer.name + " пропускає хід");
                     if ((nextPlayer().bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0] == null)
-                            && (nextPlayer().bonesToPut(Main.field.leftBone(),
-                                    Main.field.rightBone())[1] == null)) {
+                            && (nextPlayer().bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1] == null)) {
                         System.out.println("РИБА!!!!");
                         gameEnd(Const.ENDGAMEFISH);
                     }
@@ -231,7 +231,7 @@ public class Game {
     }
 
     private static String makeGameEndMessage(byte endtype) {
-        ArrayList<String> s = new ArrayList<>();
+        List<String> s = new ArrayList<String>();
         int max;
         String result = "";
 
@@ -261,13 +261,11 @@ public class Game {
         }
 
         max = s.get(0).length(); // берем первую строчку за самую длинную
-
         for (String S : s) {
             if (S.length() > max) {
                 max = S.length();
             }
         }
-
         for (int i = 0; i < s.size(); i++) { // добавляем для красоты пробелы в начале
             String currentstring = s.get(i);
 
@@ -276,16 +274,14 @@ public class Game {
             }
             s.set(i, System.lineSeparator() + currentstring);
         }
-
         for (String S : s) { // лепим в одну строку и возвращаем
             result += S;
         }
-
         return result;
 
     }
 
-    private static void gameEnd(byte endkind) { // наигрались
+    private static void gameEnd(byte endKind) { // наигрались
         Main.field.disableBonesSelect();
         Main.field.setTitle(" Гру скінчено ");
 
@@ -306,7 +302,7 @@ public class Game {
         nextPlayer().setTitle(
                 " " + nextPlayer().name + " : " + nextPlayer().properScoreString(nextPlayer().endScore()) + " ");
 
-        JOptionPane.showMessageDialog(null, makeGameEndMessage(endkind), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, makeGameEndMessage(endKind), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 
@@ -344,21 +340,21 @@ public class Game {
     }
 
     protected static Player whoFirst(Player... p) { // Выясняем, чей первый ход
-        Player firstplayer = null;
-        Bone minbone;
-        Bone minduplet;
-        int playerswithduplets = 0; // количество игроков с дуплями
+        Player firstPlayer = null;
+        Bone minBone;
+        Bone minDuplet;
+        int playersWithDuplets = 0; // количество игроков с дуплями
 
         int j = 0; // счетчик игроков с дуплями
 
         for (Player P : p) {
             if (P.hasDupletsAboveZero()) {
-                playerswithduplets++; // считаем сколько игроков с дуплями на руках
+                playersWithDuplets++; // считаем сколько игроков с дуплями на руках
             }
         }
 
-        if (playerswithduplets > 0) { // если есть хоть один игрок с дуплями больше 0:0 после раздачи с базара
-            Player[] ar = new Player[playerswithduplets]; // массив игроков с дуплями больше 0:0
+        if (playersWithDuplets > 0) { // если есть хоть один игрок с дуплями больше 0:0 после раздачи с базара
+            Player[] ar = new Player[playersWithDuplets]; // массив игроков с дуплями больше 0:0
 
             for (Player P : p) {
                 if (P.hasDupletsAboveZero()) {
@@ -367,22 +363,22 @@ public class Game {
                 }
             }
 
-            minduplet = ar[0].minDupletAboveZero();
-            firstplayer = ar[0];
+            minDuplet = ar[0].minDupletAboveZero();
+            firstPlayer = ar[0];
 
             for (Player P : ar) {
-                if (P.minDupletAboveZero().sum < minduplet.sum) {
-                    firstplayer = P;
+                if (P.minDupletAboveZero().sum < minDuplet.sum) {
+                    firstPlayer = P;
                 }
             }
         } else { // если дуплей больше 0:0 ни у кого на руках нет, ищем у кого минимальный камень
-            minbone = p[0].minBone();
+            minBone = p[0].minBone();
             for (Player P : p) {
-                if (P.minBone().sum < minbone.sum) {
-                    firstplayer = P;
+                if (P.minBone().sum < minBone.sum) {
+                    firstPlayer = P;
                 }
             }
         }
-        return firstplayer;
+        return firstPlayer;
     }
 }
