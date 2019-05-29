@@ -42,10 +42,10 @@ public class Bazar extends GamePanel {
     public void initBazar() {
         bones = initBones();
         flushBones(bones);
-        for (byte i = 0; i < bones.size(); i++) {
-            toBones(bones.get(i));
+        bones.forEach(bone -> {
+            toBones(bone);
             yBazar += Const.BONEY + Const.SHIFT;
-        }
+        });
     }
 
     private List<Bone> initBones() { // инициализируем камни
@@ -94,15 +94,15 @@ public class Bazar extends GamePanel {
 
     @Override
     protected void rebuildBonesLine(boolean frame) {
-        for (Bone b : bones) {
+        bones.forEach(bone -> {
             if (frame == Const.NOFRAME) {
-                b.removeMouseListener(b.mouseAdapterBazar); // убираем обработку мыши и рамку для всех камней
-                b.hideFrame();
+                bone.removeMouseListener(bone.mouseAdapterBazar); // убираем обработку мыши и рамку для всех камней
+                bone.hideFrame();
             } else {
-                b.addMouseListener(b.mouseAdapterBazar); // добавляем обработку мыши и рамку для всех камней
-                b.showFrame();
+                bone.addMouseListener(bone.mouseAdapterBazar); // добавляем обработку мыши и рамку для всех камней
+                bone.showFrame();
             }
-        }
+        });
         repaint();
     }
 

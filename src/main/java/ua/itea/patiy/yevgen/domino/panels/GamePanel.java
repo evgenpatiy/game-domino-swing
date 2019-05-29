@@ -36,18 +36,18 @@ public abstract class GamePanel extends JPanel {
     }
 
     public void showBones() {
-        for (Bone B : bones) {
-            B.showBone();
-            B.repaint();
-        }
+        bones.forEach(bone -> {
+            bone.showBone();
+            bone.repaint();
+        });
         repaint();
     }
 
     protected void hideBones() {
-        for (Bone B : bones) {
-            B.hideBone();
-            B.repaint();
-        }
+        bones.forEach(bone -> {
+            bone.hideBone();
+            bone.repaint();
+        });
         repaint();
     }
 
