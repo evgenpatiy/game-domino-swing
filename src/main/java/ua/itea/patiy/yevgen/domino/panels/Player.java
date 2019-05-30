@@ -27,10 +27,6 @@ import ua.itea.patiy.yevgen.domino.Game;
  * @author yevgen
  */
 public class Player extends GamePanel {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = -7224818727640107326L;
     public String name;
     public boolean isHuman;
@@ -61,11 +57,7 @@ public class Player extends GamePanel {
     }
 
     public int endScore() { // сколько суммарно глаз осталось
-        int sum = 0;
-        for (Bone b : bones) {
-            sum += b.sum;
-        }
-        return sum;
+        return bones.stream().mapToInt(bone -> bone.sum).sum();
     }
 
     public void addGoButton() { // показать кнопку хода
@@ -113,26 +105,27 @@ public class Player extends GamePanel {
                                                                                                                       // первый
                                                                                                                       // камень
 
-        for (Bone b : bones) {
+        for (Bone bone : bones) {
             if (leftBone == null) {
                 goodForLeft = false;
             } else {
-                goodForLeft = isFirst ? b.boneIsApplicable(leftBone.left) : b.boneIsApplicable(leftBone.workSide);
+                goodForLeft = isFirst ? bone.boneIsApplicable(leftBone.left) : bone.boneIsApplicable(leftBone.workSide);
             }
             if (rightBone == null) {
                 goodForRight = false;
             } else {
-                goodForRight = isFirst ? b.boneIsApplicable(rightBone.right) : b.boneIsApplicable(rightBone.workSide);
+                goodForRight = isFirst ? bone.boneIsApplicable(rightBone.right)
+                        : bone.boneIsApplicable(rightBone.workSide);
             }
 
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
-                b.showFrame();
-                b.addMouseListener(b.mouseAdapterHumanPlayer);
+                bone.showFrame();
+                bone.addMouseListener(bone.mouseAdapterHumanPlayer);
             }
 
-            b.setLocation(xPlayer, yPlayer);
-            add(b, new AbsoluteConstraints(xPlayer, yPlayer, b.getWidth(), b.getHeight()));
-            xPlayer += b.getWidth() + Const.PLAYERSHIFT;
+            bone.setLocation(xPlayer, yPlayer);
+            add(bone, new AbsoluteConstraints(xPlayer, yPlayer, bone.getWidth(), bone.getHeight()));
+            xPlayer += bone.getWidth() + Const.PLAYERSHIFT;
         }
         repaint();
     }
@@ -143,9 +136,9 @@ public class Player extends GamePanel {
         readyToGo = false;
 
         for (Bone b : bones) {
-            if ((!compareBones(b, bone) && (b.isSelected))) {
+            if ((!b.equals(bone)) && (b.isSelected)) {
                 b.selectUnselectBone();
-            } else if (compareBones(b, bone)) {
+            } else if (b.equals(bone)) {
                 b.selectUnselectBone();
 
                 if (b.isSelected && (leftBone != null) && b.boneIsApplicable(leftBone.workSide)) {
@@ -185,8 +178,8 @@ public class Player extends GamePanel {
     }
 
     protected boolean hasDuplets() { // есть ли дупли
-        for (Bone b : bones) {
-            if (b.isDuplet) {
+        for (Bone bone : bones) {
+            if (bone.isDuplet) {
                 return true;
             }
         }
@@ -195,8 +188,8 @@ public class Player extends GamePanel {
 
     protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
         byte i = 0;
-        for (Bone b : bones) {
-            if ((b.dupletIsApplicable(leftBone.workSide)) || (b.dupletIsApplicable(rightBone.workSide))) {
+        for (Bone bone : bones) {
+            if ((bone.dupletIsApplicable(leftBone.workSide)) || (bone.dupletIsApplicable(rightBone.workSide))) {
                 i++;
             }
         }
@@ -204,8 +197,8 @@ public class Player extends GamePanel {
     }
 
     public boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
-        for (Bone b : bones) {
-            if ((b.isDuplet) && (b.sum > 0)) {
+        for (Bone bone : bones) {
+            if ((bone.isDuplet) && (bone.sum > 0)) {
                 return true;
             }
         }
@@ -216,15 +209,15 @@ public class Player extends GamePanel {
         Bone min = null;
 
         if (hasDuplets()) {
-            for (Bone b : bones) {
-                if (b.isDuplet) {
-                    min = b;
+            for (Bone bone : bones) {
+                if (bone.isDuplet) {
+                    min = bone;
                 }
             }
 
-            for (Bone b : bones) {
-                if ((b.isDuplet) && (b.sum < min.sum)) { // находим минимум из всех дуплей на руках
-                    min = b;
+            for (Bone bone : bones) {
+                if ((bone.isDuplet) && (bone.sum < min.sum)) { // находим минимум из всех дуплей на руках
+                    min = bone;
                 }
             }
         }
@@ -254,24 +247,24 @@ public class Player extends GamePanel {
     public Bone minBone() {
         Bone min = bones.get(0); // берем первую кость как минимум
 
-        for (Bone b : bones) {
-            if (!b.isDuplet) {
-                min = b; // ищем первый не-дупль и переопределяем минимум
+        for (Bone bone : bones) {
+            if (!bone.isDuplet) {
+                min = bone; // ищем первый не-дупль и переопределяем минимум
                 break;
             }
         }
 
-        for (Bone b : bones) {
-            if ((!(b.isDuplet)) && (b.sum < min.sum)) { // находим минимум из всех не-дуплей на руках
-                min = b;
+        for (Bone bone : bones) {
+            if ((!(bone.isDuplet)) && (bone.sum < min.sum)) { // находим минимум из всех не-дуплей на руках
+                min = bone;
             }
         }
         return min;
     }
 
     protected boolean hasProperDuplet(byte boneSide) { // есть ли годные дупли
-        for (Bone b : bones) {
-            if (b.dupletIsApplicable(boneSide)) {
+        for (Bone bone : bones) {
+            if (bone.dupletIsApplicable(boneSide)) {
                 return true;
             }
         }
@@ -281,9 +274,9 @@ public class Player extends GamePanel {
     protected Bone properDuplet(byte boneSide) { // годный дупль
         Bone duplet = null;
 
-        for (Bone b : bones) {
-            if (b.dupletIsApplicable(boneSide)) {
-                duplet = b;
+        for (Bone bone : bones) {
+            if (bone.dupletIsApplicable(boneSide)) {
+                duplet = bone;
             }
         }
 
@@ -294,18 +287,18 @@ public class Player extends GamePanel {
         List<Bone> temp = new ArrayList<Bone>();
         Bone max = null;
 
-        for (Bone b : bones) {
-            if (b.boneIsApplicable(boneSide)) { // если подходящий не-дупль, добавляем в список
-                temp.add(b);
+        for (Bone bone : bones) {
+            if (bone.boneIsApplicable(boneSide)) { // если подходящий не-дупль, добавляем в список
+                temp.add(bone);
             }
         }
 
         if (!temp.isEmpty()) { // если есть подходящие камни
             max = temp.get(0);
 
-            for (Bone b : temp) { // ищем максимальный
-                if (b.sum > max.sum) {
-                    max = b;
+            for (Bone bone : temp) { // ищем максимальный
+                if (bone.sum > max.sum) {
+                    max = bone;
                 }
             }
         }
@@ -385,23 +378,23 @@ public class Player extends GamePanel {
         xPlayer = Const.XSHIFT;
         yPlayer = Const.YSHIFT + Const.SHIFT;
 
-        for (Bone b : bones) {
-            b.removeMouseListener(b.mouseAdapterHumanPlayer);
+        for (Bone bone : bones) {
+            bone.removeMouseListener(bone.mouseAdapterHumanPlayer);
 
-            if (b.isSelected == Const.SELECTED) {
-                b.unselectBone();
+            if (bone.isSelected == Const.SELECTED) {
+                bone.unselectBone();
             }
 
-            b.hideFrame();
+            bone.hideFrame();
             if (isHuman == Const.HUMAN) {
-                b.showBone();
+                bone.showBone();
             } else if (isHuman == Const.ROBOT) {
-                b.hideBone();
+                bone.hideBone();
             }
 
-            b.setLocation(xPlayer, yPlayer);
-            add(b, new org.netbeans.lib.awtextra.AbsoluteConstraints(xPlayer, yPlayer, b.getWidth(), b.getHeight()));
-            xPlayer += b.getWidth() + Const.PLAYERSHIFT;
+            bone.setLocation(xPlayer, yPlayer);
+            add(bone, new AbsoluteConstraints(xPlayer, yPlayer, bone.getWidth(), bone.getHeight()));
+            xPlayer += bone.getWidth() + Const.PLAYERSHIFT;
         }
         repaint();
     }
@@ -411,17 +404,17 @@ public class Player extends GamePanel {
     }
 
     @Override
-    public void toBones(Bone b) {
-        b.removeMouseListener(b.mouseAdapterBazar); // отменяем базарные нажатия мышкой
-        b.drawBone(Const.A90, Const.NOTSELECTED);
-        bones.add(b);
+    public void toBones(Bone bone) {
+        bone.removeMouseListener(bone.mouseAdapterBazar); // отменяем базарные нажатия мышкой
+        bone.drawBone(Const.A90, Const.NOTSELECTED);
+        bones.add(bone);
         disableBonesSelect();
         setTitle(" " + name + " має " + properBoneQtyString(boneQty()) + " "); // обновляем заголовок панели
     }
 
     @Override
-    public void fromBones(Bone b) { // вызываем папин метод и обновляем заголовок панели
-        super.fromBones(b);
+    public void fromBones(Bone bone) { // вызываем папин метод и обновляем заголовок панели
+        super.fromBones(bone);
         disableBonesSelect();
         setTitle(" " + name + " має " + properBoneQtyString(boneQty()) + " "); // обновляем заголовок панели
     }

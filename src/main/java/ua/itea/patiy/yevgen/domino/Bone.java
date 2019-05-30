@@ -35,6 +35,11 @@ public class Bone extends JButton {
     private ImageIcon face;
     private ImageIcon back;
 
+    public boolean equals(Bone bone) {
+        return ((this.left == bone.left) && (this.right == bone.right))
+                || ((this.left == bone.right) && (this.right == bone.left));
+    }
+
     public MouseAdapter mouseAdapterBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {

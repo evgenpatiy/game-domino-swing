@@ -5,7 +5,7 @@
  */
 package ua.itea.patiy.yevgen.domino.panels;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -19,20 +19,13 @@ import ua.itea.patiy.yevgen.domino.Const;
  */
 public abstract class GamePanel extends JPanel {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 2803579325914353051L;
     public Bone selectedLeft;
     public Bone selectedRight;
-    protected List<Bone> bones = new ArrayList<Bone>(); // камни на текущей панели
+    protected List<Bone> bones = new LinkedList<Bone>(); // камни на текущей панели
 
     public int boneQty() {
         return bones.size();
-    }
-
-    protected boolean compareBones(Bone b1, Bone b2) {
-        return ((b1.left == b2.left) && (b1.right == b2.right)) || ((b1.left == b2.right) && (b1.right == b2.left));
     }
 
     public void showBones() {

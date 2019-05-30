@@ -103,11 +103,8 @@ public class Main extends JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
         }
 
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Main().setVisible(true);
-            }
+        EventQueue.invokeLater(() -> {
+            new Main().setVisible(true);
         });
     }
 }
