@@ -6,8 +6,11 @@
 package ua.itea.patiy.yevgen.domino;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -230,54 +233,33 @@ public class Game {
         }
     }
 
-    private static String makeGameEndMessage(byte endtype) {
-        List<String> s = new ArrayList<String>();
-        int max;
-        String result = "";
+    private static String getFinalMessage(byte endtype) {
+        List<String> strings = new ArrayList<String>();
 
         switch (endtype) {
         case Const.ENDGAME: {
-            s.add("Виграв " + currentPlayer.name + "!");
-            s.add("У " + nextPlayer().name + " лишилось на руках "
-                    + nextPlayer().properScoreString(nextPlayer().endScore()));
-            s.add("\u00a9" + " Yevgen Patiy, 2018-2019");
-            s.add("GPL 2.0 license");
-
+            strings.add("Виграв " + currentPlayer.name + "!");
             break;
 
         }
         case Const.ENDGAMEFISH: {
-            s.add("Риба!");
-            s.add("У " + currentPlayer.name + " лишилось на руках "
+            strings.add("Риба!");
+            strings.add("У " + currentPlayer.name + " лишилось на руках "
                     + currentPlayer.properScoreString(currentPlayer.endScore()));
-            s.add("У " + nextPlayer().name + " лишилось на руках "
-                    + nextPlayer().properScoreString(nextPlayer().endScore()));
-            s.add("\u00a9" + " Yevgen Patiy, 2018-2019");
-            s.add("GPL 2.0 license");
-
             break;
 
         }
         }
+        strings.add("У " + nextPlayer().name + " лишилось на руках "
+                + nextPlayer().properScoreString(nextPlayer().endScore()));
+        strings.add("\u00a9" + " Yevgen Patiy, 2018-2019");
+        strings.add("GPL 2.0 license");
 
-        max = s.get(0).length(); // берем первую строчку за самую длинную
-        for (String S : s) {
-            if (S.length() > max) {
-                max = S.length();
-            }
-        }
-        for (int i = 0; i < s.size(); i++) { // добавляем для красоты пробелы в начале
-            String currentstring = s.get(i);
-
-            for (int j = 0; j <= (max - currentstring.length()); j++) {
-                currentstring = "  " + currentstring;
-            }
-            s.set(i, System.lineSeparator() + currentstring);
-        }
-        for (String S : s) { // лепим в одну строку и возвращаем
-            result += S;
-        }
-        return result;
+        int max = strings.stream().max((String s1, String s2) -> s1.length() - s2.length()).get().length();
+        return strings.stream()
+                .map(s -> System.lineSeparator()
+                        + IntStream.range(0, max - s.length()).mapToObj(i -> " ").collect(Collectors.joining("")) + s)
+                .reduce((s1, s2) -> s1 + s2).get();
 
     }
 
@@ -302,7 +284,7 @@ public class Game {
         nextPlayer().setTitle(
                 " " + nextPlayer().name + " : " + nextPlayer().properScoreString(nextPlayer().endScore()) + " ");
 
-        JOptionPane.showMessageDialog(null, makeGameEndMessage(endKind), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, getFinalMessage(endKind), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 
@@ -339,46 +321,10 @@ public class Game {
         }
     }
 
-    protected static Player whoFirst(Player... p) { // Выясняем, чей первый ход
-        Player firstPlayer = null;
-        Bone minBone;
-        Bone minDuplet;
-        int playersWithDuplets = 0; // количество игроков с дуплями
-
-        int j = 0; // счетчик игроков с дуплями
-
-        for (Player P : p) {
-            if (P.hasDupletsAboveZero()) {
-                playersWithDuplets++; // считаем сколько игроков с дуплями на руках
-            }
-        }
-
-        if (playersWithDuplets > 0) { // если есть хоть один игрок с дуплями больше 0:0 после раздачи с базара
-            Player[] ar = new Player[playersWithDuplets]; // массив игроков с дуплями больше 0:0
-
-            for (Player P : p) {
-                if (P.hasDupletsAboveZero()) {
-                    ar[j] = P; // забиваем массив игроков с дуплями больше 0:0
-                    j++;
-                }
-            }
-
-            minDuplet = ar[0].minDupletAboveZero();
-            firstPlayer = ar[0];
-
-            for (Player P : ar) {
-                if (P.minDupletAboveZero().sum < minDuplet.sum) {
-                    firstPlayer = P;
-                }
-            }
-        } else { // если дуплей больше 0:0 ни у кого на руках нет, ищем у кого минимальный камень
-            minBone = p[0].minBone();
-            for (Player P : p) {
-                if (P.minBone().sum < minBone.sum) {
-                    firstPlayer = P;
-                }
-            }
-        }
-        return firstPlayer;
+    protected static Player whoFirst(Player... player) { // Выясняем, чей первый ход
+        return Arrays.stream(player).filter(p -> p.hasDupletsAboveZero())
+                .min((Player p1, Player p2) -> (p1.minDupletAboveZero().sum - p2.minDupletAboveZero().sum))
+                .orElse(Arrays.stream(player).min((Player p1, Player p2) -> (p1.minBone().sum - p2.minBone().sum))
+                        .get());
     }
 }

@@ -216,7 +216,7 @@ public class Player extends GamePanel {
 
     public Bone[] bonesToPut(Bone leftBone, Bone rightBone) { // возвращаем массив двух камней, левый и правый
         byte left, right; // левые и правые части на поле для хода
-        Bone[] togo = new Bone[2]; // массив двух камней
+        Bone[] toGo = new Bone[2]; // массив двух камней
 
         if ((leftBone.isFirst) && (rightBone.isFirst)) { // если идем от первого камня
             left = leftBone.left;
@@ -232,34 +232,34 @@ public class Player extends GamePanel {
             right = rightBone.workSide;
         }
 
-        togo[0] = maxProperBone(left);
-        togo[1] = maxProperBone(right);
+        toGo[0] = maxProperBone(left);
+        toGo[1] = maxProperBone(right);
 
-        if ((togo[0] != null) && (togo[1] != null)) { // если подходят камни с двух сторон, выбираем больший по сумме
+        if ((toGo[0] != null) && (toGo[1] != null)) { // если подходят камни с двух сторон, выбираем больший по сумме
                                                       // глаз
-            if (togo[0].sum > togo[1].sum) {
-                togo[1] = null;
-            } else if (togo[0].sum <= togo[1].sum) {
-                togo[0] = null;
+            if (toGo[0].sum > toGo[1].sum) {
+                toGo[1] = null;
+            } else if (toGo[0].sum <= toGo[1].sum) {
+                toGo[0] = null;
             }
         }
 
         if (hasProperDuplet(left) && (left != right)) { // если есть подходящий дупль слева, берем его
-            togo[0] = properDuplet(left);
-            togo[1] = null;
+            toGo[0] = properDuplet(left);
+            toGo[1] = null;
         }
 
         if (hasProperDuplet(right)) { // если есть подходящий дупль справа, берем его
-            togo[0] = null;
-            togo[1] = properDuplet(right);
+            toGo[0] = null;
+            toGo[1] = properDuplet(right);
         }
 
         if ((left != right) && (hasProperDuplet(left)) && (hasProperDuplet(right))) { // если два подходящих дупля,
                                                                                       // отдупляемся :))
-            togo[0] = properDuplet(left);
-            togo[1] = properDuplet(right);
+            toGo[0] = properDuplet(left);
+            toGo[1] = properDuplet(right);
         }
-        return togo;
+        return toGo;
     }
 
     public boolean less7Bones() { // есть ли 7 камней на борту

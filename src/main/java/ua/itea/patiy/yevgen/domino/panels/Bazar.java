@@ -74,7 +74,6 @@ public class Bazar extends GamePanel {
             int i = r.nextInt(bones.size());
             returnbone = bones.get(i);
         }
-
         return returnbone;
     }
 
