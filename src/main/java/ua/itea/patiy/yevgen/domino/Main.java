@@ -46,7 +46,7 @@ public class Main extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(0, 204, 102));
         setMinimumSize(new Dimension(1300, 720));
-        setName("window"); // NOI18N
+        setName("window");
         setResizable(false);
         setSize(new Dimension(1300, 720));
         getContentPane().setLayout(new AbsoluteLayout());
@@ -54,7 +54,6 @@ public class Main extends JFrame {
         bazar.setBackground(new Color(0, 102, 51));
         bazar.setLayout(new AbsoluteLayout());
         getContentPane().add(bazar, new AbsoluteConstraints(1200, 0, 100, 720));
-        bazar.initBazar();
 
         you.setBackground(new Color(0, 102, 51));
         you.setTitle(" Поле гравця " + Game.enemyName + " ");

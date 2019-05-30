@@ -56,7 +56,7 @@ public class Const {
     public static final int A180 = 180;
     public static final int A270 = 270;
 
-    protected static final String VERSION = "| JAVA Basic";
+    protected static final String VERSION = "| Java ";
     protected static final String[] RIVALS = { "Windows", "Linux", "OS/2", "Solaris", "FreeBSD", "QNX", "OS X",
             "Android", "iOS", "Tizen" };
 

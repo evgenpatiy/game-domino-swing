@@ -151,7 +151,6 @@ public class Player extends GamePanel {
 
     public String properScoreString(int i) {
         String s = "глаз";
-
         if (((i > 1) && (i < 5)) || ((i > 20) && (((i % 10) > 1) && ((i % 10) < 5)))) {
             s += "а";
         }
@@ -263,22 +262,17 @@ public class Player extends GamePanel {
     }
 
     public boolean less7Bones() { // есть ли 7 камней на борту
-        return this.boneQty() < Const.MAXBONES;
+        return bones.size() < Const.MAXBONES;
     }
 
     public boolean has7Bones() {
-        return this.boneQty() == Const.MAXBONES;
+        return bones.size() == Const.MAXBONES;
     }
 
     public String playerMsg() { // Сообщение на панель поля
-        String s = "Ходить " + name + ". ";
-        if (isHuman == Const.HUMAN) {
-            s += "Оберіть камені на полі та свої камені, і зробіть хід";
-        } else if (isHuman == Const.ROBOT) {
-            s += "Натисніть кнопку на його панелі";
-        }
-
-        return " " + s + " ";
+        String s = " Ходить " + name + ". ";
+        return (isHuman == Const.HUMAN) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
+                : s + "Натисніть кнопку на його панелі ";
     }
 
     @Override
@@ -317,14 +311,14 @@ public class Player extends GamePanel {
         bone.drawBone(Const.A90, Const.NOTSELECTED);
         bones.add(bone);
         disableBonesSelect();
-        setTitle(" " + name + " має " + properBoneQtyString(boneQty()) + " "); // обновляем заголовок панели
+        setTitle(" " + name + " має " + properBoneQtyString(bones.size()) + " "); // обновляем заголовок панели
     }
 
     @Override
     public void fromBones(Bone bone) { // вызываем папин метод и обновляем заголовок панели
         super.fromBones(bone);
         disableBonesSelect();
-        setTitle(" " + name + " має " + properBoneQtyString(boneQty()) + " "); // обновляем заголовок панели
+        setTitle(" " + name + " має " + properBoneQtyString(bones.size()) + " "); // обновляем заголовок панели
     }
 
     @Override

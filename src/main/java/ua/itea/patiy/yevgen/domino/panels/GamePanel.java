@@ -13,20 +13,12 @@ import javax.swing.JPanel;
 import ua.itea.patiy.yevgen.domino.Bone;
 import ua.itea.patiy.yevgen.domino.Const;
 
-/**
- *
- * @author yevgen
- */
 public abstract class GamePanel extends JPanel {
 
     private static final long serialVersionUID = 2803579325914353051L;
     public Bone selectedLeft;
     public Bone selectedRight;
-    protected List<Bone> bones = new LinkedList<Bone>(); // камни на текущей панели
-
-    public int boneQty() {
-        return bones.size();
-    }
+    public List<Bone> bones = new LinkedList<Bone>(); // камни на текущей панели
 
     public void showBones() {
         bones.forEach(bone -> {

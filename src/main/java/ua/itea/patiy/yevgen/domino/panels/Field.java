@@ -101,7 +101,7 @@ public class Field extends GamePanel {
     public void enableFieldSelect(Player p) {
         Bone temp;
 
-        if (boneQty() == 1) { // если одна кость на поле, цепляем к ней мышку
+        if (bones.size() == 1) { // если одна кость на поле, цепляем к ней мышку
             temp = bones.get(0);
 
             for (Bone b : p.bones) {

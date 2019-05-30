@@ -75,12 +75,7 @@ public class Bone extends JButton {
 
     @Override
     public String toString() {
-        String s = "";
-        if (this.isDuplet == Const.DUPLET) {
-            s = "дупль ";
-        } else {
-            s = "камінь ";
-        }
+        String s = isDuplet == Const.DUPLET ? "дупль " : "камінь ";
         return s + left + ":" + right;
     }
 
@@ -96,7 +91,6 @@ public class Bone extends JButton {
         byte temp = left;
         left = right;
         right = temp;
-
         angle = Math.abs(360 - (angle + 180)); // угол увеличиваем на 180 и берем модуль
     }
 

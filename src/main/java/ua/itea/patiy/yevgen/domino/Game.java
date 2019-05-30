@@ -55,8 +55,8 @@ public class Game {
             Main.you.toBones(bazarSelectedBone);
             Main.bazar.fromBones(bazarSelectedBone);
 
-            Main.field
-                    .setTitle(" Візьміть ще " + Main.me.properBoneQtyString(Const.MAXBONES - Main.me.boneQty()) + " ");
+            Main.field.setTitle(
+                    " Візьміть ще " + Main.me.properBoneQtyString(Const.MAXBONES - Main.me.bones.size()) + " ");
         }
 
         if ((Main.me.has7Bones()) && (Main.you.has7Bones())) { // набрали
@@ -116,7 +116,7 @@ public class Game {
 
     protected static void getMoreBonesFromBazar() { // берем камень с базара по ходу игры
         if (currentPlayer.isHuman == Const.ROBOT) { // если робот, берет сам и ходит
-            while (!Main.bazar.empty()) {
+            while (!Main.bazar.bones.isEmpty()) {
                 bazarSelectedBone = Main.bazar.randomFromBones();
 
                 System.out.println(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
@@ -165,7 +165,7 @@ public class Game {
             }
 
             if ((currentPlayer.isHuman == Const.ROBOT) && (left == null) && (right == null)) {
-                if (!Main.bazar.empty()) {
+                if (!Main.bazar.bones.isEmpty()) {
                     getMoreBonesFromBazar();
                 } else {
                     currentPlayer.noBonesToGo = true;
@@ -190,7 +190,7 @@ public class Game {
                 currentPlayer.fromBones(right);
             }
 
-            if (currentPlayer.boneQty() > 0) { // играем дальше, камни еще есть
+            if (currentPlayer.bones.size() > 0) { // играем дальше, камни еще есть
                 currentPlayer.hideGoButton(); // скрыли кнопку
                 currentPlayer.goPressed = false;
                 currentPlayer = nextPlayer(); // передали ход
@@ -201,7 +201,7 @@ public class Game {
 
                 if ((currentPlayer.isHuman == Const.HUMAN)) { // человек
                     if ((left == null) && (right == null)) { // нечем ходить
-                        if (!Main.bazar.empty()) {
+                        if (!Main.bazar.bones.isEmpty()) {
                             Main.field
                                     .setTitle(" " + currentPlayer.name + " не має каменів для хода, беріть з базара ");
                             currentPlayer.disableGoButton("На базар");

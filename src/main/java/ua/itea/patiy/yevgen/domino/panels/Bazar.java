@@ -26,9 +26,6 @@ import ua.itea.patiy.yevgen.domino.Const;
  */
 public class Bazar extends GamePanel {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -4485166148555484926L;
     private int xBazar;
     private int yBazar;
@@ -36,12 +33,12 @@ public class Bazar extends GamePanel {
     public Bazar() {
         xBazar = Const.XSHIFT;
         yBazar = Const.YSHIFT - 2 * Const.SHIFT;
+        bones = initBones();
+        initBazar();
         setTitle(" Базар ");
     }
 
-    public void initBazar() {
-        bones = initBones();
-        flushBones(bones);
+    private void initBazar() {
         bones.forEach(bone -> {
             toBones(bone);
             yBazar += Const.BONEY + Const.SHIFT;
@@ -49,32 +46,18 @@ public class Bazar extends GamePanel {
     }
 
     private List<Bone> initBones() { // инициализируем камни
-        List<Bone> b = new ArrayList<Bone>();
+        List<Bone> bone = new ArrayList<Bone>();
         for (byte i = 0; i <= Const.MAXDOTS; i++) {
             for (byte j = i; j <= Const.MAXDOTS; j++) {
-                b.add(new Bone(i, j));
+                bone.add(new Bone(i, j));
             }
         }
-        return b;
-    }
-
-    private void flushBones(List<Bone> b) { // перемешали камни
-        Collections.shuffle(b);
-    }
-
-    public boolean empty() { // базар пуст
-        return bones.isEmpty();
+        Collections.shuffle(bone);
+        return bone;
     }
 
     public Bone randomFromBones() { // произвольный камень с базара
-        Random r = new Random();
-        Bone returnbone = null;
-
-        if (!empty()) {
-            int i = r.nextInt(bones.size());
-            returnbone = bones.get(i);
-        }
-        return returnbone;
+        return bones.isEmpty() ? null : bones.get((new Random()).nextInt(bones.size()));
     }
 
     @Override
