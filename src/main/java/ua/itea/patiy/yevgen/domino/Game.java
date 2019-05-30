@@ -23,7 +23,6 @@ import ua.itea.patiy.yevgen.domino.panels.Player;
  */
 public class Game {
 
-    protected int enemy = 0; // ваш противник
     protected static String myName = "%username%";
     protected static String enemyName = "";
 
@@ -39,7 +38,7 @@ public class Game {
 
     protected static Player currentPlayer = null;
 
-    Game() {
+    public Game() {
         enemyName = chooseEnemy();
         firstStep = true;
         get7bones = true;
@@ -233,22 +232,15 @@ public class Game {
         }
     }
 
-    private static String getFinalMessage(byte endtype) {
+    private static String getFinalMessage(byte endCase) {
         List<String> strings = new ArrayList<String>();
 
-        switch (endtype) {
-        case Const.ENDGAME: {
+        if (endCase == Const.ENDGAME) {
             strings.add("Виграв " + currentPlayer.name + "!");
-            break;
-
-        }
-        case Const.ENDGAMEFISH: {
+        } else if (endCase == Const.ENDGAMEFISH) {
             strings.add("Риба!");
             strings.add("У " + currentPlayer.name + " лишилось на руках "
                     + currentPlayer.properScoreString(currentPlayer.endScore()));
-            break;
-
-        }
         }
         strings.add("У " + nextPlayer().name + " лишилось на руках "
                 + nextPlayer().properScoreString(nextPlayer().endScore()));
@@ -263,10 +255,9 @@ public class Game {
 
     }
 
-    private static void gameEnd(byte endKind) { // наигрались
+    private static void gameEnd(byte endCase) { // наигрались
         Main.field.disableBonesSelect();
         Main.field.setTitle(" Гру скінчено ");
-
         Main.bazar.showBones();
         Main.bazar.disableBazar();
 
@@ -284,7 +275,7 @@ public class Game {
         nextPlayer().setTitle(
                 " " + nextPlayer().name + " : " + nextPlayer().properScoreString(nextPlayer().endScore()) + " ");
 
-        JOptionPane.showMessageDialog(null, getFinalMessage(endKind), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, getFinalMessage(endCase), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
         System.exit(0);
     }
 
@@ -292,33 +283,29 @@ public class Game {
         return "Доміно " + Const.VERSION + ": " + myName + " грає проти " + enemyName;
     }
 
-    private int yourEnemy() {
-        Random r = new Random();
-        return r.nextInt(Const.RIVALS.length); // от фонаря выбираем противника
+    private Object yourEnemy() {
+        return Const.ENEMY.keySet().toArray()[new Random().nextInt(Const.ENEMY.keySet().toArray().length)];
     }
 
     private String chooseEnemy() { // Показываем диалоговое окно на старте, пока не выберем соперника или не выйдем
+        String enemy = "";
         int choice = JOptionPane.NO_OPTION;
 
         while (choice != JOptionPane.YES_OPTION) {
-            enemy = yourEnemy();
-            choice = JOptionPane.showConfirmDialog(null, "Ваш суперник: " + Const.RIVALS[enemy],
-                    "Ну шо, забйом в козла?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    new ImageIcon(Main.class.getResource("/img/logos/" + Const.RIVALIMG[enemy])));
+            enemy = (String) yourEnemy();
+            choice = JOptionPane.showConfirmDialog(null, "Ваш суперник: " + enemy, "Ну шо, забйом в козла?",
+                    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    new ImageIcon(Main.class.getResource("/img/logos/" + Const.ENEMY.get(enemy))));
 
             if (choice == JOptionPane.CANCEL_OPTION) {
                 System.exit(0);
             }
         }
-        return (Const.RIVALS[enemy]);
+        return enemy;
     }
 
     protected static Player nextPlayer() { // кто ходит следующим
-        if (currentPlayer == Main.me) {
-            return Main.you;
-        } else {
-            return Main.me;
-        }
+        return currentPlayer == Main.me ? Main.you : Main.me;
     }
 
     protected static Player whoFirst(Player... player) { // Выясняем, чей первый ход

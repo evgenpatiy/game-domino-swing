@@ -45,10 +45,9 @@ public class Main extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBackground(new Color(0, 204, 102));
-        setMinimumSize(new Dimension(1300, 720));
-        setName("window");
+        setMinimumSize(new Dimension(Const.SIZEX, Const.SIZEY));
         setResizable(false);
-        setSize(new Dimension(1300, 720));
+        setSize(new Dimension(Const.SIZEX, Const.SIZEY));
         getContentPane().setLayout(new AbsoluteLayout());
 
         bazar.setBackground(new Color(0, 102, 51));
