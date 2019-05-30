@@ -9,8 +9,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -172,138 +170,48 @@ public class Player extends GamePanel {
         return Integer.toString(i) + " " + s;
     }
 
-    public Bone firstBoneToStart() { // с какого камня заходит первый игрок (минимальный дупль больше голого, либо
-                                     // минимальный камень)
+    public Bone firstBoneToStart() { // с какого камня заходит первый игрок (минимальный дупль либо камень)
         return hasDupletsAboveZero() ? minDupletAboveZero() : minBone();
     }
 
     protected boolean hasDuplets() { // есть ли дупли
-        for (Bone bone : bones) {
-            if (bone.isDuplet) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
-        byte i = 0;
-        for (Bone bone : bones) {
-            if ((bone.dupletIsApplicable(leftBone.workSide)) || (bone.dupletIsApplicable(rightBone.workSide))) {
-                i++;
-            }
-        }
-        return (i == 2);
-    }
-
-    public boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
-        for (Bone bone : bones) {
-            if ((bone.isDuplet) && (bone.sum > 0)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    protected Bone minDuplet() {
-        Bone min = null;
-
-        if (hasDuplets()) {
-            for (Bone bone : bones) {
-                if (bone.isDuplet) {
-                    min = bone;
-                }
-            }
-
-            for (Bone bone : bones) {
-                if ((bone.isDuplet) && (bone.sum < min.sum)) { // находим минимум из всех дуплей на руках
-                    min = bone;
-                }
-            }
-        }
-        return min;
-    }
-
-    public Bone minDupletAboveZero() {
-        Bone min = null;
-
-        if (hasDuplets()) {
-            for (Bone b : bones) {
-                if ((b.isDuplet) && (b.sum != 0)) {
-                    min = b;
-                }
-            }
-
-            for (Bone b : bones) {
-                if ((b.isDuplet) && (b.sum != 0) && (b.sum < min.sum)) { // находим минимум из всех дуплей больше 0:0 на
-                                                                         // руках
-                    min = b;
-                }
-            }
-        }
-        return min;
-    }
-
-    public Bone minBone() {
-        Bone min = bones.get(0); // берем первую кость как минимум
-
-        for (Bone bone : bones) {
-            if (!bone.isDuplet) {
-                min = bone; // ищем первый не-дупль и переопределяем минимум
-                break;
-            }
-        }
-
-        for (Bone bone : bones) {
-            if ((!(bone.isDuplet)) && (bone.sum < min.sum)) { // находим минимум из всех не-дуплей на руках
-                min = bone;
-            }
-        }
-        return min;
+        return bones.stream().anyMatch(bone -> bone.isDuplet);
     }
 
     protected boolean hasProperDuplet(byte boneSide) { // есть ли годные дупли
-        for (Bone bone : bones) {
-            if (bone.dupletIsApplicable(boneSide)) {
-                return true;
-            }
-        }
-        return false;
+        return bones.stream().anyMatch(bone -> bone.dupletIsApplicable(boneSide));
+    }
+
+    protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
+        return bones.stream().filter(
+                bone -> (bone.dupletIsApplicable(leftBone.workSide)) || (bone.dupletIsApplicable(rightBone.workSide)))
+                .count() == 2;
+    }
+
+    public boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
+        return bones.stream().anyMatch(bone -> (bone.isDuplet & bone.sum > 0));
+    }
+
+    protected Bone minDuplet() {
+        return bones.stream().filter(bone -> bone.isDuplet).min((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
+    }
+
+    public Bone minDupletAboveZero() {
+        return bones.stream().filter(bone -> bone.isDuplet & bone.sum > 0).min((Bone b1, Bone b2) -> (b1.sum - b2.sum))
+                .orElse(null);
+    }
+
+    public Bone minBone() {
+        return bones.stream().filter(bone -> !bone.isDuplet).min((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
     }
 
     protected Bone properDuplet(byte boneSide) { // годный дупль
-        Bone duplet = null;
-
-        for (Bone bone : bones) {
-            if (bone.dupletIsApplicable(boneSide)) {
-                duplet = bone;
-            }
-        }
-
-        return duplet;
+        return bones.stream().filter(bone -> bone.dupletIsApplicable(boneSide)).findFirst().orElse(null);
     }
 
-    protected Bone hasMaxProperBone(byte boneSide) { // максимально годный не-дупль для хода
-        List<Bone> temp = new ArrayList<Bone>();
-        Bone max = null;
-
-        for (Bone bone : bones) {
-            if (bone.boneIsApplicable(boneSide)) { // если подходящий не-дупль, добавляем в список
-                temp.add(bone);
-            }
-        }
-
-        if (!temp.isEmpty()) { // если есть подходящие камни
-            max = temp.get(0);
-
-            for (Bone bone : temp) { // ищем максимальный
-                if (bone.sum > max.sum) {
-                    max = bone;
-                }
-            }
-        }
-
-        return max;
+    protected Bone maxProperBone(byte boneSide) { // максимально годный не-дупль для хода
+        return bones.stream().filter(bone -> bone.boneIsApplicable(boneSide))
+                .max((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
     }
 
     public Bone[] bonesToPut(Bone leftBone, Bone rightBone) { // возвращаем массив двух камней, левый и правый
@@ -324,8 +232,8 @@ public class Player extends GamePanel {
             right = rightBone.workSide;
         }
 
-        togo[0] = hasMaxProperBone(left);
-        togo[1] = hasMaxProperBone(right);
+        togo[0] = maxProperBone(left);
+        togo[1] = maxProperBone(right);
 
         if ((togo[0] != null) && (togo[1] != null)) { // если подходят камни с двух сторон, выбираем больший по сумме
                                                       // глаз

@@ -8,7 +8,7 @@ Java-written application for playing classic domino
 
 `git clone https://github.com/evgenpatiy/maven-domino.git`
 
-* Compile source code using command below. Warning: existing [MAVEN](https://maven.apache.org/) installation required!
+* Compile source code using command below. Warning: existing [Java 8](https://java.com/en/download/) and [MAVEN](https://maven.apache.org/) installation required!
    
 `mvn compile assembly:single` 
 

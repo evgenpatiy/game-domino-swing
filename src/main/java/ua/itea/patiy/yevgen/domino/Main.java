@@ -91,9 +91,9 @@ public class Main extends JFrame {
     public static void main(String args[]) {
 
         try {
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Metal".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
+            for (LookAndFeelInfo lookAndFeel : UIManager.getInstalledLookAndFeels()) {
+                if ("Metal".equals(lookAndFeel.getName())) {
+                    UIManager.setLookAndFeel(lookAndFeel.getClassName());
                     break;
                 }
             }
