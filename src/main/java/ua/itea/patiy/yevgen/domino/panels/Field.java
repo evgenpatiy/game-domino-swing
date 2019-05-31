@@ -45,11 +45,11 @@ public class Field extends GamePanel {
     private Random r = new Random();
     private boolean randomChoice;
 
-    public Bone leftBone() { // левый камень на панели
+    protected Bone leftBone() { // левый камень на панели
         return bones.get(0);
     }
 
-    public Bone rightBone() { // правый камень на панели
+    protected Bone rightBone() { // правый камень на панели
         return bones.get(bones.size() - 1);
     }
 

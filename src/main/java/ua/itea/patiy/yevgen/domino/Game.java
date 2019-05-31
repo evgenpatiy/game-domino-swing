@@ -96,8 +96,8 @@ public class Game {
                 Main.field.disableBonesSelect();
             }
 
-            left = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0]; // ход человека
-            right = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1];
+            left = currentPlayer.bonesToPut(Main.field)[0]; // ход человека
+            right = currentPlayer.bonesToPut(Main.field)[1];
 
             if ((currentPlayer.isHuman == Const.HUMAN) && (left == null) && (right == null)) { // если у человека нет
                                                                                                // камней, заставляем
@@ -121,8 +121,8 @@ public class Game {
                 currentPlayer.toBones(bazarSelectedBone);
                 Main.bazar.fromBones(bazarSelectedBone);
 
-                left = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0];
-                right = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1];
+                left = currentPlayer.bonesToPut(Main.field)[0];
+                right = currentPlayer.bonesToPut(Main.field)[1];
 
                 if ((left != null) || (right != null)) {
                     break;
@@ -133,8 +133,8 @@ public class Game {
             currentPlayer.toBones(bazarSelectedBone);
             Main.bazar.fromBones(bazarSelectedBone);
 
-            left = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0];
-            right = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1];
+            left = currentPlayer.bonesToPut(Main.field)[0];
+            right = currentPlayer.bonesToPut(Main.field)[1];
 
             if ((left != null) || (right != null)) {
                 Main.field.setTitle(" " + currentPlayer.name + " вже може ходити ");
@@ -155,8 +155,8 @@ public class Game {
             Main.field.setTitle(nextPlayer().playerMsg()); // сообщение на поле
 
             if (currentPlayer.isHuman == Const.ROBOT) {
-                left = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0]; // ход игрока
-                right = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1];
+                left = currentPlayer.bonesToPut(Main.field)[0]; // ход игрока
+                right = currentPlayer.bonesToPut(Main.field)[1];
             } else if (currentPlayer.isHuman == Const.HUMAN) {
                 left = currentPlayer.selectedLeft;
                 right = currentPlayer.selectedRight;
@@ -168,8 +168,8 @@ public class Game {
                 } else {
                     currentPlayer.noBonesToGo = true;
                     System.out.println(currentPlayer.name + " пропускає хід");
-                    if ((nextPlayer().bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0] == null)
-                            && (nextPlayer().bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1] == null)) {
+                    if ((nextPlayer().bonesToPut(Main.field)[0] == null)
+                            && (nextPlayer().bonesToPut(Main.field)[1] == null)) {
                         System.out.println("РИБА!!!!");
                         gameEnd(Const.ENDGAMEFISH);
                     }
@@ -194,8 +194,8 @@ public class Game {
                 currentPlayer = nextPlayer(); // передали ход
                 currentPlayer.showGoButton(); // показали кнопку}
 
-                left = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0]; // ход человека
-                right = currentPlayer.bonesToPut(Main.field.leftBone(), Main.field.rightBone())[1];
+                left = currentPlayer.bonesToPut(Main.field)[0]; // ход человека
+                right = currentPlayer.bonesToPut(Main.field)[1];
 
                 if ((currentPlayer.isHuman == Const.HUMAN)) { // человек
                     if ((left == null) && (right == null)) { // нечем ходить
@@ -209,9 +209,8 @@ public class Game {
                         } else {
                             currentPlayer.noBonesToGo = true;
                             System.out.println(currentPlayer.name + " пропускає хід");
-                            if ((nextPlayer().bonesToPut(Main.field.leftBone(), Main.field.rightBone())[0] == null)
-                                    && (nextPlayer().bonesToPut(Main.field.leftBone(),
-                                            Main.field.rightBone())[1] == null)) {
+                            if ((nextPlayer().bonesToPut(Main.field)[0] == null)
+                                    && (nextPlayer().bonesToPut(Main.field)[1] == null)) {
                                 System.out.println("РИБА!!!!");
                                 gameEnd(Const.ENDGAMEFISH);
                             }

@@ -213,22 +213,22 @@ public class Player extends GamePanel {
                 .max((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
     }
 
-    public Bone[] bonesToPut(Bone leftBone, Bone rightBone) { // возвращаем массив двух камней, левый и правый
+    public Bone[] bonesToPut(Field field) { // возвращаем массив двух камней, левый и правый
         byte left, right; // левые и правые части на поле для хода
         Bone[] toGo = new Bone[2]; // массив двух камней
 
-        if ((leftBone.isFirst) && (rightBone.isFirst)) { // если идем от первого камня
-            left = leftBone.left;
-            right = rightBone.right;
-        } else if ((leftBone.isFirst) && (!rightBone.isFirst)) { // если левый камень самый первый
-            left = leftBone.left;
-            right = rightBone.workSide;
-        } else if ((!leftBone.isFirst) && (rightBone.isFirst)) { // если правый камень самый первый
-            left = leftBone.workSide;
-            right = rightBone.right;
+        if ((field.leftBone().isFirst) && (field.rightBone().isFirst)) { // если идем от первого камня
+            left = field.leftBone().left;
+            right = field.rightBone().right;
+        } else if ((field.leftBone().isFirst) && (!field.rightBone().isFirst)) { // если левый камень самый первый
+            left = field.leftBone().left;
+            right = field.rightBone().workSide;
+        } else if ((!field.leftBone().isFirst) && (field.rightBone().isFirst)) { // если правый камень самый первый
+            left = field.leftBone().workSide;
+            right = field.rightBone().right;
         } else { // если минимум три камня, левый, первый, и правый
-            left = leftBone.workSide;
-            right = rightBone.workSide;
+            left = field.leftBone().workSide;
+            right = field.rightBone().workSide;
         }
 
         toGo[0] = maxProperBone(left);
