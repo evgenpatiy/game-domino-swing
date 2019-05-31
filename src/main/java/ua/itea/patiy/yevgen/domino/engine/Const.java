@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.engine;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
@@ -18,10 +18,10 @@ public class Const {
 
     public static final byte MAXDOTS = 6;
     public static final byte MAXBONES = MAXDOTS + 1;
-    protected static final int TOTALBONES = (MAXDOTS + 1) * (MAXDOTS + 2) / 2;
+    public static final int TOTALBONES = (MAXDOTS + 1) * (MAXDOTS + 2) / 2;
 
-    protected static final int SIZEX = 1300; // размеры окна
-    protected static final int SIZEY = 720;
+    public static final int SIZEX = 1300; // размеры окна
+    public static final int SIZEY = 720;
 
     public static final int BONEX = 46; // размеры костей
     public static final int BONEY = 20;

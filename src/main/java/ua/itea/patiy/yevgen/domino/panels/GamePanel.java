@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import ua.itea.patiy.yevgen.domino.Bone;
-import ua.itea.patiy.yevgen.domino.Const;
+import ua.itea.patiy.yevgen.domino.engine.Bone;
+import ua.itea.patiy.yevgen.domino.engine.Const;
 
 public abstract class GamePanel extends JPanel {
 

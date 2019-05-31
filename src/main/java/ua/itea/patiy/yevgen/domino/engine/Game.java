@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.engine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import ua.itea.patiy.yevgen.domino.Main;
 import ua.itea.patiy.yevgen.domino.panels.Player;
 
 /**
@@ -22,8 +23,8 @@ import ua.itea.patiy.yevgen.domino.panels.Player;
  * @author yevgen
  */
 public class Game {
-    protected static String myName = "%username%";
-    protected static String enemyName = "";
+    public static String myName = "%username%";
+    public static String enemyName = "";
 
     public static boolean firstStep;
     protected static boolean get7bones;
@@ -276,7 +277,7 @@ public class Game {
         System.exit(0);
     }
 
-    protected String getTitle() {
+    public String getTitle() {
         return "Доміно " + Const.VERSION + ": " + myName + " грає проти " + enemyName;
     }
 

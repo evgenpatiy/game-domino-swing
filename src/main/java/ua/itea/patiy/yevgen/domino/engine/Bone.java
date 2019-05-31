@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.itea.patiy.yevgen.domino;
+package ua.itea.patiy.yevgen.domino.engine;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +18,8 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import ua.itea.patiy.yevgen.domino.Main;
 
 public class Bone extends JButton {
     private static final long serialVersionUID = 1756065351166502914L;

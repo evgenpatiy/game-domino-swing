@@ -20,6 +20,8 @@ import javax.swing.WindowConstants;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+import ua.itea.patiy.yevgen.domino.engine.Const;
+import ua.itea.patiy.yevgen.domino.engine.Game;
 import ua.itea.patiy.yevgen.domino.panels.Bazar;
 import ua.itea.patiy.yevgen.domino.panels.Field;
 import ua.itea.patiy.yevgen.domino.panels.Player;
@@ -27,10 +29,10 @@ import ua.itea.patiy.yevgen.domino.panels.Player;
 public class Main extends JFrame {
     private static final long serialVersionUID = -8260728118527482348L;
 
-    protected static Bazar bazar;
-    protected static Field field;
-    protected static Player me;
-    protected static Player you;
+    public static Bazar bazar;
+    public static Field field;
+    public static Player me;
+    public static Player you;
 
     @Override
     public void setTitle(String title) {
