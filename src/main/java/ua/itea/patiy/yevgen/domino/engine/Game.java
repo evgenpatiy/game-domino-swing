@@ -15,7 +15,6 @@ import java.util.stream.IntStream;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import ua.itea.patiy.yevgen.domino.Main;
 import ua.itea.patiy.yevgen.domino.panels.Player;
 
 /**
@@ -45,40 +44,40 @@ public class Game {
     }
 
     protected static void getStart7BonesFromBazar() {
-        if ((Main.me.less7Bones()) && (Main.you.less7Bones())) { // набираем кости с базара
+        if ((Domino.me.less7Bones()) && (Domino.you.less7Bones())) { // набираем кости с базара
             // берем камень от клика мыши
-            Main.me.toBones(bazarSelectedBone);
-            Main.bazar.fromBones(bazarSelectedBone);
+            Domino.me.toBones(bazarSelectedBone);
+            Domino.bazar.fromBones(bazarSelectedBone);
 
-            bazarSelectedBone = Main.bazar.randomFromBones(); // берем случайную кость с базара
-            Main.you.toBones(bazarSelectedBone);
-            Main.bazar.fromBones(bazarSelectedBone);
+            bazarSelectedBone = Domino.bazar.randomFromBones(); // берем случайную кость с базара
+            Domino.you.toBones(bazarSelectedBone);
+            Domino.bazar.fromBones(bazarSelectedBone);
 
-            Main.field.setTitle(
-                    " Візьміть ще " + Main.me.properBoneQtyString(Const.MAXBONES - Main.me.bones.size()) + " ");
+            Domino.field.setTitle(
+                    " Візьміть ще " + Domino.me.properBoneQtyString(Const.MAXBONES - Domino.me.bones.size()) + " ");
         }
 
-        if ((Main.me.has7Bones()) && (Main.you.has7Bones())) { // набрали
+        if ((Domino.me.has7Bones()) && (Domino.you.has7Bones())) { // набрали
             get7bones = false;
-            Main.bazar.disableBazar();
+            Domino.bazar.disableBazar();
             prepareFirstMove(); // готов к первому ходу
         }
     }
 
     private static void prepareFirstMove() { // Выясняем первого игрока и готовим первый ход
-        currentPlayer = whoFirst(Main.me, Main.you); // кто ходит первым
+        currentPlayer = whoFirst(Domino.me, Domino.you); // кто ходит первым
 
         currentPlayer.addGoButton(); // добавляем кнопки хода
         nextPlayer().addGoButton();
         currentPlayer.showGoButton(); // у первого игрока кнопку показываем, у следующего она скрыта
 
-        Main.field.setTitle(" Першим ходить " + currentPlayer.name + ", у нього найменший "
+        Domino.field.setTitle(" Першим ходить " + currentPlayer.name + ", у нього найменший "
                 + currentPlayer.firstBoneToStart() + ". Натисніть кнопку на панелі ");
     }
 
     public static void firstMove() {
         if (currentPlayer.goPressed == true) {
-            Main.field.addFirstBone(currentPlayer.firstBoneToStart()); // ставим первый камень на поле
+            Domino.field.addFirstBone(currentPlayer.firstBoneToStart()); // ставим первый камень на поле
             System.out.println(currentPlayer.name + " дав " + currentPlayer.firstBoneToStart() + " на перший хід");
             currentPlayer.fromBones(currentPlayer.firstBoneToStart());
 
@@ -87,26 +86,26 @@ public class Game {
             currentPlayer = nextPlayer(); // передаем ход следующему
             currentPlayer.showGoButton(); // показываем кнопку у следующего
 
-            Main.field.setTitle(currentPlayer.playerMsg()); // сообщение на поле
+            Domino.field.setTitle(currentPlayer.playerMsg()); // сообщение на поле
             firstStep = false; // больше первых ходов не будет
 
             if (currentPlayer.isHuman == Const.HUMAN) {
-                Main.field.enableFieldSelect(currentPlayer);
+                Domino.field.enableFieldSelect(currentPlayer);
                 currentPlayer.disableGoButton("Оберіть");
             } else {
-                Main.field.disableBonesSelect();
+                Domino.field.disableBonesSelect();
             }
 
-            left = currentPlayer.putBones(Main.field).left; // ход человека
-            right = currentPlayer.putBones(Main.field).right;
+            left = currentPlayer.putBones(Domino.field).left; // ход человека
+            right = currentPlayer.putBones(Domino.field).right;
 
             if ((currentPlayer.isHuman == Const.HUMAN) && (left == null) && (right == null)) { // если у человека нет
                                                                                                // камней, заставляем
                                                                                                // идти на базар
-                Main.field.setTitle(" " + currentPlayer.name + " не має каменів для хода, беріть з базара ");
+                Domino.field.setTitle(" " + currentPlayer.name + " не має каменів для хода, беріть з базара ");
                 currentPlayer.disableGoButton("На базар");
-                Main.field.disableBonesSelect();
-                Main.bazar.enableBazar();
+                Domino.field.disableBonesSelect();
+                Domino.bazar.enableBazar();
 
                 needMoreBones = true;
             }
@@ -115,15 +114,15 @@ public class Game {
 
     protected static void getMoreBonesFromBazar() { // берем камень с базара по ходу игры
         if (currentPlayer.isHuman == Const.ROBOT) { // если робот, берет сам и ходит
-            while (!Main.bazar.bones.isEmpty()) {
-                bazarSelectedBone = Main.bazar.randomFromBones();
+            while (!Domino.bazar.bones.isEmpty()) {
+                bazarSelectedBone = Domino.bazar.randomFromBones();
 
                 System.out.println(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
                 currentPlayer.toBones(bazarSelectedBone);
-                Main.bazar.fromBones(bazarSelectedBone);
+                Domino.bazar.fromBones(bazarSelectedBone);
 
-                left = currentPlayer.putBones(Main.field).left;
-                right = currentPlayer.putBones(Main.field).right;
+                left = currentPlayer.putBones(Domino.field).left;
+                right = currentPlayer.putBones(Domino.field).right;
 
                 if ((left != null) || (right != null)) {
                     break;
@@ -132,15 +131,15 @@ public class Game {
         } else if (currentPlayer.isHuman == Const.HUMAN) {
             System.out.println(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
             currentPlayer.toBones(bazarSelectedBone);
-            Main.bazar.fromBones(bazarSelectedBone);
+            Domino.bazar.fromBones(bazarSelectedBone);
 
-            left = currentPlayer.putBones(Main.field).left;
-            right = currentPlayer.putBones(Main.field).right;
+            left = currentPlayer.putBones(Domino.field).left;
+            right = currentPlayer.putBones(Domino.field).right;
 
             if ((left != null) || (right != null)) {
-                Main.field.setTitle(" " + currentPlayer.name + " вже може ходити ");
-                Main.field.enableFieldSelect(currentPlayer);
-                Main.bazar.disableBazar(); // если взяли подходящий камень, запрещаем базар
+                Domino.field.setTitle(" " + currentPlayer.name + " вже може ходити ");
+                Domino.field.enableFieldSelect(currentPlayer);
+                Domino.bazar.disableBazar(); // если взяли подходящий камень, запрещаем базар
                 currentPlayer.disableGoButton("Оберіть");
             }
         }
@@ -150,27 +149,27 @@ public class Game {
         if (currentPlayer.goPressed) {
             if (needMoreBones == true) { // если человек набирал камни с базара, так уже все.
                 needMoreBones = false;
-                Main.bazar.disableBazar();
+                Domino.bazar.disableBazar();
             }
 
-            Main.field.setTitle(nextPlayer().playerMsg()); // сообщение на поле
+            Domino.field.setTitle(nextPlayer().playerMsg()); // сообщение на поле
 
             if (currentPlayer.isHuman == Const.ROBOT) {
-                left = currentPlayer.putBones(Main.field).left; // ход игрока
-                right = currentPlayer.putBones(Main.field).right;
+                left = currentPlayer.putBones(Domino.field).left; // ход игрока
+                right = currentPlayer.putBones(Domino.field).right;
             } else if (currentPlayer.isHuman == Const.HUMAN) {
                 left = currentPlayer.selectedLeft;
                 right = currentPlayer.selectedRight;
             }
 
             if ((currentPlayer.isHuman == Const.ROBOT) && (left == null) && (right == null)) {
-                if (!Main.bazar.bones.isEmpty()) {
+                if (!Domino.bazar.bones.isEmpty()) {
                     getMoreBonesFromBazar();
                 } else {
                     currentPlayer.noBonesToGo = true;
                     System.out.println(currentPlayer.name + " пропускає хід");
-                    if ((nextPlayer().putBones(Main.field).left == null)
-                            && (nextPlayer().putBones(Main.field).right == null)) {
+                    if ((nextPlayer().putBones(Domino.field).left == null)
+                            && (nextPlayer().putBones(Domino.field).right == null)) {
                         System.out.println("РИБА!!!!");
                         gameEnd(Const.ENDGAMEFISH);
                     }
@@ -179,13 +178,13 @@ public class Game {
 
             if (left != null) {
                 System.out.println(currentPlayer.name + " дав зліва " + left);
-                Main.field.addToLeft(left);
+                Domino.field.addToLeft(left);
                 currentPlayer.fromBones(left);
             }
 
             if (right != null) {
                 System.out.println(currentPlayer.name + " дав зправа " + right);
-                Main.field.addToRight(right);
+                Domino.field.addToRight(right);
                 currentPlayer.fromBones(right);
             }
 
@@ -195,34 +194,34 @@ public class Game {
                 currentPlayer = nextPlayer(); // передали ход
                 currentPlayer.showGoButton(); // показали кнопку}
 
-                left = currentPlayer.putBones(Main.field).left; // ход человека
-                right = currentPlayer.putBones(Main.field).right;
+                left = currentPlayer.putBones(Domino.field).left; // ход человека
+                right = currentPlayer.putBones(Domino.field).right;
 
                 if ((currentPlayer.isHuman == Const.HUMAN)) { // человек
                     if ((left == null) && (right == null)) { // нечем ходить
-                        if (!Main.bazar.bones.isEmpty()) {
-                            Main.field
+                        if (!Domino.bazar.bones.isEmpty()) {
+                            Domino.field
                                     .setTitle(" " + currentPlayer.name + " не має каменів для хода, беріть з базара ");
                             currentPlayer.disableGoButton("На базар");
-                            Main.bazar.enableBazar(); // разрешаем брать с базара
-                            Main.field.disableBonesSelect();
+                            Domino.bazar.enableBazar(); // разрешаем брать с базара
+                            Domino.field.disableBonesSelect();
                             needMoreBones = true;
                         } else {
                             currentPlayer.noBonesToGo = true;
                             System.out.println(currentPlayer.name + " пропускає хід");
-                            if ((nextPlayer().putBones(Main.field).left == null)
-                                    && (nextPlayer().putBones(Main.field).right == null)) {
+                            if ((nextPlayer().putBones(Domino.field).left == null)
+                                    && (nextPlayer().putBones(Domino.field).right == null)) {
                                 System.out.println("РИБА!!!!");
                                 gameEnd(Const.ENDGAMEFISH);
                             }
                         }
 
                     } else if ((left != null) || (right != null)) { // есть чем ходить
-                        Main.field.enableFieldSelect(currentPlayer);
+                        Domino.field.enableFieldSelect(currentPlayer);
                         currentPlayer.disableGoButton("Оберіть");
                     }
                 } else if (currentPlayer.isHuman == Const.ROBOT) { // при ходе робота клацать мышкой не даем
-                    Main.field.disableBonesSelect();
+                    Domino.field.disableBonesSelect();
                 }
 
             } else { // выкинули все камни
@@ -254,10 +253,10 @@ public class Game {
     }
 
     private static void gameEnd(byte endCase) { // наигрались
-        Main.field.disableBonesSelect();
-        Main.field.setTitle(" Гру скінчено ");
-        Main.bazar.showBones();
-        Main.bazar.disableBazar();
+        Domino.field.disableBonesSelect();
+        Domino.field.setTitle(" Гру скінчено ");
+        Domino.bazar.showBones();
+        Domino.bazar.disableBazar();
 
         currentPlayer.isHuman = Const.HUMAN;
         currentPlayer.showBones();
@@ -293,7 +292,7 @@ public class Game {
             enemy = (String) yourEnemy();
             choice = JOptionPane.showConfirmDialog(null, "Ваш суперник: " + enemy, "Ну шо, забйом в козла?",
                     JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,
-                    new ImageIcon(Main.class.getResource("/img/logos/" + Const.ENEMY.get(enemy))));
+                    new ImageIcon(Domino.class.getResource("/img/logos/" + Const.ENEMY.get(enemy))));
 
             if (choice == JOptionPane.CANCEL_OPTION) {
                 System.exit(0);
@@ -303,7 +302,7 @@ public class Game {
     }
 
     protected static Player nextPlayer() { // кто ходит следующим
-        return currentPlayer == Main.me ? Main.you : Main.me;
+        return currentPlayer == Domino.me ? Domino.you : Domino.me;
     }
 
     protected static Player whoFirst(Player... player) { // Выясняем, чей первый ход

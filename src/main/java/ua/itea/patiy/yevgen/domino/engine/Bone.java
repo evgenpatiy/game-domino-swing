@@ -19,8 +19,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import ua.itea.patiy.yevgen.domino.Main;
-
 public class Bone extends JButton {
     private static final long serialVersionUID = 1756065351166502914L;
     public byte left; // левая часть кости
@@ -60,8 +58,8 @@ public class Bone extends JButton {
         @Override
         public void mouseClicked(MouseEvent evt) {
             Game.playerSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            Game.currentPlayer.selectPlayerBones(Game.playerSelectedBone, Main.field.selectedLeft,
-                    Main.field.selectedRight);
+            Game.currentPlayer.selectPlayerBones(Game.playerSelectedBone, Domino.field.selectedLeft,
+                    Domino.field.selectedRight);
             evt.consume();
         }
     };
@@ -70,7 +68,7 @@ public class Bone extends JButton {
         @Override
         public void mouseClicked(MouseEvent evt) {
             Game.fieldSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            Main.field.selectFieldBones(Game.currentPlayer, Game.fieldSelectedBone);
+            Domino.field.selectFieldBones(Game.currentPlayer, Game.fieldSelectedBone);
             evt.consume();
         }
     };
