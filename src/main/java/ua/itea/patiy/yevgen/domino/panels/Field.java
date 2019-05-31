@@ -53,58 +53,56 @@ public class Field extends GamePanel {
         return bones.get(bones.size() - 1);
     }
 
-    public void selectFieldBones(Player p, Bone bone) { // Выбираем камень на поле
+    public void selectFieldBones(Player player, Bone bone) { // Выбираем камень на поле
         selectedLeft = null;
         selectedRight = null;
 
-        p.disableBonesSelect();
-        for (Bone b : bones) {
-            if ((!b.equals(bone) & (b.isSelected))) {
-                b.selectUnselectBone();
-            } else if (b.equals(bone)) {
-                b.selectUnselectBone();
+        player.disableBonesSelect();
+        for (Bone fieldBone : bones) {
+            if ((!fieldBone.equals(bone) & (fieldBone.isSelected))) {
+                fieldBone.selectUnselectBone();
+            } else if (fieldBone.equals(bone)) {
+                fieldBone.selectUnselectBone();
             }
 
-            if (b.isSelected) {
-                if (leftBone().equals(b)) {
-                    selectedLeft = b;
-                } else if (rightBone().equals(b)) {
-                    selectedRight = b;
+            if (fieldBone.isSelected) {
+                if (leftBone().equals(fieldBone)) {
+                    selectedLeft = fieldBone;
+                } else if (rightBone().equals(fieldBone)) {
+                    selectedRight = fieldBone;
                 }
             }
 
         }
-        p.enableBonesSelect(selectedLeft, selectedRight);
+        player.enableBonesSelect(selectedLeft, selectedRight);
         repaint();
     }
 
     @Override
     protected void rebuildBonesLine(boolean frame) { // цепляем мышку только для левого и правого камней, перерисовываем
                                                      // рамку
-        for (Bone b : bones) {
-            b.removeMouseListener(b.mouseAdapterField); // убираем обработку мыши и рамку для всех камней
-            if (b.isSelected == Const.SELECTED) {
-                b.unselectBone();// рисуем с нормальной мордой
+        bones.forEach(bone -> {
+            bone.removeMouseListener(bone.mouseAdapterField); // убираем обработку мыши и рамку для всех камней
+            if (bone.isSelected) {
+                bone.unselectBone(); // рисуем с нормальной мордой
             }
-            b.hideFrame();
-        }
+            bone.hideFrame();
+        });
     }
 
     public void disableBonesSelect() {
         rebuildBonesLine(Const.NOFRAME);
     }
 
-    public void enableFieldSelect(Player p) {
-        Bone temp;
-
+    public void enableFieldSelect(Player player) {
         if (bones.size() == 1) { // если одна кость на поле, цепляем к ней мышку
-            temp = bones.get(0);
+            Bone temp = leftBone();
 
-            for (Bone b : p.bones) {
-                if ((b.boneOKtoMove(temp.left)) || (b.boneOKtoMove(temp.right))) { // если хоть один камень
-                                                                                           // игрока подходит, разрешаем
-                                                                                           // щелкать по первому камню
-                                                                                           // на поле
+            for (Bone b : player.bones) {
+                if ((b.okToMove(temp.left)) || (b.okToMove(temp.right))) { // если хоть один камень
+                                                                           // игрока подходит, разрешаем
+                                                                           // щелкать по первому камню
+                                                                           // на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();
                     break;
@@ -112,15 +110,15 @@ public class Field extends GamePanel {
             }
             bones.set(0, temp);
         } else {
-            for (Bone b : bones) {
-                b.removeMouseListener(b.mouseAdapterField); // убираем обработку мыши и рамку для всех камней
-                b.hideFrame();
-            }
+            bones.forEach(bone -> {
+                bone.removeMouseListener(bone.mouseAdapterField); // убираем обработку мыши и рамку для всех камней
+                bone.hideFrame();
+            });
 
-            temp = bones.get(0); // к левой
-            for (Bone b : p.bones) {
-                if (b.boneOKtoMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
-                                                         // левому камню на поле
+            Bone temp = leftBone(); // к левой
+            for (Bone b : player.bones) {
+                if (b.okToMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                                                 // левому камню на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();
                     break;
@@ -128,10 +126,10 @@ public class Field extends GamePanel {
             }
             bones.set(0, temp);
 
-            temp = bones.get(bones.size() - 1); // к правой
-            for (Bone b : p.bones) {
-                if (b.boneOKtoMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
-                                                         // левому камню на поле
+            temp = rightBone(); // к правой
+            for (Bone b : player.bones) {
+                if (b.okToMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                                                 // левому камню на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();
                     break;

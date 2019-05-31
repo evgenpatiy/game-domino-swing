@@ -111,12 +111,12 @@ public class Player extends GamePanel {
             if (leftBone == null) {
                 goodForLeft = false;
             } else {
-                goodForLeft = isFirst ? bone.boneOKtoMove(leftBone.left) : bone.boneOKtoMove(leftBone.workSide);
+                goodForLeft = isFirst ? bone.okToMove(leftBone.left) : bone.okToMove(leftBone.workSide);
             }
             if (rightBone == null) {
                 goodForRight = false;
             } else {
-                goodForRight = isFirst ? bone.boneOKtoMove(rightBone.right) : bone.boneOKtoMove(rightBone.workSide);
+                goodForRight = isFirst ? bone.okToMove(rightBone.right) : bone.okToMove(rightBone.workSide);
             }
 
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
@@ -142,9 +142,9 @@ public class Player extends GamePanel {
             } else if (b.equals(bone)) {
                 b.selectUnselectBone();
 
-                if (b.isSelected && (leftBone != null) && b.boneOKtoMove(leftBone.workSide)) {
+                if (b.isSelected && (leftBone != null) && b.okToMove(leftBone.workSide)) {
                     selectedLeft = b;
-                } else if ((b.isSelected && (rightBone != null) && b.boneOKtoMove(rightBone.workSide))) {
+                } else if ((b.isSelected && (rightBone != null) && b.okToMove(rightBone.workSide))) {
                     selectedRight = b;
                 }
             }
@@ -212,7 +212,7 @@ public class Player extends GamePanel {
     }
 
     protected Bone maxProperBone(byte boneSide) { // максимально годный не-дупль для хода
-        return bones.stream().filter(bone -> bone.boneOKtoMove(boneSide)).max((Bone b1, Bone b2) -> (b1.sum - b2.sum))
+        return bones.stream().filter(bone -> bone.okToMove(boneSide)).max((Bone b1, Bone b2) -> (b1.sum - b2.sum))
                 .orElse(null);
     }
 
