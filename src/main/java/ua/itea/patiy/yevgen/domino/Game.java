@@ -22,7 +22,6 @@ import ua.itea.patiy.yevgen.domino.panels.Player;
  * @author yevgen
  */
 public class Game {
-
     protected static String myName = "%username%";
     protected static String enemyName = "";
 
@@ -252,7 +251,6 @@ public class Game {
                 .map(s -> System.lineSeparator()
                         + IntStream.range(0, max - s.length()).mapToObj(i -> " ").collect(Collectors.joining("")) + s)
                 .reduce((s1, s2) -> s1 + s2).get();
-
     }
 
     private static void gameEnd(byte endCase) { // наигрались

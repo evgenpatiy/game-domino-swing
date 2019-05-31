@@ -229,9 +229,7 @@ public class Bone extends JButton {
     }
 
     public Bone(byte left, byte right) { // конструктор класса, прописываем значения свойств
-        Random r = new Random();
-
-        if (r.nextBoolean()) { // костяшки переворачиваются случайным образом, не 0:3, а 3:0 например
+        if ((new Random()).nextBoolean()) { // костяшки переворачиваются случайным образом, не 0:3, а 3:0 например
             this.left = left;
             this.right = right;
         } else {

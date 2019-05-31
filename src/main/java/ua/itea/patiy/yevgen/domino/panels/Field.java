@@ -22,10 +22,6 @@ import ua.itea.patiy.yevgen.domino.Const;
  * @author yevgen
  */
 public class Field extends GamePanel {
-
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8185038222875756793L;
     private int xLine;
     private int yLine;
