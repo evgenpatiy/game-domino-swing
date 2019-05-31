@@ -79,11 +79,11 @@ public class Bone extends JButton {
         return s + left + ":" + right;
     }
 
-    public final boolean dupletIsApplicable(byte boneside) { // подходит ли дупль для хода
+    public final boolean dupletOKtoMove(byte boneside) { // подходит ли дупль для хода
         return (isDuplet == true) && (left == boneside) && (right == boneside);
     }
 
-    public final boolean boneIsApplicable(byte boneside) { // можно ли ходить костью
+    public final boolean boneOKtoMove(byte boneside) { // можно ли ходить костью
         return ((left == boneside) || (right == boneside));
     }
 

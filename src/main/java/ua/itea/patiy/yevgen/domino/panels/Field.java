@@ -101,7 +101,7 @@ public class Field extends GamePanel {
             temp = bones.get(0);
 
             for (Bone b : p.bones) {
-                if ((b.boneIsApplicable(temp.left)) || (b.boneIsApplicable(temp.right))) { // если хоть один камень
+                if ((b.boneOKtoMove(temp.left)) || (b.boneOKtoMove(temp.right))) { // если хоть один камень
                                                                                            // игрока подходит, разрешаем
                                                                                            // щелкать по первому камню
                                                                                            // на поле
@@ -119,7 +119,7 @@ public class Field extends GamePanel {
 
             temp = bones.get(0); // к левой
             for (Bone b : p.bones) {
-                if (b.boneIsApplicable(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                if (b.boneOKtoMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
                                                          // левому камню на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();
@@ -130,7 +130,7 @@ public class Field extends GamePanel {
 
             temp = bones.get(bones.size() - 1); // к правой
             for (Bone b : p.bones) {
-                if (b.boneIsApplicable(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                if (b.boneOKtoMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
                                                          // левому камню на поле
                     temp.addMouseListener(temp.mouseAdapterField);
                     temp.showFrame();

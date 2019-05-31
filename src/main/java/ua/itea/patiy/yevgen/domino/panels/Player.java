@@ -26,18 +26,27 @@ import ua.itea.patiy.yevgen.domino.Game;
  */
 public class Player extends GamePanel {
     private static final long serialVersionUID = -7224818727640107326L;
+
+    public class Move {
+        public Bone left;
+        public Bone right;
+    }
+
+    public Move next;
     public String name;
     public boolean isHuman;
     protected boolean readyToGo;
     public boolean noBonesToGo;
     public boolean goPressed;
     protected JButton go;
+    private int xPlayer;
+    private int yPlayer;
 
     protected MouseAdapter mouseAdapterGo = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             goPressed = true;
-            if (Game.firstStep == true) {
+            if (Game.firstStep) {
                 Game.firstMove();
             } else {
                 Game.nextMove();
@@ -45,9 +54,6 @@ public class Player extends GamePanel {
             evt.consume();
         }
     };
-
-    private int xPlayer;
-    private int yPlayer;
 
     public Player() {
         name = "";
@@ -98,22 +104,19 @@ public class Player extends GamePanel {
 
         boolean goodForLeft;
         boolean goodForRight;
-        boolean isFirst = ((leftBone != null) && (rightBone != null)) && ((leftBone.isFirst) && (rightBone.isFirst)); // если
-                                                                                                                      // передан
-                                                                                                                      // первый
-                                                                                                                      // камень
+        // если передан первый камень
+        boolean isFirst = ((leftBone != null) && (rightBone != null)) && ((leftBone.isFirst) && (rightBone.isFirst));
 
         for (Bone bone : bones) {
             if (leftBone == null) {
                 goodForLeft = false;
             } else {
-                goodForLeft = isFirst ? bone.boneIsApplicable(leftBone.left) : bone.boneIsApplicable(leftBone.workSide);
+                goodForLeft = isFirst ? bone.boneOKtoMove(leftBone.left) : bone.boneOKtoMove(leftBone.workSide);
             }
             if (rightBone == null) {
                 goodForRight = false;
             } else {
-                goodForRight = isFirst ? bone.boneIsApplicable(rightBone.right)
-                        : bone.boneIsApplicable(rightBone.workSide);
+                goodForRight = isFirst ? bone.boneOKtoMove(rightBone.right) : bone.boneOKtoMove(rightBone.workSide);
             }
 
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
@@ -139,9 +142,9 @@ public class Player extends GamePanel {
             } else if (b.equals(bone)) {
                 b.selectUnselectBone();
 
-                if (b.isSelected && (leftBone != null) && b.boneIsApplicable(leftBone.workSide)) {
+                if (b.isSelected && (leftBone != null) && b.boneOKtoMove(leftBone.workSide)) {
                     selectedLeft = b;
-                } else if ((b.isSelected && (rightBone != null) && b.boneIsApplicable(rightBone.workSide))) {
+                } else if ((b.isSelected && (rightBone != null) && b.boneOKtoMove(rightBone.workSide))) {
                     selectedRight = b;
                 }
             }
@@ -178,12 +181,12 @@ public class Player extends GamePanel {
     }
 
     protected boolean hasProperDuplet(byte boneSide) { // есть ли годные дупли
-        return bones.stream().anyMatch(bone -> bone.dupletIsApplicable(boneSide));
+        return bones.stream().anyMatch(bone -> bone.dupletOKtoMove(boneSide));
     }
 
     protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
-        return bones.stream().filter(
-                bone -> (bone.dupletIsApplicable(leftBone.workSide)) || (bone.dupletIsApplicable(rightBone.workSide)))
+        return bones.stream()
+                .filter(bone -> (bone.dupletOKtoMove(leftBone.workSide)) || (bone.dupletOKtoMove(rightBone.workSide)))
                 .count() == 2;
     }
 
@@ -205,60 +208,58 @@ public class Player extends GamePanel {
     }
 
     protected Bone properDuplet(byte boneSide) { // годный дупль
-        return bones.stream().filter(bone -> bone.dupletIsApplicable(boneSide)).findFirst().orElse(null);
+        return bones.stream().filter(bone -> bone.dupletOKtoMove(boneSide)).findFirst().orElse(null);
     }
 
     protected Bone maxProperBone(byte boneSide) { // максимально годный не-дупль для хода
-        return bones.stream().filter(bone -> bone.boneIsApplicable(boneSide))
-                .max((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
+        return bones.stream().filter(bone -> bone.boneOKtoMove(boneSide)).max((Bone b1, Bone b2) -> (b1.sum - b2.sum))
+                .orElse(null);
     }
 
-    public Bone[] bonesToPut(Field field) { // возвращаем массив двух камней, левый и правый
+    public Move putBones(Field field) { // возвращаем массив двух камней, левый и правый
+        Bone fieldLeft = field.leftBone();
+        Bone fieldRight = field.rightBone();
+        Move move = new Move();
         byte left, right; // левые и правые части на поле для хода
-        Bone[] toGo = new Bone[2]; // массив двух камней
 
-        if ((field.leftBone().isFirst) && (field.rightBone().isFirst)) { // если идем от первого камня
-            left = field.leftBone().left;
-            right = field.rightBone().right;
-        } else if ((field.leftBone().isFirst) && (!field.rightBone().isFirst)) { // если левый камень самый первый
-            left = field.leftBone().left;
-            right = field.rightBone().workSide;
-        } else if ((!field.leftBone().isFirst) && (field.rightBone().isFirst)) { // если правый камень самый первый
-            left = field.leftBone().workSide;
-            right = field.rightBone().right;
+        if ((fieldLeft.isFirst) && (fieldRight.isFirst)) { // если идем от первого камня
+            left = fieldLeft.left;
+            right = fieldRight.right;
+        } else if ((fieldLeft.isFirst) && (!fieldRight.isFirst)) { // если левый камень самый первый
+            left = fieldLeft.left;
+            right = fieldRight.workSide;
+        } else if ((!fieldLeft.isFirst) && (fieldRight.isFirst)) { // если правый камень самый первый
+            left = fieldLeft.workSide;
+            right = fieldRight.right;
         } else { // если минимум три камня, левый, первый, и правый
-            left = field.leftBone().workSide;
-            right = field.rightBone().workSide;
+            left = fieldLeft.workSide;
+            right = fieldRight.workSide;
         }
+        move.left = maxProperBone(left);
+        move.right = maxProperBone(right);
 
-        toGo[0] = maxProperBone(left);
-        toGo[1] = maxProperBone(right);
-
-        if ((toGo[0] != null) && (toGo[1] != null)) { // если подходят камни с двух сторон, выбираем больший по сумме
-                                                      // глаз
-            if (toGo[0].sum > toGo[1].sum) {
-                toGo[1] = null;
-            } else if (toGo[0].sum <= toGo[1].sum) {
-                toGo[0] = null;
+        if ((move.left != null) && (move.right != null)) { // если подходят камни с двух сторон, выбираем больший по
+                                                           // сумме глаз
+            if (move.left.sum > move.right.sum) {
+                move.right = null;
+            } else if (move.left.sum <= move.right.sum) {
+                move.left = null;
             }
         }
-
         if (hasProperDuplet(left) && (left != right)) { // если есть подходящий дупль слева, берем его
-            toGo[0] = properDuplet(left);
-            toGo[1] = null;
+            move.left = properDuplet(left);
+            move.right = null;
         }
-
         if (hasProperDuplet(right)) { // если есть подходящий дупль справа, берем его
-            toGo[0] = null;
-            toGo[1] = properDuplet(right);
+            move.left = null;
+            move.right = properDuplet(right);
         }
-
         if ((left != right) && (hasProperDuplet(left)) && (hasProperDuplet(right))) { // если два подходящих дупля,
                                                                                       // отдупляемся :))
-            toGo[0] = properDuplet(left);
-            toGo[1] = properDuplet(right);
+            move.left = properDuplet(left);
+            move.right = properDuplet(right);
         }
-        return toGo;
+        return move;
     }
 
     public boolean less7Bones() { // есть ли 7 камней на борту
