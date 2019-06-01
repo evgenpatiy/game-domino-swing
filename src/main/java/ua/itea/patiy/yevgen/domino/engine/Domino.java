@@ -269,7 +269,7 @@ public class Domino extends JFrame {
             while (!bazar.bones.isEmpty()) {
                 bazarSelectedBone = bazar.randomFromBones();
 
-                System.out.println(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
+                System.out.printf("%s%n", currentPlayer.name + " взяв з базара " + bazarSelectedBone);
                 currentPlayer.toBones(bazarSelectedBone);
                 bazar.fromBones(bazarSelectedBone);
 
@@ -281,7 +281,7 @@ public class Domino extends JFrame {
                 }
             }
         } else if (currentPlayer.isHuman == Const.HUMAN) {
-            System.out.println(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
+            System.out.printf("%s%n", currentPlayer.name + " взяв з базара " + bazarSelectedBone);
             currentPlayer.toBones(bazarSelectedBone);
             bazar.fromBones(bazarSelectedBone);
 
