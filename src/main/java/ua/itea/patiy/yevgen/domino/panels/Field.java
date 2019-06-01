@@ -81,7 +81,7 @@ public class Field extends GamePanel {
     @Override
     protected void rebuildBonesLine(boolean frame) { // цепляем мышку для левого и правого камней, перерисовываем рамку
         bones.forEach(bone -> {
-            bone.removeMouseListener(bone.mouseAdapterField); // убираем обработку мыши и рамку для всех камней
+            bone.removeMouseListener(bone.clickOnField); // убираем обработку мыши и рамку для всех камней
             if (bone.isSelected) {
                 bone.unselect(); // рисуем с нормальной мордой
             }
@@ -102,7 +102,7 @@ public class Field extends GamePanel {
                                                                            // игрока подходит, разрешаем
                                                                            // щелкать по первому камню
                                                                            // на поле
-                    temp.addMouseListener(temp.mouseAdapterField);
+                    temp.addMouseListener(temp.clickOnField);
                     temp.showFrame();
                     break;
                 }
@@ -110,7 +110,7 @@ public class Field extends GamePanel {
             bones.set(0, temp);
         } else {
             bones.forEach(bone -> {
-                bone.removeMouseListener(bone.mouseAdapterField); // убираем обработку мыши и рамку для всех камней
+                bone.removeMouseListener(bone.clickOnField); // убираем обработку мыши и рамку для всех камней
                 bone.hideFrame();
             });
 
@@ -118,7 +118,7 @@ public class Field extends GamePanel {
             for (Bone bone : player.bones) {
                 if (bone.okToMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
                                                  // левому камню на поле
-                    temp.addMouseListener(temp.mouseAdapterField);
+                    temp.addMouseListener(temp.clickOnField);
                     temp.showFrame();
                     break;
                 }
@@ -129,7 +129,7 @@ public class Field extends GamePanel {
             for (Bone bone : player.bones) {
                 if (bone.okToMove(temp.workSide)) { // если хоть один камень игрока подходит, разрешаем щелкать по
                                                  // левому камню на поле
-                    temp.addMouseListener(temp.mouseAdapterField);
+                    temp.addMouseListener(temp.clickOnField);
                     temp.showFrame();
                     break;
                 }
@@ -139,7 +139,7 @@ public class Field extends GamePanel {
     }
 
     private void putAtPosition(boolean where, Bone bone, int x, int y) {
-        bone.removeMouseListener(bone.mouseAdapterHumanPlayer);
+        bone.removeMouseListener(bone.clickOnHumanPlayer);
         if (where == Const.TORIGHT) {
             bones.add(bone); // даем камень справа
         } else if (where == Const.TOLEFT) {

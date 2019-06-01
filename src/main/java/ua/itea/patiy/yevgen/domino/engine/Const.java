@@ -23,7 +23,7 @@ public class Const {
     public static final int SIZEX = 1300; // размеры окна
     public static final int SIZEY = 720;
 
-    public static final int BONEX = 46; // размеры костей
+    public static final int BONEX = 46; // размеры камней
     public static final int BONEY = 20;
     public static final int MOVEJBX = 1060;
     public static final int MOVEJBY = 40;
@@ -39,7 +39,7 @@ public class Const {
     public static final boolean FRAME = true;
     public static final boolean NOFRAME = false;
 
-    public static final int XSHIFT = 25; // Начальное смещение костей на панели
+    public static final int XSHIFT = 25; // Начальное смещение камней на панели
     public static final int YSHIFT = 25;
 
     protected static final boolean SHOW = true;

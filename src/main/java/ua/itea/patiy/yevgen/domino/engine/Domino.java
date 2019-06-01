@@ -143,7 +143,7 @@ public class Domino extends JFrame {
         return currentPlayer == me ? you : me;
     }
 
-    private static Player whoFirst(Player... player) { // Выясняем, чей первый ход
+    private Player whoFirst(Player... player) { // Выясняем, чей первый ход
         return Arrays.stream(player).filter(p -> p.hasDupletsAboveZero())
                 .min((Player p1, Player p2) -> (p1.minDupletAboveZero().sum - p2.minDupletAboveZero().sum))
                 .orElse(Arrays.stream(player).min((Player p1, Player p2) -> (p1.minBone().sum - p2.minBone().sum))

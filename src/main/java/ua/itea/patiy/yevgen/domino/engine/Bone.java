@@ -44,21 +44,21 @@ public class Bone extends JButton {
                 || ((this.left == bone.right) && (this.right == bone.left));
     }
 
-    public MouseAdapter mouseAdapterBazar = new MouseAdapter() {
+    public MouseAdapter clickOnBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             domino.bazarSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            if (domino.get7bones == true) {
+            if (domino.get7bones) {
                 domino.getStart7BonesFromBazar();
             }
-            if (domino.needMoreBones == true) {
+            if (domino.needMoreBones) {
                 domino.getMoreBonesFromBazar();
             }
             evt.consume();
         }
     };
 
-    public MouseAdapter mouseAdapterHumanPlayer = new MouseAdapter() {
+    public MouseAdapter clickOnHumanPlayer = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             domino.playerSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
@@ -68,7 +68,7 @@ public class Bone extends JButton {
         }
     };
 
-    public MouseAdapter mouseAdapterField = new MouseAdapter() {
+    public MouseAdapter clickOnField = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             domino.fieldSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
@@ -79,7 +79,7 @@ public class Bone extends JButton {
 
     @Override
     public String toString() {
-        String s = isDuplet == Const.DUPLET ? "дупль " : "камінь ";
+        String s = (isDuplet == Const.DUPLET) ? "дупль " : "камінь ";
         return s + left + ":" + right;
     }
 
@@ -128,7 +128,6 @@ public class Bone extends JButton {
         }
 
         BufferedImage boneImg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-
         Graphics2D g = boneImg.createGraphics();
         Color oldColor = g.getColor();
         g.setPaint(Color.WHITE);
@@ -173,7 +172,6 @@ public class Bone extends JButton {
 
         String leftPath = prefix + left + ".png";
         String rightPath = prefix + right + ".png";
-
         URL img1Url = getClass().getResource(leftPath);
         URL img2Url = getClass().getResource(rightPath);
         URL backUrl = getClass().getResource(backPath);

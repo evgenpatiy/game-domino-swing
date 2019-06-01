@@ -124,7 +124,7 @@ public class Player extends GamePanel {
 
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
                 bone.showFrame();
-                bone.addMouseListener(bone.mouseAdapterHumanPlayer);
+                bone.addMouseListener(bone.clickOnHumanPlayer);
             }
 
             bone.setLocation(xPlayer, yPlayer);
@@ -285,7 +285,7 @@ public class Player extends GamePanel {
         yPlayer = Const.YSHIFT + Const.SHIFT;
 
         for (Bone bone : bones) {
-            bone.removeMouseListener(bone.mouseAdapterHumanPlayer);
+            bone.removeMouseListener(bone.clickOnHumanPlayer);
 
             if (bone.isSelected == Const.SELECTED) {
                 bone.unselect();
@@ -311,7 +311,7 @@ public class Player extends GamePanel {
 
     @Override
     public void toBones(Bone bone) {
-        bone.removeMouseListener(bone.mouseAdapterBazar); // отменяем базарные нажатия мышкой
+        bone.removeMouseListener(bone.clickOnBazar); // отменяем базарные нажатия мышкой
         bone.draw(Const.A90, Const.NOTSELECTED);
         bones.add(bone);
         disableBonesSelect();

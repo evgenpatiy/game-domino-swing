@@ -63,7 +63,7 @@ public class Bazar extends GamePanel {
     @Override
     protected void toBones(Bone b) {
         b.setLocation(xBazar, yBazar);
-        b.addMouseListener(b.mouseAdapterBazar); // обработчик нажатий
+        b.addMouseListener(b.clickOnBazar); // обработчик нажатий
         add(b, new AbsoluteConstraints(xBazar, yBazar, Const.BONEX, Const.BONEY));
         repaint();
     }
@@ -78,10 +78,10 @@ public class Bazar extends GamePanel {
     protected void rebuildBonesLine(boolean frame) {
         bones.forEach(bone -> {
             if (frame == Const.NOFRAME) {
-                bone.removeMouseListener(bone.mouseAdapterBazar); // убираем обработку мыши и рамку для всех камней
+                bone.removeMouseListener(bone.clickOnBazar); // убираем обработку мыши и рамку для всех камней
                 bone.hideFrame();
             } else {
-                bone.addMouseListener(bone.mouseAdapterBazar); // добавляем обработку мыши и рамку для всех камней
+                bone.addMouseListener(bone.clickOnBazar); // добавляем обработку мыши и рамку для всех камней
                 bone.showFrame();
             }
         });
