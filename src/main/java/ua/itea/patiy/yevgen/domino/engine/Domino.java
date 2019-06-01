@@ -2,7 +2,6 @@ package ua.itea.patiy.yevgen.domino.engine;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,10 +25,7 @@ import ua.itea.patiy.yevgen.domino.panels.Field;
 import ua.itea.patiy.yevgen.domino.panels.Player;
 
 public class Domino extends JFrame {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 4841460412282066398L;
+    private static final long serialVersionUID = -4761309140419685336L;
     private Bazar bazar;
     protected Field field;
     private Player me;
@@ -50,12 +46,9 @@ public class Domino extends JFrame {
     protected Player currentPlayer = null;
 
     public Domino() {
-        URL iconURL = getClass().getResource("/img/logos/domino.png"); // иконка приложения
-        ImageIcon icon = new ImageIcon(iconURL);
-
-        setTitle("Доміно " + Const.VERSION + ": " + myName + " грає проти " + enemyName); // заголовок окна
-        setIconImage(icon.getImage()); // иконка
-        initComponents(); // интерфейс игры
+        setTitle("Доміно " + Const.VERSION + ": " + myName + " грає проти " + enemyName);
+        setIconImage((new ImageIcon(getClass().getResource("/img/logos/domino.png"))).getImage());
+        initComponents();
 
         try {
             for (LookAndFeelInfo lookAndFeel : UIManager.getInstalledLookAndFeels()) {
@@ -140,7 +133,7 @@ public class Domino extends JFrame {
     }
 
     private Player nextPlayer() { // кто ходит следующим
-        return currentPlayer == me ? you : me;
+        return (currentPlayer == me) ? you : me;
     }
 
     private Player whoFirst(Player... player) { // Выясняем, чей первый ход
