@@ -40,7 +40,7 @@ public abstract class GamePanel extends JPanel {
         bones.remove(b);
         remove(b);
         if (b.isSelected == Const.SELECTED) {
-            b.unselectBone();
+            b.unselect();
         }
         repaint();
     }

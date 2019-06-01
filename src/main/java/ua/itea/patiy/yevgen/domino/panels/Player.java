@@ -285,7 +285,7 @@ public class Player extends GamePanel {
             bone.removeMouseListener(bone.mouseAdapterHumanPlayer);
 
             if (bone.isSelected == Const.SELECTED) {
-                bone.unselectBone();
+                bone.unselect();
             }
 
             bone.hideFrame();
@@ -309,7 +309,7 @@ public class Player extends GamePanel {
     @Override
     public void toBones(Bone bone) {
         bone.removeMouseListener(bone.mouseAdapterBazar); // отменяем базарные нажатия мышкой
-        bone.drawBone(Const.A90, Const.NOTSELECTED);
+        bone.draw(Const.A90, Const.NOTSELECTED);
         bones.add(bone);
         disableBonesSelect();
         setTitle(" " + name + " має " + properBoneQtyString(bones.size()) + " "); // обновляем заголовок панели

@@ -143,7 +143,7 @@ public class Bone extends JButton {
         return boneImg;
     }
 
-    public final void drawBone(int ang, boolean selected) { // отрисовываем камень
+    public final void draw(int ang, boolean selected) { // отрисовываем камень
         String prefix = ""; // путь к картинкам камней
         int width = Const.BONEX; // по умолчанию камень горизонтально
         int height = Const.BONEY;
@@ -192,23 +192,23 @@ public class Bone extends JButton {
         back = new ImageIcon(backImage);
     }
 
-    protected final void selectBone() {
-        drawBone(angle, Const.SELECTED);
+    protected final void select() {
+        draw(angle, Const.SELECTED);
         isSelected = Const.SELECTED;
         showBone();
     }
 
-    public final void unselectBone() {
-        drawBone(angle, Const.NOTSELECTED);
+    public final void unselect() {
+        draw(angle, Const.NOTSELECTED);
         isSelected = Const.NOTSELECTED;
         showBone();
     }
 
     public final void selectUnselectBone() {
         if (isSelected) {
-            unselectBone();
+            unselect();
         } else {
-            selectBone();
+            select();
         }
     }
 
@@ -241,7 +241,7 @@ public class Bone extends JButton {
         isDuplet = (left == right); // сразу записываем, дупль или нет
         isFirst = false;
 
-        drawBone(Const.A0, Const.NOTSELECTED); // для базара камни лежат ровно
+        draw(Const.A0, Const.NOTSELECTED); // для базара камни лежат ровно
         setPreferredSize(new Dimension(Const.BONEX, Const.BONEY));
         showFrame(); // показываем рамку для набора на базаре
         hideBone(); // в начале

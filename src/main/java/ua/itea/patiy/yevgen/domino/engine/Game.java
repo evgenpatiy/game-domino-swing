@@ -25,8 +25,8 @@ public class Game {
     public static String myName = "%username%";
     public static String enemyName = "";
 
-    public static boolean firstStep;
-    protected static boolean get7bones;
+    public static boolean firstStep = true;
+    protected static boolean get7bones = true;
     protected static boolean needMoreBones;
 
     private static Bone left;
@@ -39,8 +39,6 @@ public class Game {
 
     public Game() {
         enemyName = chooseEnemy();
-        firstStep = true;
-        get7bones = true;
     }
 
     protected static void getStart7BonesFromBazar() {
