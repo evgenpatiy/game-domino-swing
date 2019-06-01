@@ -16,9 +16,10 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
+import lombok.Setter;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
 import ua.itea.patiy.yevgen.domino.engine.Const;
-import ua.itea.patiy.yevgen.domino.engine.Game;
+import ua.itea.patiy.yevgen.domino.engine.Domino;
 
 /**
  *
@@ -41,15 +42,17 @@ public class Player extends GamePanel {
     protected JButton go;
     private int xPlayer;
     private int yPlayer;
+    @Setter
+    private Domino domino;
 
     protected MouseAdapter mouseAdapterGo = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
             goPressed = true;
-            if (Game.firstStep) {
-                Game.firstMove();
+            if (domino.firstStep) {
+                domino.firstMove();
             } else {
-                Game.nextMove();
+                domino.nextMove();
             }
             evt.consume();
         }

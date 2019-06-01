@@ -19,6 +19,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import lombok.Setter;
+
 public class Bone extends JButton {
     private static final long serialVersionUID = 1756065351166502914L;
     public byte left; // левая часть кости
@@ -34,6 +36,8 @@ public class Bone extends JButton {
     private BufferedImage backImage = null;
     private ImageIcon face;
     private ImageIcon back;
+    @Setter
+    private Domino domino;
 
     public boolean equals(Bone bone) {
         return ((this.left == bone.left) && (this.right == bone.right))
@@ -43,12 +47,12 @@ public class Bone extends JButton {
     public MouseAdapter mouseAdapterBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            Game.bazarSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            if (Game.get7bones == true) {
-                Game.getStart7BonesFromBazar();
+            domino.bazarSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
+            if (domino.get7bones == true) {
+                domino.getStart7BonesFromBazar();
             }
-            if (Game.needMoreBones == true) {
-                Game.getMoreBonesFromBazar();
+            if (domino.needMoreBones == true) {
+                domino.getMoreBonesFromBazar();
             }
             evt.consume();
         }
@@ -57,9 +61,9 @@ public class Bone extends JButton {
     public MouseAdapter mouseAdapterHumanPlayer = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            Game.playerSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            Game.currentPlayer.selectPlayerBones(Game.playerSelectedBone, Domino.field.selectedLeft,
-                    Domino.field.selectedRight);
+            domino.playerSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
+            domino.currentPlayer.selectPlayerBones(domino.playerSelectedBone, domino.field.selectedLeft,
+                    domino.field.selectedRight);
             evt.consume();
         }
     };
@@ -67,8 +71,8 @@ public class Bone extends JButton {
     public MouseAdapter mouseAdapterField = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            Game.fieldSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            Domino.field.selectFieldBones(Game.currentPlayer, Game.fieldSelectedBone);
+            domino.fieldSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
+            domino.field.selectFieldBones(domino.currentPlayer, domino.fieldSelectedBone);
             evt.consume();
         }
     };
