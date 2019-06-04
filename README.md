@@ -6,15 +6,19 @@ Java-written application for playing classic domino
 
 * Clone current git repository to local machine
 
-`git clone https://github.com/evgenpatiy/maven-domino.git`
+`git clone https://github.com/evgenpatiy/game-domino-swing.git`
 
 * Compile source code using command below. Warning: existing [Java 8](https://java.com/en/download/) and [MAVEN](https://maven.apache.org/) installation required!
    
 `mvn compile assembly:single` 
 
-* "target" directory will be created, find **itea-domino-1.0-SNAPSHOT-jar-with-dependencies.jar** inside and run application as per below, or just double-click on it, if you're as lazy as I am.
+* "target" directory will be created, find **domino-1.0-SNAPSHOT-jar-with-dependencies.jar** inside and run application as per below, or just double-click on it, if you're as lazy as I am.
 
-`java -jar itea-domino-1.0-SNAPSHOT-jar-with-dependencies.jar`
+`java -jar domino-1.0-SNAPSHOT-jar-with-dependencies.jar`
+
+## Gameplay
+
+![Screenshot](docs/1.png)
 
 ## Author
 
