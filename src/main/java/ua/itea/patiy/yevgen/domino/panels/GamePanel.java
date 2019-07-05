@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.itea.patiy.yevgen.domino.panels;
 
 import java.util.LinkedList;
@@ -10,15 +5,18 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import lombok.Getter;
+import lombok.Setter;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
 import ua.itea.patiy.yevgen.domino.engine.Const;
 
+@Getter
+@Setter
 public abstract class GamePanel extends JPanel {
-
-    private static final long serialVersionUID = 2803579325914353051L;
-    public Bone selectedLeft;
-    public Bone selectedRight;
-    public List<Bone> bones = new LinkedList<Bone>(); // камни на текущей панели
+    private static final long serialVersionUID = -3490722431721194231L;
+    private Bone selectedLeft;
+    private Bone selectedRight;
+    private List<Bone> bones = new LinkedList<Bone>(); // камни на текущей панели
 
     public void showBones() {
         bones.forEach(bone -> {
@@ -39,7 +37,7 @@ public abstract class GamePanel extends JPanel {
     public void fromBones(Bone b) {
         bones.remove(b);
         remove(b);
-        if (b.isSelected == Const.SELECTED) {
+        if (b.isSelected() == Const.SELECTED) {
             b.unselect();
         }
         repaint();

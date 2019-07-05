@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.itea.patiy.yevgen.domino.panels;
 
 import java.awt.Color;
@@ -20,10 +15,6 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
 import ua.itea.patiy.yevgen.domino.engine.Const;
 
-/**
- *
- * @author yevgen
- */
 public class Bazar extends GamePanel {
 
     private static final long serialVersionUID = -4485166148555484926L;
@@ -33,13 +24,13 @@ public class Bazar extends GamePanel {
     public Bazar() {
         xBazar = Const.XSHIFT;
         yBazar = Const.YSHIFT - 2 * Const.SHIFT;
-        bones = initBones();
+        setBones(initBones());
         initBazar();
         setTitle(" Базар ");
     }
 
     private void initBazar() {
-        bones.forEach(bone -> {
+        getBones().forEach(bone -> {
             toBones(bone);
             yBazar += Const.BONEY + Const.SHIFT;
         });
@@ -57,7 +48,7 @@ public class Bazar extends GamePanel {
     }
 
     public Bone randomFromBones() { // произвольный камень с базара
-        return bones.isEmpty() ? null : bones.get((new Random()).nextInt(bones.size()));
+        return getBones().isEmpty() ? null : getBones().get((new Random()).nextInt(getBones().size()));
     }
 
     @Override
@@ -76,7 +67,7 @@ public class Bazar extends GamePanel {
 
     @Override
     protected void rebuildBonesLine(boolean frame) {
-        bones.forEach(bone -> {
+        getBones().forEach(bone -> {
             if (frame == Const.NOFRAME) {
                 bone.removeMouseListener(bone.clickOnBazar); // убираем обработку мыши и рамку для всех камней
                 bone.hideFrame();

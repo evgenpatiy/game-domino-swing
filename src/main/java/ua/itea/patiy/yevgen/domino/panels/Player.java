@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.itea.patiy.yevgen.domino.panels;
 
 import java.awt.Color;
@@ -16,15 +11,12 @@ import javax.swing.border.TitledBorder;
 
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
+import lombok.Getter;
 import lombok.Setter;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
 import ua.itea.patiy.yevgen.domino.engine.Const;
 import ua.itea.patiy.yevgen.domino.engine.Domino;
 
-/**
- *
- * @author yevgen
- */
 public class Player extends GamePanel {
     private static final long serialVersionUID = -7224818727640107326L;
 
@@ -33,13 +25,15 @@ public class Player extends GamePanel {
         public Bone right;
     }
 
-    public Move next;
-    public String name;
-    public boolean isHuman;
-    protected boolean readyToGo;
-    public boolean noBonesToGo;
-    public boolean goPressed;
-    protected JButton go;
+    @Getter
+    private String name;
+    @Getter
+    @Setter
+    private boolean human;
+    @Getter
+    @Setter
+    private boolean goPressed;
+    private JButton go;
     private int xPlayer;
     private int yPlayer;
     @Setter
@@ -49,7 +43,7 @@ public class Player extends GamePanel {
         @Override
         public void mouseClicked(MouseEvent evt) {
             goPressed = true;
-            if (domino.firstStep) {
+            if (domino.isFirstStep()) {
                 domino.firstMove();
             } else {
                 domino.nextMove();
@@ -64,7 +58,7 @@ public class Player extends GamePanel {
     }
 
     public int endScore() { // сколько суммарно глаз осталось
-        return bones.stream().mapToInt(bone -> bone.sum).sum();
+        return getBones().stream().mapToInt(bone -> bone.getSum()).sum();
     }
 
     public void addGoButton() { // показать кнопку хода
@@ -108,18 +102,19 @@ public class Player extends GamePanel {
         boolean goodForLeft;
         boolean goodForRight;
         // если передан первый камень
-        boolean isFirst = ((leftBone != null) && (rightBone != null)) && ((leftBone.isFirst) && (rightBone.isFirst));
+        boolean isFirst = ((leftBone != null) && (rightBone != null))
+                && ((leftBone.isFirst()) && (rightBone.isFirst()));
 
-        for (Bone bone : bones) {
+        for (Bone bone : getBones()) {
             if (leftBone == null) {
                 goodForLeft = false;
             } else {
-                goodForLeft = isFirst ? bone.okToMove(leftBone.left) : bone.okToMove(leftBone.workSide);
+                goodForLeft = isFirst ? bone.okToMove(leftBone.getLeft()) : bone.okToMove(leftBone.getWorkSide());
             }
             if (rightBone == null) {
                 goodForRight = false;
             } else {
-                goodForRight = isFirst ? bone.okToMove(rightBone.right) : bone.okToMove(rightBone.workSide);
+                goodForRight = isFirst ? bone.okToMove(rightBone.getRight()) : bone.okToMove(rightBone.getWorkSide());
             }
 
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
@@ -135,20 +130,19 @@ public class Player extends GamePanel {
     }
 
     public void selectPlayerBones(Bone bone, Bone leftBone, Bone rightBone) { // Выбираем камень у игрока
-        selectedLeft = null;
-        selectedRight = null;
-        readyToGo = false;
+        setSelectedLeft(null);
+        setSelectedRight(null);
 
-        for (Bone b : bones) {
-            if ((!b.equals(bone)) && (b.isSelected)) {
+        for (Bone b : getBones()) {
+            if ((!b.equals(bone)) && (b.isSelected())) {
                 b.selectUnselectBone();
             } else if (b.equals(bone)) {
                 b.selectUnselectBone();
 
-                if (b.isSelected && (leftBone != null) && b.okToMove(leftBone.workSide)) {
-                    selectedLeft = b;
-                } else if ((b.isSelected && (rightBone != null) && b.okToMove(rightBone.workSide))) {
-                    selectedRight = b;
+                if (b.isSelected() && (leftBone != null) && b.okToMove(leftBone.getWorkSide())) {
+                    setSelectedLeft(b);
+                } else if ((b.isSelected() && (rightBone != null) && b.okToMove(rightBone.getWorkSide()))) {
+                    setSelectedRight(b);
                 }
             }
         }
@@ -180,43 +174,45 @@ public class Player extends GamePanel {
     }
 
     protected boolean hasDuplets() { // есть ли дупли
-        return bones.stream().anyMatch(bone -> bone.isDuplet);
+        return getBones().stream().anyMatch(bone -> bone.isDuplet());
     }
 
     protected boolean hasProperDuplet(byte boneSide) { // есть ли годные дупли
-        return bones.stream().anyMatch(bone -> bone.dupletOKtoMove(boneSide));
+        return getBones().stream().anyMatch(bone -> bone.dupletOKtoMove(boneSide));
     }
 
     protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
-        return bones.stream()
-                .filter(bone -> (bone.dupletOKtoMove(leftBone.workSide)) || (bone.dupletOKtoMove(rightBone.workSide)))
+        return getBones().stream().filter(
+                bone -> (bone.dupletOKtoMove(leftBone.getWorkSide())) || (bone.dupletOKtoMove(rightBone.getWorkSide())))
                 .count() == 2;
     }
 
     public boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
-        return bones.stream().anyMatch(bone -> (bone.isDuplet & bone.sum > 0));
+        return getBones().stream().anyMatch(bone -> (bone.isDuplet() & bone.getSum() > 0));
     }
 
     protected Bone minDuplet() {
-        return bones.stream().filter(bone -> bone.isDuplet).min((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
+        return getBones().stream().filter(bone -> bone.isDuplet())
+                .min((Bone b1, Bone b2) -> (b1.getSum() - b2.getSum())).orElse(null);
     }
 
     public Bone minDupletAboveZero() {
-        return bones.stream().filter(bone -> bone.isDuplet & bone.sum > 0).min((Bone b1, Bone b2) -> (b1.sum - b2.sum))
-                .orElse(null);
+        return getBones().stream().filter(bone -> bone.isDuplet() & bone.getSum() > 0)
+                .min((Bone b1, Bone b2) -> (b1.getSum() - b2.getSum())).orElse(null);
     }
 
     public Bone minBone() {
-        return bones.stream().filter(bone -> !bone.isDuplet).min((Bone b1, Bone b2) -> (b1.sum - b2.sum)).orElse(null);
+        return getBones().stream().filter(bone -> !bone.isDuplet())
+                .min((Bone b1, Bone b2) -> (b1.getSum() - b2.getSum())).orElse(null);
     }
 
     protected Bone properDuplet(byte boneSide) { // годный дупль
-        return bones.stream().filter(bone -> bone.dupletOKtoMove(boneSide)).findFirst().orElse(null);
+        return getBones().stream().filter(bone -> bone.dupletOKtoMove(boneSide)).findFirst().orElse(null);
     }
 
     protected Bone maxProperBone(byte boneSide) { // максимально годный не-дупль для хода
-        return bones.stream().filter(bone -> bone.okToMove(boneSide)).max((Bone b1, Bone b2) -> (b1.sum - b2.sum))
-                .orElse(null);
+        return getBones().stream().filter(bone -> bone.okToMove(boneSide))
+                .max((Bone b1, Bone b2) -> (b1.getSum() - b2.getSum())).orElse(null);
     }
 
     public Move putBones(Field field) { // возвращаем массив двух камней, левый и правый
@@ -225,27 +221,27 @@ public class Player extends GamePanel {
         Move move = new Move();
         byte left, right; // левые и правые части на поле для хода
 
-        if ((fieldLeft.isFirst) && (fieldRight.isFirst)) { // если идем от первого камня
-            left = fieldLeft.left;
-            right = fieldRight.right;
-        } else if ((fieldLeft.isFirst) && (!fieldRight.isFirst)) { // если левый камень самый первый
-            left = fieldLeft.left;
-            right = fieldRight.workSide;
-        } else if ((!fieldLeft.isFirst) && (fieldRight.isFirst)) { // если правый камень самый первый
-            left = fieldLeft.workSide;
-            right = fieldRight.right;
+        if ((fieldLeft.isFirst()) && (fieldRight.isFirst())) { // если идем от первого камня
+            left = fieldLeft.getLeft();
+            right = fieldRight.getRight();
+        } else if ((fieldLeft.isFirst()) && (!fieldRight.isFirst())) { // если левый камень самый первый
+            left = fieldLeft.getLeft();
+            right = fieldRight.getWorkSide();
+        } else if ((!fieldLeft.isFirst()) && (fieldRight.isFirst())) { // если правый камень самый первый
+            left = fieldLeft.getWorkSide();
+            right = fieldRight.getRight();
         } else { // если минимум три камня, левый, первый, и правый
-            left = fieldLeft.workSide;
-            right = fieldRight.workSide;
+            left = fieldLeft.getWorkSide();
+            right = fieldRight.getWorkSide();
         }
         move.left = maxProperBone(left);
         move.right = maxProperBone(right);
 
         if ((move.left != null) && (move.right != null)) { // если подходят камни с двух сторон, выбираем больший по
                                                            // сумме глаз
-            if (move.left.sum > move.right.sum) {
+            if (move.left.getSum() > move.right.getSum()) {
                 move.right = null;
-            } else if (move.left.sum <= move.right.sum) {
+            } else if (move.left.getSum() <= move.right.getSum()) {
                 move.left = null;
             }
         }
@@ -266,16 +262,16 @@ public class Player extends GamePanel {
     }
 
     public boolean less7Bones() { // есть ли 7 камней на борту
-        return bones.size() < Const.MAXBONES;
+        return getBones().size() < Const.MAXBONES;
     }
 
     public boolean has7Bones() {
-        return bones.size() == Const.MAXBONES;
+        return getBones().size() == Const.MAXBONES;
     }
 
     public String playerMsg() { // Сообщение на панель поля
         String s = " Ходить " + name + ". ";
-        return (isHuman == Const.HUMAN) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
+        return (human == Const.HUMAN) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
                 : s + "Натисніть кнопку на його панелі ";
     }
 
@@ -284,17 +280,17 @@ public class Player extends GamePanel {
         xPlayer = Const.XSHIFT;
         yPlayer = Const.YSHIFT + Const.SHIFT;
 
-        for (Bone bone : bones) {
+        for (Bone bone : getBones()) {
             bone.removeMouseListener(bone.clickOnHumanPlayer);
 
-            if (bone.isSelected == Const.SELECTED) {
+            if (bone.isSelected() == Const.SELECTED) {
                 bone.unselect();
             }
 
             bone.hideFrame();
-            if (isHuman == Const.HUMAN) {
+            if (human == Const.HUMAN) {
                 bone.showBone();
-            } else if (isHuman == Const.ROBOT) {
+            } else if (human == Const.ROBOT) {
                 bone.hideBone();
             }
 
@@ -313,16 +309,16 @@ public class Player extends GamePanel {
     public void toBones(Bone bone) {
         bone.removeMouseListener(bone.clickOnBazar); // отменяем базарные нажатия мышкой
         bone.draw(Const.A90, Const.NOTSELECTED);
-        bones.add(bone);
+        getBones().add(bone);
         disableBonesSelect();
-        setTitle(" " + name + " має " + properBoneQtyString(bones.size()) + " "); // обновляем заголовок панели
+        setTitle(" " + name + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
     }
 
     @Override
     public void fromBones(Bone bone) { // вызываем папин метод и обновляем заголовок панели
         super.fromBones(bone);
         disableBonesSelect();
-        setTitle(" " + name + " має " + properBoneQtyString(bones.size()) + " "); // обновляем заголовок панели
+        setTitle(" " + name + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
     }
 
     @Override
@@ -331,9 +327,9 @@ public class Player extends GamePanel {
                 TitledBorder.DEFAULT_POSITION, new Font("Dialog", 1, 10), new Color(255, 255, 255)));
     }
 
-    public void setPlayerName(String name, boolean isHuman) {
+    public void setPlayerName(String name, boolean human) {
         this.name = name;
-        this.isHuman = isHuman;
+        this.human = human;
     }
 
 }

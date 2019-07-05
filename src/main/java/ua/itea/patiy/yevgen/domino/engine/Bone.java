@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.itea.patiy.yevgen.domino.engine;
 
 import java.awt.Color;
@@ -19,19 +14,30 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import lombok.Getter;
 import lombok.Setter;
 
 public class Bone extends JButton {
     private static final long serialVersionUID = 1756065351166502914L;
-    public byte left; // левая часть кости
-    public byte right; // правая часть кости
-    public byte workSide; // сторона, к которой ставим камни
-    public int sum;
-    public boolean isFirst;
-    public boolean isDuplet;
-    public boolean isSelected;
-    public int angle;
-
+    @Getter
+    private byte left; // левая часть кости
+    @Getter
+    private byte right; // правая часть кости
+    @Getter
+    @Setter
+    private byte workSide; // сторона, к которой ставим камни
+    @Getter
+    private int sum;
+    @Getter
+    @Setter
+    private boolean first;
+    @Getter
+    @Setter
+    private boolean duplet;
+    @Getter
+    private boolean selected;
+    @Getter
+    private int angle;
     private BufferedImage faceImage = null;
     private BufferedImage backImage = null;
     private ImageIcon face;
@@ -47,11 +53,11 @@ public class Bone extends JButton {
     public MouseAdapter clickOnBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            domino.bazarSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            if (domino.get7bones) {
+            domino.setBazarSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+            if (domino.isGet7bones()) {
                 domino.getStart7BonesFromBazar();
             }
-            if (domino.needMoreBones) {
+            if (domino.isNeedMoreBones()) {
                 domino.getMoreBonesFromBazar();
             }
             evt.consume();
@@ -61,9 +67,9 @@ public class Bone extends JButton {
     public MouseAdapter clickOnHumanPlayer = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            domino.playerSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            domino.currentPlayer.selectPlayerBones(domino.playerSelectedBone, domino.field.selectedLeft,
-                    domino.field.selectedRight);
+            domino.setPlayerSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+            domino.getCurrentPlayer().selectPlayerBones(domino.getPlayerSelectedBone(),
+                    domino.getField().getSelectedLeft(), domino.getField().getSelectedRight());
             evt.consume();
         }
     };
@@ -71,20 +77,20 @@ public class Bone extends JButton {
     public MouseAdapter clickOnField = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            domino.fieldSelectedBone = (Bone) evt.getSource(); // нажатая костяшка;
-            domino.field.selectFieldBones(domino.currentPlayer, domino.fieldSelectedBone);
+            domino.setFieldSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+            domino.getField().selectFieldBones(domino.getCurrentPlayer(), domino.getFieldSelectedBone());
             evt.consume();
         }
     };
 
     @Override
     public String toString() {
-        String s = (isDuplet == Const.DUPLET) ? "дупль " : "камінь ";
+        String s = (duplet == Const.DUPLET) ? "дупль " : "камінь ";
         return s + left + ":" + right;
     }
 
     public final boolean dupletOKtoMove(byte boneside) { // подходит ли дупль для хода
-        return (isDuplet == true) && (left == boneside) && (right == boneside);
+        return (duplet == true) && (left == boneside) && (right == boneside);
     }
 
     public final boolean okToMove(byte boneside) { // можно ли ходить костью
@@ -196,18 +202,18 @@ public class Bone extends JButton {
 
     protected final void select() {
         draw(angle, Const.SELECTED);
-        isSelected = Const.SELECTED;
+        selected = Const.SELECTED;
         showBone();
     }
 
     public final void unselect() {
         draw(angle, Const.NOTSELECTED);
-        isSelected = Const.NOTSELECTED;
+        selected = Const.NOTSELECTED;
         showBone();
     }
 
     public final void selectUnselectBone() {
-        if (isSelected) {
+        if (selected) {
             unselect();
         } else {
             select();
@@ -240,8 +246,8 @@ public class Bone extends JButton {
         }
 
         sum = left + right; // сумма полей
-        isDuplet = (left == right); // сразу записываем, дупль или нет
-        isFirst = false;
+        duplet = (left == right); // сразу записываем, дупль или нет
+        first = false;
 
         draw(Const.A0, Const.NOTSELECTED); // для базара камни лежат ровно
         setPreferredSize(new Dimension(Const.BONEX, Const.BONEY));
