@@ -85,8 +85,7 @@ public final class Bone extends JButton {
 
     @Override
     public String toString() {
-        String s = (duplet == Game.DUPLET) ? "дупль " : "камінь ";
-        return s + left + ":" + right;
+        return ((duplet == Game.DUPLET) ? "дупль " : "камінь ") + left + ":" + right;
     }
 
     public final boolean dupletOKtoMove(byte boneside) { // подходит ли дупль для хода
@@ -101,13 +100,14 @@ public final class Bone extends JButton {
         byte temp = left;
         left = right;
         right = temp;
-        angle = Math.abs(360 - (angle + 180)); // угол увеличиваем на 180 и берем модуль
+        angle = Math.abs(180 - angle); // угол увеличиваем на 180 и берем модуль
     }
 
     private BufferedImage invertImg(BufferedImage img) { // инвертируем изображение для выбора камней
-        BufferedImage invimg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB); // картинка
-                                                                                                                // как и
-                                                                                                                // исходная
+        BufferedImage invertImg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB); // картинка
+                                                                                                                   // как
+                                                                                                                   // и
+                                                                                                                   // исходная
         for (int i = 0; i < img.getWidth(); i++) {
             for (int j = 0; j < img.getHeight(); j++) {
                 int rgba = img.getRGB(i, j);
@@ -115,10 +115,10 @@ public final class Bone extends JButton {
 
                 color = new Color(255 - color.getRed(), // инвертируем цвета
                         255 - color.getGreen(), 255 - color.getBlue());
-                invimg.setRGB(i, j, color.getRGB());
+                invertImg.setRGB(i, j, color.getRGB());
             }
         }
-        return invimg;
+        return invertImg;
     }
 
     private BufferedImage createFaceImg(BufferedImage img1, BufferedImage img2) { // склеиваем две картинки в одну
@@ -151,16 +151,15 @@ public final class Bone extends JButton {
             g.drawImage(img1, null, 0, 0);
             g.drawImage(img2, null, 0, Game.OFFSET + img2.getHeight());
         }
-
         g.dispose();
         return boneImg;
     }
 
-    public final void draw(int ang, boolean selected) { // отрисовываем камень
+    public final void draw(int angle, boolean selected) { // отрисовываем камень
         String prefix = ""; // путь к картинкам камней
         int width = Game.BONEX; // по умолчанию камень горизонтально
         int height = Game.BONEY;
-        angle = ang;
+        this.angle = angle;
 
         if ((angle == Game.Angle.A0.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // если горизонтально
             prefix = "/img/bones/horizontal/";
@@ -180,7 +179,6 @@ public final class Bone extends JButton {
                                                                                               // лево-право
             invertBone();
         }
-
         setSize(new Dimension(width, height)); // ставим размеры камня
 
         String leftPath = prefix + left + ".png";
@@ -202,7 +200,6 @@ public final class Bone extends JButton {
             backImage = ImageIO.read(backUrl);
         } catch (IOException ex) {
         }
-
         face = new ImageIcon(faceImage);
         back = new ImageIcon(backImage);
     }
@@ -254,7 +251,6 @@ public final class Bone extends JButton {
 
         sum = left + right; // сумма полей
         duplet = (left == right); // сразу записываем, дупль или нет
-        first = false;
 
         draw(Game.Angle.A0.getAngle(), Game.UNSELECTED); // для базара камни лежат ровно
         setPreferredSize(new Dimension(Game.BONEX, Game.BONEY));

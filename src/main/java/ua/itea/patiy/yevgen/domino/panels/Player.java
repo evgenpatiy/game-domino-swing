@@ -64,12 +64,10 @@ public final class Player extends GamePanel {
         go.setLocation(Game.MOVEJBX, Game.MOVEJBY);
         go.addMouseListener(mouseAdapterGo);
         hideGoButton(); // изначально кнопка скрыта
-
         add(go, new AbsoluteConstraints(Game.MOVEJBX, Game.MOVEJBY, -1, -1));
-        // repaint();
     }
 
-    public void showGoButton() {
+    public void showGoButton() { // показать кнопку хода
         go.setVisible(true);
     }
 
@@ -110,17 +108,14 @@ public final class Player extends GamePanel {
             } else {
                 goodForRight = false;
             }
-
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
                 bone.showFrame();
                 bone.addMouseListener(bone.clickOnHumanPlayer);
             }
-
             bone.setLocation(xPlayer, yPlayer);
             add(bone, new AbsoluteConstraints(xPlayer, yPlayer, bone.getWidth(), bone.getHeight()));
             xPlayer += bone.getWidth() + Game.PLAYERSHIFT;
         }
-        repaint();
     }
 
     public void selectPlayerBones(Bone bone, Bone leftBone, Bone rightBone) { // Выбираем камень у игрока
@@ -140,6 +135,7 @@ public final class Player extends GamePanel {
                 }
             }
         }
+
         enableGoButton("Пішов!");
     }
 

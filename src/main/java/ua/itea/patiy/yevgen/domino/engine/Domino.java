@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
@@ -64,26 +63,16 @@ public final class Domino extends JFrame {
         setIconImage((new ImageIcon(getClass().getResource("/img/logos/domino.png"))).getImage());
         initComponents();
 
-        try {
-            for (LookAndFeelInfo lookAndFeel : UIManager.getInstalledLookAndFeels()) {
-                if (lookAndFeel.getName().equals("Metal")) {
-                    UIManager.setLookAndFeel(lookAndFeel.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            log.severe("Error: Class not found");
-            ex.printStackTrace();
-        } catch (InstantiationException ex) {
-            log.severe("Error: Instantiation exception");
-            ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-            log.severe("Error: Illegal access");
-            ex.printStackTrace();
-        } catch (UnsupportedLookAndFeelException ex) {
-            log.severe("Error: Unsupported look and feel");
-            ex.printStackTrace();
-        }
+        Arrays.stream(UIManager.getInstalledLookAndFeels()).filter(lf -> lf.getName().equalsIgnoreCase("metal"))
+                .forEach(lf -> {
+                    try {
+                        UIManager.setLookAndFeel(lf.getClassName());
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                            | UnsupportedLookAndFeelException e) {
+                        log.severe("Error UI manager");
+                        e.printStackTrace();
+                    }
+                });
     }
 
     @Override
@@ -92,13 +81,13 @@ public final class Domino extends JFrame {
     }
 
     private void initComponents() {
+        field = new Field();
         bazar = new Bazar();
         bazar.getBones().forEach(bone -> bone.setDomino(this));
         you = new Player();
         you.setDomino(this);
         me = new Player();
         me.setDomino(this);
-        field = new Field();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(Game.SIZEX, Game.SIZEY));
