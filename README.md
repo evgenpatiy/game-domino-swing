@@ -10,7 +10,7 @@ Java-written application for playing classic domino
 
 * Compile source code using command below. Warning: existing [Java 8](https://java.com/en/download/) and [MAVEN](https://maven.apache.org/) installation required!
    
-`mvn compile assembly:single` 
+`mvn clean compile assembly:single` 
 
 * "target" directory will be created, find **domino-1.0-SNAPSHOT-jar-with-dependencies.jar** inside and run application as per below, or just double-click on it, if you're as lazy as I am.
 

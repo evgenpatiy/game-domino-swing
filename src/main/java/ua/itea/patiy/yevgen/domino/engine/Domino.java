@@ -20,10 +20,12 @@ import javax.swing.WindowConstants;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import org.netbeans.lib.awtextra.AbsoluteLayout;
 
+import lombok.extern.java.Log;
 import ua.itea.patiy.yevgen.domino.panels.Bazar;
 import ua.itea.patiy.yevgen.domino.panels.Field;
 import ua.itea.patiy.yevgen.domino.panels.Player;
 
+@Log
 public class Domino extends JFrame {
     private static final long serialVersionUID = -4761309140419685336L;
     private Bazar bazar;
@@ -58,9 +60,17 @@ public class Domino extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
+            log.severe("Error: Class not found");
+            ex.printStackTrace();
         } catch (InstantiationException ex) {
+            log.severe("Error: Instantiation exception");
+            ex.printStackTrace();
         } catch (IllegalAccessException ex) {
+            log.severe("Error: Illegal access");
+            ex.printStackTrace();
         } catch (UnsupportedLookAndFeelException ex) {
+            log.severe("Error: Unsupported look and feel");
+            ex.printStackTrace();
         }
     }
 
@@ -223,7 +233,7 @@ public class Domino extends JFrame {
     public void firstMove() {
         if (currentPlayer.goPressed == true) {
             field.addFirstBone(currentPlayer.firstBoneToStart()); // ставим первый камень на поле
-            System.out.println(currentPlayer.name + " дав " + currentPlayer.firstBoneToStart() + " на перший хід");
+            log.severe(currentPlayer.name + " дав " + currentPlayer.firstBoneToStart() + " на перший хід");
             currentPlayer.fromBones(currentPlayer.firstBoneToStart());
 
             currentPlayer.hideGoButton(); // убираем кнопку хода у первого игрока
@@ -262,7 +272,7 @@ public class Domino extends JFrame {
             while (!bazar.bones.isEmpty()) {
                 bazarSelectedBone = bazar.randomFromBones();
 
-                System.out.printf("%s%n", currentPlayer.name + " взяв з базара " + bazarSelectedBone);
+                log.severe(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
                 currentPlayer.toBones(bazarSelectedBone);
                 bazar.fromBones(bazarSelectedBone);
 
@@ -274,7 +284,7 @@ public class Domino extends JFrame {
                 }
             }
         } else if (currentPlayer.isHuman == Const.HUMAN) {
-            System.out.printf("%s%n", currentPlayer.name + " взяв з базара " + bazarSelectedBone);
+            log.severe(currentPlayer.name + " взяв з базара " + bazarSelectedBone);
             currentPlayer.toBones(bazarSelectedBone);
             bazar.fromBones(bazarSelectedBone);
 
@@ -312,22 +322,23 @@ public class Domino extends JFrame {
                     getMoreBonesFromBazar();
                 } else {
                     currentPlayer.noBonesToGo = true;
-                    System.out.println(currentPlayer.name + " пропускає хід");
+                    log.severe(currentPlayer.name + " пропускає хід");
+
                     if ((nextPlayer().putBones(field).left == null) && (nextPlayer().putBones(field).right == null)) {
-                        System.out.println("РИБА!!!!");
+                        log.severe("РИБА!!!!");
                         gameEnd(Const.ENDGAMEFISH);
                     }
                 }
             }
 
             if (left != null) {
-                System.out.printf("%s%n", currentPlayer.name + " дав зліва " + left);
+                log.severe(currentPlayer.name + " дав зліва " + left);
                 field.addToLeft(left);
                 currentPlayer.fromBones(left);
             }
 
             if (right != null) {
-                System.out.printf("%s%n", currentPlayer.name + " дав зправа " + right);
+                log.severe(currentPlayer.name + " дав зправа " + right);
                 field.addToRight(right);
                 currentPlayer.fromBones(right);
             }
@@ -351,10 +362,10 @@ public class Domino extends JFrame {
                             needMoreBones = true;
                         } else {
                             currentPlayer.noBonesToGo = true;
-                            System.out.println(currentPlayer.name + " пропускає хід");
+                            log.severe(currentPlayer.name + " пропускає хід");
                             if ((nextPlayer().putBones(field).left == null)
                                     && (nextPlayer().putBones(field).right == null)) {
-                                System.out.println("РИБА!!!!");
+                                log.severe("РИБА!!!!");
                                 gameEnd(Const.ENDGAMEFISH);
                             }
                         }
