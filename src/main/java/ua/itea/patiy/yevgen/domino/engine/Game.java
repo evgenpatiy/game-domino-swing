@@ -1,5 +1,6 @@
 package ua.itea.patiy.yevgen.domino.engine;
 
+import java.awt.Color;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,7 +8,7 @@ import java.util.stream.Stream;
 
 import lombok.Getter;
 
-public final class Const {
+public final class Game {
 
     public static enum End {
         NORMAL, FISH, GOAT, SKINGOAT, GENERALGOAT
@@ -23,6 +24,8 @@ public final class Const {
             this.angle = angle;
         }
     }
+
+    public static final Color GREEN = new Color(0, 102, 51);
 
     public static final byte MAXDOTS = 6;
     public static final byte MAXBONES = MAXDOTS + 1;
@@ -57,7 +60,7 @@ public final class Const {
     public static final boolean HUMAN = true;
     public static final boolean ROBOT = !HUMAN;
     public static final boolean SELECTED = true;
-    public static final boolean NOTSELECTED = !SELECTED;
+    public static final boolean UNSELECTED = !SELECTED;
 
     protected static final String VERSION = "| Java ";
     protected static final Map<String, String> ENEMY = Stream

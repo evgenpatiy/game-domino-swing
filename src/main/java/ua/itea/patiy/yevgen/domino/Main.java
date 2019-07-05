@@ -6,8 +6,6 @@ public class Main {
     private static Context context = Context.getInstance();
 
     public static void main(String args[]) {
-        EventQueue.invokeLater(() -> {
-            context.getDomino().setVisible(true);
-        });
+        EventQueue.invokeLater(() -> context.getDomino().play());
     }
 }

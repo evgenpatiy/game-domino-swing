@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import lombok.Getter;
 import lombok.Setter;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
-import ua.itea.patiy.yevgen.domino.engine.Const;
 
 @Getter
 @Setter
@@ -16,31 +15,19 @@ public abstract class GamePanel extends JPanel {
     private static final long serialVersionUID = -3490722431721194231L;
     private Bone selectedLeft;
     private Bone selectedRight;
-    private List<Bone> bones = new LinkedList<Bone>(); // камни на текущей панели
+    private List<Bone> bones = new LinkedList<Bone>(); // камни на панели
 
     public void showBones() {
-        bones.forEach(bone -> {
-            bone.showBone();
-            bone.repaint();
-        });
-        repaint();
+        bones.forEach(bone -> bone.showBone());
     }
 
     protected void hideBones() {
-        bones.forEach(bone -> {
-            bone.hideBone();
-            bone.repaint();
-        });
-        repaint();
+        bones.forEach(bone -> bone.hideBone());
     }
 
-    public void fromBones(Bone b) {
-        bones.remove(b);
-        remove(b);
-        if (b.isSelected() == Const.SELECTED) {
-            b.unselect();
-        }
-        repaint();
+    public void fromBones(Bone bone) {
+        bones.remove(bone);
+        remove(bone);
     }
 
     protected abstract void rebuildBonesLine(boolean frame);

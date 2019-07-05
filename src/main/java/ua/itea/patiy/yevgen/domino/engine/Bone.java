@@ -85,7 +85,7 @@ public final class Bone extends JButton {
 
     @Override
     public String toString() {
-        String s = (duplet == Const.DUPLET) ? "дупль " : "камінь ";
+        String s = (duplet == Game.DUPLET) ? "дупль " : "камінь ";
         return s + left + ":" + right;
     }
 
@@ -125,15 +125,15 @@ public final class Bone extends JButton {
         int imgWidth = 0;
         int imgHeight = 0;
 
-        if ((angle == Const.Angle.A0.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // камень горизонтально,
-                                                                                              // размер
-            imgWidth = (2 * img1.getWidth()) + Const.OFFSET;
+        if ((angle == Game.Angle.A0.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // камень горизонтально,
+                                                                                            // размер
+            imgWidth = (2 * img1.getWidth()) + Game.OFFSET;
             imgHeight = img1.getHeight();
-        } else if ((angle == Const.Angle.A90.getAngle()) || (angle == Const.Angle.A270.getAngle())) { // камень
-                                                                                                      // вертикально,
-                                                                                                      // размер
+        } else if ((angle == Game.Angle.A90.getAngle()) || (angle == Game.Angle.A270.getAngle())) { // камень
+                                                                                                    // вертикально,
+                                                                                                    // размер
             imgWidth = img1.getWidth();
-            imgHeight = (2 * img1.getHeight()) + Const.OFFSET;
+            imgHeight = (2 * img1.getHeight()) + Game.OFFSET;
         }
 
         BufferedImage boneImg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
@@ -143,13 +143,13 @@ public final class Bone extends JButton {
         g.fillRect(0, 0, imgWidth, imgHeight);
         g.setColor(oldColor);
 
-        if ((angle == Const.Angle.A0.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // камень горизонтально
+        if ((angle == Game.Angle.A0.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // камень горизонтально
             g.drawImage(img1, null, 0, 0);
-            g.drawImage(img2, null, Const.OFFSET + img2.getWidth(), 0);
-        } else if ((angle == Const.Angle.A90.getAngle()) || (angle == Const.Angle.A270.getAngle())) { // камень
-                                                                                                      // вертикально
+            g.drawImage(img2, null, Game.OFFSET + img2.getWidth(), 0);
+        } else if ((angle == Game.Angle.A90.getAngle()) || (angle == Game.Angle.A270.getAngle())) { // камень
+                                                                                                    // вертикально
             g.drawImage(img1, null, 0, 0);
-            g.drawImage(img2, null, 0, Const.OFFSET + img2.getHeight());
+            g.drawImage(img2, null, 0, Game.OFFSET + img2.getHeight());
         }
 
         g.dispose();
@@ -158,14 +158,14 @@ public final class Bone extends JButton {
 
     public final void draw(int ang, boolean selected) { // отрисовываем камень
         String prefix = ""; // путь к картинкам камней
-        int width = Const.BONEX; // по умолчанию камень горизонтально
-        int height = Const.BONEY;
+        int width = Game.BONEX; // по умолчанию камень горизонтально
+        int height = Game.BONEY;
         angle = ang;
 
-        if ((angle == Const.Angle.A0.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // если горизонтально
+        if ((angle == Game.Angle.A0.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // если горизонтально
             prefix = "/img/bones/horizontal/";
-        } else if ((angle == Const.Angle.A90.getAngle()) || (angle == Const.Angle.A270.getAngle())) { // если
-                                                                                                      // вертикально
+        } else if ((angle == Game.Angle.A90.getAngle()) || (angle == Game.Angle.A270.getAngle())) { // если
+                                                                                                    // вертикально
             prefix = "/img/bones/vertical/";
 
             int temp = width;
@@ -175,9 +175,9 @@ public final class Bone extends JButton {
 
         String backPath = prefix + "back.png";
 
-        if ((angle == Const.Angle.A270.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // при перевороте камней
-                                                                                                // меняем местами
-                                                                                                // лево-право
+        if ((angle == Game.Angle.A270.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // при перевороте камней
+                                                                                              // меняем местами
+                                                                                              // лево-право
             invertBone();
         }
 
@@ -193,7 +193,7 @@ public final class Bone extends JButton {
             BufferedImage img1 = ImageIO.read(img1Url);
             BufferedImage img2 = ImageIO.read(img2Url);
 
-            if (selected == Const.NOTSELECTED) {
+            if (selected == Game.UNSELECTED) {
                 faceImage = createFaceImg(img1, img2);
             } else {
                 faceImage = invertImg(createFaceImg(img1, img2));
@@ -208,18 +208,18 @@ public final class Bone extends JButton {
     }
 
     protected final void select() {
-        draw(angle, Const.SELECTED);
-        selected = Const.SELECTED;
+        draw(angle, Game.SELECTED);
+        selected = Game.SELECTED;
         showBone();
     }
 
     public final void unselect() {
-        draw(angle, Const.NOTSELECTED);
-        selected = Const.NOTSELECTED;
+        draw(angle, Game.UNSELECTED);
+        selected = Game.UNSELECTED;
         showBone();
     }
 
-    public final void selectUnselectBone() {
+    public final void toggleBoneSelection() {
         if (selected) {
             unselect();
         } else {
@@ -256,8 +256,8 @@ public final class Bone extends JButton {
         duplet = (left == right); // сразу записываем, дупль или нет
         first = false;
 
-        draw(Const.Angle.A0.getAngle(), Const.NOTSELECTED); // для базара камни лежат ровно
-        setPreferredSize(new Dimension(Const.BONEX, Const.BONEY));
+        draw(Game.Angle.A0.getAngle(), Game.UNSELECTED); // для базара камни лежат ровно
+        setPreferredSize(new Dimension(Game.BONEX, Game.BONEY));
         showFrame(); // показываем рамку для набора на базаре
         hideBone(); // в начале
     }

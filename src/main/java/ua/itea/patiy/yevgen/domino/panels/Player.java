@@ -14,18 +14,21 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import lombok.Getter;
 import lombok.Setter;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
-import ua.itea.patiy.yevgen.domino.engine.Const;
 import ua.itea.patiy.yevgen.domino.engine.Domino;
+import ua.itea.patiy.yevgen.domino.engine.Game;
 
 public final class Player extends GamePanel {
     private static final long serialVersionUID = -7224818727640107326L;
 
+    @Getter
+    @Setter
     public class Move {
-        public Bone left;
-        public Bone right;
+        private Bone left;
+        private Bone right;
     }
 
     @Getter
+    @Setter
     private String name;
     @Getter
     @Setter
@@ -33,7 +36,7 @@ public final class Player extends GamePanel {
     @Getter
     @Setter
     private boolean goPressed;
-    private JButton go;
+    private JButton go = new JButton();
     private int xPlayer;
     private int yPlayer;
     @Setter
@@ -52,52 +55,43 @@ public final class Player extends GamePanel {
         }
     };
 
-    public Player() {
-        name = "";
-        go = new JButton(); // кнопка хода
-    }
-
     public int endScore() { // сколько суммарно глаз осталось
         return getBones().stream().mapToInt(bone -> bone.getSum()).sum();
     }
 
     public void addGoButton() { // показать кнопку хода
         go.setText("Пішов!");
-        go.setLocation(Const.MOVEJBX, Const.MOVEJBY);
+        go.setLocation(Game.MOVEJBX, Game.MOVEJBY);
         go.addMouseListener(mouseAdapterGo);
         hideGoButton(); // изначально кнопка скрыта
 
-        add(go, new AbsoluteConstraints(Const.MOVEJBX, Const.MOVEJBY, -1, -1));
-        repaint();
+        add(go, new AbsoluteConstraints(Game.MOVEJBX, Game.MOVEJBY, -1, -1));
+        // repaint();
     }
 
     public void showGoButton() {
         go.setVisible(true);
-        repaint();
     }
 
     public void hideGoButton() { // убрать кнопку хода
         go.setVisible(false);
-        repaint();
     }
 
     protected void enableGoButton(String s) {
         go.setText(s);
         go.setEnabled(true);
         go.addMouseListener(mouseAdapterGo);
-        repaint();
     }
 
     public void disableGoButton(String s) {
         go.setText(s);
         go.setEnabled(false);
         go.removeMouseListener(mouseAdapterGo);
-        repaint();
     }
 
     protected void enableBonesSelect(Bone leftBone, Bone rightBone) { // разрешаем нажимать только подходящие камни
-        xPlayer = Const.XSHIFT;
-        yPlayer = Const.YSHIFT + Const.SHIFT;
+        xPlayer = Game.XSHIFT;
+        yPlayer = Game.YSHIFT + Game.SHIFT;
 
         boolean goodForLeft;
         boolean goodForRight;
@@ -106,15 +100,15 @@ public final class Player extends GamePanel {
                 && ((leftBone.isFirst()) && (rightBone.isFirst()));
 
         for (Bone bone : getBones()) {
-            if (leftBone == null) {
-                goodForLeft = false;
-            } else {
+            if (leftBone != null) {
                 goodForLeft = isFirst ? bone.okToMove(leftBone.getLeft()) : bone.okToMove(leftBone.getWorkSide());
-            }
-            if (rightBone == null) {
-                goodForRight = false;
             } else {
+                goodForLeft = false;
+            }
+            if (rightBone != null) {
                 goodForRight = isFirst ? bone.okToMove(rightBone.getRight()) : bone.okToMove(rightBone.getWorkSide());
+            } else {
+                goodForRight = false;
             }
 
             if (goodForLeft || goodForRight) { // разрешаем нажимать только те камни, что подходят по ситуации
@@ -124,7 +118,7 @@ public final class Player extends GamePanel {
 
             bone.setLocation(xPlayer, yPlayer);
             add(bone, new AbsoluteConstraints(xPlayer, yPlayer, bone.getWidth(), bone.getHeight()));
-            xPlayer += bone.getWidth() + Const.PLAYERSHIFT;
+            xPlayer += bone.getWidth() + Game.PLAYERSHIFT;
         }
         repaint();
     }
@@ -135,9 +129,9 @@ public final class Player extends GamePanel {
 
         for (Bone b : getBones()) {
             if ((!b.equals(bone)) && (b.isSelected())) {
-                b.selectUnselectBone();
+                b.toggleBoneSelection();
             } else if (b.equals(bone)) {
-                b.selectUnselectBone();
+                b.toggleBoneSelection();
 
                 if (b.isSelected() && (leftBone != null) && b.okToMove(leftBone.getWorkSide())) {
                     setSelectedLeft(b);
@@ -262,11 +256,11 @@ public final class Player extends GamePanel {
     }
 
     public boolean less7Bones() { // есть ли 7 камней на борту
-        return getBones().size() < Const.MAXBONES;
+        return getBones().size() < Game.MAXBONES;
     }
 
     public boolean has7Bones() {
-        return getBones().size() == Const.MAXBONES;
+        return getBones().size() == Game.MAXBONES;
     }
 
     public String playerMsg() { // Сообщение на панель поля
@@ -277,13 +271,13 @@ public final class Player extends GamePanel {
 
     @Override
     protected void rebuildBonesLine(boolean frame) { // выстраиваем камни в рядок
-        xPlayer = Const.XSHIFT;
-        yPlayer = Const.YSHIFT + Const.SHIFT;
+        xPlayer = Game.XSHIFT;
+        yPlayer = Game.YSHIFT + Game.SHIFT;
 
         for (Bone bone : getBones()) {
             bone.removeMouseListener(bone.clickOnHumanPlayer);
 
-            if (bone.isSelected() == Const.SELECTED) {
+            if (bone.isSelected()) {
                 bone.unselect();
             }
 
@@ -296,19 +290,19 @@ public final class Player extends GamePanel {
 
             bone.setLocation(xPlayer, yPlayer);
             add(bone, new AbsoluteConstraints(xPlayer, yPlayer, bone.getWidth(), bone.getHeight()));
-            xPlayer += bone.getWidth() + Const.PLAYERSHIFT;
+            xPlayer += bone.getWidth() + Game.PLAYERSHIFT;
         }
         repaint();
     }
 
     public void disableBonesSelect() {
-        rebuildBonesLine(Const.NOFRAME);
+        rebuildBonesLine(Game.NOFRAME);
     }
 
     @Override
     public void toBones(Bone bone) {
         bone.removeMouseListener(bone.clickOnBazar); // отменяем базарные нажатия мышкой
-        bone.draw(Const.Angle.A90.getAngle(), Const.NOTSELECTED);
+        bone.draw(Game.Angle.A90.getAngle(), Game.UNSELECTED);
         getBones().add(bone);
         disableBonesSelect();
         setTitle(" " + name + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
@@ -326,10 +320,4 @@ public final class Player extends GamePanel {
         this.setBorder(BorderFactory.createTitledBorder(null, title, TitledBorder.DEFAULT_JUSTIFICATION,
                 TitledBorder.DEFAULT_POSITION, new Font("Dialog", 1, 10), new Color(255, 255, 255)));
     }
-
-    public void setPlayerName(String name, boolean human) {
-        this.name = name;
-        this.human = human;
-    }
-
 }

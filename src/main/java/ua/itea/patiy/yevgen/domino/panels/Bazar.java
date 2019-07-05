@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 import ua.itea.patiy.yevgen.domino.engine.Bone;
-import ua.itea.patiy.yevgen.domino.engine.Const;
+import ua.itea.patiy.yevgen.domino.engine.Game;
 
 public final class Bazar extends GamePanel {
 
@@ -22,8 +22,8 @@ public final class Bazar extends GamePanel {
     private int yBazar;
 
     public Bazar() {
-        xBazar = Const.XSHIFT;
-        yBazar = Const.YSHIFT - 2 * Const.SHIFT;
+        xBazar = Game.XSHIFT;
+        yBazar = Game.YSHIFT - 2 * Game.SHIFT;
         setBones(initBones());
         initBazar();
         setTitle(" Базар ");
@@ -32,19 +32,19 @@ public final class Bazar extends GamePanel {
     private void initBazar() {
         getBones().forEach(bone -> {
             toBones(bone);
-            yBazar += Const.BONEY + Const.SHIFT;
+            yBazar += Game.BONEY + Game.SHIFT;
         });
     }
 
     private List<Bone> initBones() { // инициализируем камни
-        List<Bone> bone = new ArrayList<Bone>();
-        for (byte i = 0; i <= Const.MAXDOTS; i++) {
-            for (byte j = i; j <= Const.MAXDOTS; j++) {
-                bone.add(new Bone(i, j));
+        List<Bone> bones = new ArrayList<Bone>(Game.TOTALBONES);
+        for (byte i = 0; i <= Game.MAXDOTS; i++) {
+            for (byte j = i; j <= Game.MAXDOTS; j++) {
+                bones.add(new Bone(i, j));
             }
         }
-        Collections.shuffle(bone);
-        return bone;
+        Collections.shuffle(bones);
+        return bones;
     }
 
     public Bone randomFromBones() { // произвольный камень с базара
@@ -55,7 +55,7 @@ public final class Bazar extends GamePanel {
     protected void toBones(Bone b) {
         b.setLocation(xBazar, yBazar);
         b.addMouseListener(b.clickOnBazar); // обработчик нажатий
-        add(b, new AbsoluteConstraints(xBazar, yBazar, Const.BONEX, Const.BONEY));
+        add(b, new AbsoluteConstraints(xBazar, yBazar, Game.BONEX, Game.BONEY));
         repaint();
     }
 
@@ -68,7 +68,7 @@ public final class Bazar extends GamePanel {
     @Override
     protected void rebuildBonesLine(boolean frame) {
         getBones().forEach(bone -> {
-            if (frame == Const.NOFRAME) {
+            if (frame == Game.NOFRAME) {
                 bone.removeMouseListener(bone.clickOnBazar); // убираем обработку мыши и рамку для всех камней
                 bone.hideFrame();
             } else {
@@ -80,10 +80,10 @@ public final class Bazar extends GamePanel {
     }
 
     public void enableBazar() {
-        rebuildBonesLine(Const.FRAME);
+        rebuildBonesLine(Game.FRAME);
     }
 
     public void disableBazar() {
-        rebuildBonesLine(Const.NOFRAME);
+        rebuildBonesLine(Game.NOFRAME);
     }
 }

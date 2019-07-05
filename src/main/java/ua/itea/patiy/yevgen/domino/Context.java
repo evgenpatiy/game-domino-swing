@@ -4,7 +4,7 @@ import ua.itea.patiy.yevgen.domino.engine.Domino;
 
 public final class Context {
     private static Context context;
-    private static Domino domino;
+    private Domino domino;
 
     private Context() {
         domino = new Domino();
