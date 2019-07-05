@@ -15,7 +15,7 @@ import org.netbeans.lib.awtextra.AbsoluteConstraints;
 import ua.itea.patiy.yevgen.domino.engine.Bone;
 import ua.itea.patiy.yevgen.domino.engine.Const;
 
-public class Bazar extends GamePanel {
+public final class Bazar extends GamePanel {
 
     private static final long serialVersionUID = -4485166148555484926L;
     private int xBazar;

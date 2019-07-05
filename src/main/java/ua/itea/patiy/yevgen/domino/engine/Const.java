@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ua.itea.patiy.yevgen.domino.engine;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -10,11 +5,24 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- *
- * @author yevgen
- */
-public class Const {
+import lombok.Getter;
+
+public final class Const {
+
+    public static enum End {
+        NORMAL, FISH, GOAT, SKINGOAT, GENERALGOAT
+    }
+
+    public static enum Angle {
+        A0(0), A90(90), A180(180), A270(270);
+
+        @Getter
+        private int angle;
+
+        Angle(int angle) {
+            this.angle = angle;
+        }
+    }
 
     public static final byte MAXDOTS = 6;
     public static final byte MAXBONES = MAXDOTS + 1;
@@ -33,11 +41,11 @@ public class Const {
     public static final int SHIFT = 5;
     public static final int SPACELIMIT = 150;
 
-    public static final boolean TOLEFT = false;
     public static final boolean TORIGHT = true;
+    public static final boolean TOLEFT = !TORIGHT;
 
     public static final boolean FRAME = true;
-    public static final boolean NOFRAME = false;
+    public static final boolean NOFRAME = !FRAME;
 
     public static final int XSHIFT = 25; // Начальное смещение камней на панели
     public static final int YSHIFT = 25;
@@ -50,16 +58,6 @@ public class Const {
     public static final boolean ROBOT = !HUMAN;
     public static final boolean SELECTED = true;
     public static final boolean NOTSELECTED = !SELECTED;
-
-    protected static final byte ENDGAME = 1;
-    protected static final byte ENDGAMEFISH = 2;
-    protected static final byte ENDGAMEGOAT = 3;
-    protected static final byte ENDGAMESKINGOAT = 4;
-
-    public static final int A0 = 0;
-    public static final int A90 = 90;
-    public static final int A180 = 180;
-    public static final int A270 = 270;
 
     protected static final String VERSION = "| Java ";
     protected static final Map<String, String> ENEMY = Stream

@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import lombok.Getter;
 import lombok.Setter;
 
-public class Bone extends JButton {
+public final class Bone extends JButton {
     private static final long serialVersionUID = 1756065351166502914L;
     @Getter
     private byte left; // левая часть кости
@@ -125,10 +125,13 @@ public class Bone extends JButton {
         int imgWidth = 0;
         int imgHeight = 0;
 
-        if ((angle == Const.A0) || (angle == Const.A180)) { // камень горизонтально, размер
+        if ((angle == Const.Angle.A0.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // камень горизонтально,
+                                                                                              // размер
             imgWidth = (2 * img1.getWidth()) + Const.OFFSET;
             imgHeight = img1.getHeight();
-        } else if ((angle == Const.A90) || (angle == Const.A270)) { // камень вертикально, размер
+        } else if ((angle == Const.Angle.A90.getAngle()) || (angle == Const.Angle.A270.getAngle())) { // камень
+                                                                                                      // вертикально,
+                                                                                                      // размер
             imgWidth = img1.getWidth();
             imgHeight = (2 * img1.getHeight()) + Const.OFFSET;
         }
@@ -140,10 +143,11 @@ public class Bone extends JButton {
         g.fillRect(0, 0, imgWidth, imgHeight);
         g.setColor(oldColor);
 
-        if ((angle == Const.A0) || (angle == Const.A180)) { // камень горизонтально
+        if ((angle == Const.Angle.A0.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // камень горизонтально
             g.drawImage(img1, null, 0, 0);
             g.drawImage(img2, null, Const.OFFSET + img2.getWidth(), 0);
-        } else if ((angle == Const.A90) || (angle == Const.A270)) { // камень вертикально
+        } else if ((angle == Const.Angle.A90.getAngle()) || (angle == Const.Angle.A270.getAngle())) { // камень
+                                                                                                      // вертикально
             g.drawImage(img1, null, 0, 0);
             g.drawImage(img2, null, 0, Const.OFFSET + img2.getHeight());
         }
@@ -158,9 +162,10 @@ public class Bone extends JButton {
         int height = Const.BONEY;
         angle = ang;
 
-        if ((angle == Const.A0) || (angle == Const.A180)) { // если горизонтально
+        if ((angle == Const.Angle.A0.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // если горизонтально
             prefix = "/img/bones/horizontal/";
-        } else if ((angle == Const.A90) || (angle == Const.A270)) { // если вертикально
+        } else if ((angle == Const.Angle.A90.getAngle()) || (angle == Const.Angle.A270.getAngle())) { // если
+                                                                                                      // вертикально
             prefix = "/img/bones/vertical/";
 
             int temp = width;
@@ -170,7 +175,9 @@ public class Bone extends JButton {
 
         String backPath = prefix + "back.png";
 
-        if ((angle == Const.A270) || (angle == Const.A180)) { // при перевороте камней меняем местами лево-право
+        if ((angle == Const.Angle.A270.getAngle()) || (angle == Const.Angle.A180.getAngle())) { // при перевороте камней
+                                                                                                // меняем местами
+                                                                                                // лево-право
             invertBone();
         }
 
@@ -249,7 +256,7 @@ public class Bone extends JButton {
         duplet = (left == right); // сразу записываем, дупль или нет
         first = false;
 
-        draw(Const.A0, Const.NOTSELECTED); // для базара камни лежат ровно
+        draw(Const.Angle.A0.getAngle(), Const.NOTSELECTED); // для базара камни лежат ровно
         setPreferredSize(new Dimension(Const.BONEX, Const.BONEY));
         showFrame(); // показываем рамку для набора на базаре
         hideBone(); // в начале

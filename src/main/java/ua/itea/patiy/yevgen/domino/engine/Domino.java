@@ -28,7 +28,7 @@ import ua.itea.patiy.yevgen.domino.panels.Field;
 import ua.itea.patiy.yevgen.domino.panels.Player;
 
 @Log
-public class Domino extends JFrame {
+public final class Domino extends JFrame {
     private static final long serialVersionUID = -4761309140419685336L;
     private Bazar bazar;
     @Getter
@@ -163,12 +163,12 @@ public class Domino extends JFrame {
                         .min((Player p1, Player p2) -> (p1.minBone().getSum() - p2.minBone().getSum())).get());
     }
 
-    private String getFinalMessage(byte endCase) {
+    private String getFinalMessage(Const.End endCase) {
         List<String> strings = new ArrayList<String>();
 
-        if (endCase == Const.ENDGAME) {
+        if (endCase == Const.End.NORMAL) {
             strings.add("Виграв " + currentPlayer.getName() + "!");
-        } else if (endCase == Const.ENDGAMEFISH) {
+        } else if (endCase == Const.End.FISH) {
             strings.add("Риба!");
             strings.add("У " + currentPlayer.getName() + " лишилось на руках "
                     + currentPlayer.properScoreString(currentPlayer.endScore()));
@@ -185,7 +185,7 @@ public class Domino extends JFrame {
                 .reduce((s1, s2) -> s1 + s2).get();
     }
 
-    private void gameEnd(byte endCase) { // наигрались
+    private void gameEnd(Const.End endCase) { // наигрались
         field.disableBonesSelect();
         field.setTitle(" Гру скінчено ");
         bazar.showBones();
@@ -335,7 +335,7 @@ public class Domino extends JFrame {
 
                     if ((nextPlayer().putBones(field).left == null) && (nextPlayer().putBones(field).right == null)) {
                         log.severe("РИБА!!!!");
-                        gameEnd(Const.ENDGAMEFISH);
+                        gameEnd(Const.End.FISH);
                     }
                 }
             }
@@ -375,7 +375,7 @@ public class Domino extends JFrame {
                             if ((nextPlayer().putBones(field).left == null)
                                     && (nextPlayer().putBones(field).right == null)) {
                                 log.severe("РИБА!!!!");
-                                gameEnd(Const.ENDGAMEFISH);
+                                gameEnd(Const.End.FISH);
                             }
                         }
 
@@ -388,7 +388,7 @@ public class Domino extends JFrame {
                 }
 
             } else { // выкинули все камни
-                gameEnd(Const.ENDGAME);
+                gameEnd(Const.End.NORMAL);
             }
         }
     }

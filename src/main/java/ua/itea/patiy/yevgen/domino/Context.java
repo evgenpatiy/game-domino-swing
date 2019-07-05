@@ -2,7 +2,7 @@ package ua.itea.patiy.yevgen.domino;
 
 import ua.itea.patiy.yevgen.domino.engine.Domino;
 
-public class Context {
+public final class Context {
     private static Context context;
     private static Domino domino;
 

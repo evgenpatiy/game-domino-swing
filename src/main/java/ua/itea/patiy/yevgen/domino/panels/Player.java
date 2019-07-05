@@ -17,7 +17,7 @@ import ua.itea.patiy.yevgen.domino.engine.Bone;
 import ua.itea.patiy.yevgen.domino.engine.Const;
 import ua.itea.patiy.yevgen.domino.engine.Domino;
 
-public class Player extends GamePanel {
+public final class Player extends GamePanel {
     private static final long serialVersionUID = -7224818727640107326L;
 
     public class Move {
@@ -271,7 +271,7 @@ public class Player extends GamePanel {
 
     public String playerMsg() { // Сообщение на панель поля
         String s = " Ходить " + name + ". ";
-        return (human == Const.HUMAN) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
+        return (human) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
                 : s + "Натисніть кнопку на його панелі ";
     }
 
@@ -288,9 +288,9 @@ public class Player extends GamePanel {
             }
 
             bone.hideFrame();
-            if (human == Const.HUMAN) {
+            if (human) {
                 bone.showBone();
-            } else if (human == Const.ROBOT) {
+            } else {
                 bone.hideBone();
             }
 
@@ -308,7 +308,7 @@ public class Player extends GamePanel {
     @Override
     public void toBones(Bone bone) {
         bone.removeMouseListener(bone.clickOnBazar); // отменяем базарные нажатия мышкой
-        bone.draw(Const.A90, Const.NOTSELECTED);
+        bone.draw(Const.Angle.A90.getAngle(), Const.NOTSELECTED);
         getBones().add(bone);
         disableBonesSelect();
         setTitle(" " + name + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
