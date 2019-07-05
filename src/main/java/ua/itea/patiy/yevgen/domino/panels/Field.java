@@ -503,6 +503,6 @@ public final class Field extends GamePanel {
     }
 
     @Override
-    protected void toBones(Bone b) {
+    protected void addToBones(Bone b) {
     }
 }

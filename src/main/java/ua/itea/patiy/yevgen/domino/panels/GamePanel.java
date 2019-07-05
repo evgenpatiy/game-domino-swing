@@ -25,14 +25,14 @@ public abstract class GamePanel extends JPanel {
         bones.forEach(bone -> bone.hideBone());
     }
 
-    public void fromBones(Bone bone) {
+    public void removeFromBones(Bone bone) {
         bones.remove(bone);
         remove(bone);
     }
 
     protected abstract void rebuildBonesLine(boolean frame);
 
-    protected abstract void toBones(Bone b);
+    protected abstract void addToBones(Bone bone);
 
     protected abstract void setTitle(String s);
 }

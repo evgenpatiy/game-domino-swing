@@ -89,7 +89,7 @@ public final class Bone extends JButton {
     }
 
     public final boolean dupletOKtoMove(byte boneside) { // подходит ли дупль для хода
-        return (duplet == true) && (left == boneside) && (right == boneside);
+        return (duplet == Game.DUPLET) && (left == boneside) && (right == boneside);
     }
 
     public final boolean okToMove(byte boneside) { // можно ли ходить костью

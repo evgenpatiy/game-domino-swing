@@ -204,12 +204,12 @@ public final class Domino extends JFrame {
     protected void getStart7BonesFromBazar() {
         if ((me.less7Bones()) && (you.less7Bones())) { // набираем кости с базара
             // берем камень от клика мыши
-            me.toBones(bazarSelectedBone);
-            bazar.fromBones(bazarSelectedBone);
+            me.addToBones(bazarSelectedBone);
+            bazar.removeFromBones(bazarSelectedBone);
 
             bazarSelectedBone = bazar.randomFromBones(); // берем случайную кость с базара
-            you.toBones(bazarSelectedBone);
-            bazar.fromBones(bazarSelectedBone);
+            you.addToBones(bazarSelectedBone);
+            bazar.removeFromBones(bazarSelectedBone);
 
             field.setTitle(" Візьміть ще " + me.properBoneQtyString(Game.MAXBONES - me.getBones().size()) + " ");
         }
@@ -236,7 +236,7 @@ public final class Domino extends JFrame {
         if (currentPlayer.isGoPressed()) {
             field.addFirstBone(currentPlayer.firstBoneToStart()); // ставим первый камень на поле
             log.info(currentPlayer.getName() + " дав " + currentPlayer.firstBoneToStart() + " на перший хід");
-            currentPlayer.fromBones(currentPlayer.firstBoneToStart());
+            currentPlayer.removeFromBones(currentPlayer.firstBoneToStart());
 
             currentPlayer.hideGoButton(); // убираем кнопку хода у первого игрока
             currentPlayer.setGoPressed(false);
@@ -275,8 +275,8 @@ public final class Domino extends JFrame {
                 bazarSelectedBone = bazar.randomFromBones();
 
                 log.info(currentPlayer.getName() + " взяв з базара " + bazarSelectedBone);
-                currentPlayer.toBones(bazarSelectedBone);
-                bazar.fromBones(bazarSelectedBone);
+                currentPlayer.addToBones(bazarSelectedBone);
+                bazar.removeFromBones(bazarSelectedBone);
 
                 left = currentPlayer.putBones(field).getLeft();
                 right = currentPlayer.putBones(field).getRight();
@@ -287,8 +287,8 @@ public final class Domino extends JFrame {
             }
         } else if (currentPlayer.isHuman() == Game.HUMAN) {
             log.info(currentPlayer.getName() + " взяв з базара " + bazarSelectedBone);
-            currentPlayer.toBones(bazarSelectedBone);
-            bazar.fromBones(bazarSelectedBone);
+            currentPlayer.addToBones(bazarSelectedBone);
+            bazar.removeFromBones(bazarSelectedBone);
 
             left = currentPlayer.putBones(field).getLeft();
             right = currentPlayer.putBones(field).getRight();
@@ -336,13 +336,13 @@ public final class Domino extends JFrame {
             if (left != null) {
                 log.info(currentPlayer.getName() + " дав зліва " + left);
                 field.addToLeft(left);
-                currentPlayer.fromBones(left);
+                currentPlayer.removeFromBones(left);
             }
 
             if (right != null) {
                 log.info(currentPlayer.getName() + " дав зправа " + right);
                 field.addToRight(right);
-                currentPlayer.fromBones(right);
+                currentPlayer.removeFromBones(right);
             }
 
             if (currentPlayer.getBones().size() > 0) { // играем дальше, камни еще есть

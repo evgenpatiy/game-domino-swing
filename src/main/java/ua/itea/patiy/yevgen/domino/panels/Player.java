@@ -29,7 +29,7 @@ public final class Player extends GamePanel {
 
     @Getter
     @Setter
-    private String name;
+    private String playerName;
     @Getter
     @Setter
     private boolean human;
@@ -122,7 +122,7 @@ public final class Player extends GamePanel {
         setSelectedLeft(null);
         setSelectedRight(null);
 
-        for (Bone b : getBones()) {
+        getBones().forEach(b -> {
             if ((!b.equals(bone)) && (b.isSelected())) {
                 b.toggleBoneSelection();
             } else if (b.equals(bone)) {
@@ -130,12 +130,11 @@ public final class Player extends GamePanel {
 
                 if (b.isSelected() && (leftBone != null) && b.okToMove(leftBone.getWorkSide())) {
                     setSelectedLeft(b);
-                } else if ((b.isSelected() && (rightBone != null) && b.okToMove(rightBone.getWorkSide()))) {
+                } else if (b.isSelected() && (rightBone != null) && b.okToMove(rightBone.getWorkSide())) {
                     setSelectedRight(b);
                 }
             }
-        }
-
+        });
         enableGoButton("Пішов!");
     }
 
@@ -260,7 +259,7 @@ public final class Player extends GamePanel {
     }
 
     public String playerMsg() { // Сообщение на панель поля
-        String s = " Ходить " + name + ". ";
+        String s = " Ходить " + playerName + ". ";
         return (human) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
                 : s + "Натисніть кнопку на його панелі ";
     }
@@ -296,19 +295,19 @@ public final class Player extends GamePanel {
     }
 
     @Override
-    public void toBones(Bone bone) {
+    public void addToBones(Bone bone) {
         bone.removeMouseListener(bone.clickOnBazar); // отменяем базарные нажатия мышкой
         bone.draw(Game.Angle.A90.getAngle(), Game.UNSELECTED);
         getBones().add(bone);
         disableBonesSelect();
-        setTitle(" " + name + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
+        setTitle(" " + playerName + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
     }
 
     @Override
-    public void fromBones(Bone bone) { // вызываем папин метод и обновляем заголовок панели
-        super.fromBones(bone);
+    public void removeFromBones(Bone bone) { // вызываем папин метод и обновляем заголовок панели
+        super.removeFromBones(bone);
         disableBonesSelect();
-        setTitle(" " + name + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
+        setTitle(" " + playerName + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
     }
 
     @Override

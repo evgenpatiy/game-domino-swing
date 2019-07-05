@@ -31,7 +31,7 @@ public final class Bazar extends GamePanel {
 
     private void initBazar() {
         getBones().forEach(bone -> {
-            toBones(bone);
+            addToBones(bone);
             yBazar += Game.BONEY + Game.SHIFT;
         });
     }
@@ -52,10 +52,10 @@ public final class Bazar extends GamePanel {
     }
 
     @Override
-    protected void toBones(Bone b) {
-        b.setLocation(xBazar, yBazar);
-        b.addMouseListener(b.clickOnBazar); // обработчик нажатий
-        add(b, new AbsoluteConstraints(xBazar, yBazar, Game.BONEX, Game.BONEY));
+    protected void addToBones(Bone bone) {
+        bone.setLocation(xBazar, yBazar);
+        bone.addMouseListener(bone.clickOnBazar); // обработчик нажатий
+        add(bone, new AbsoluteConstraints(xBazar, yBazar, Game.BONEX, Game.BONEY));
         repaint();
     }
 
