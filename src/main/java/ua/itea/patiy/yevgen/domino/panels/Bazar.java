@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 import ua.itea.patiy.yevgen.domino.engine.Bone;
+import ua.itea.patiy.yevgen.domino.engine.Domino;
 import ua.itea.patiy.yevgen.domino.engine.Game;
 
 public final class Bazar extends GamePanel {
@@ -20,8 +21,10 @@ public final class Bazar extends GamePanel {
     private static final long serialVersionUID = -4485166148555484926L;
     private int xBazar;
     private int yBazar;
+    private Domino domino;
 
-    public Bazar() {
+    public Bazar(Domino domino) {
+        this.domino = domino;
         xBazar = Game.XSHIFT;
         yBazar = Game.YSHIFT - 2 * Game.SHIFT;
         setBones(initBones());
@@ -40,7 +43,7 @@ public final class Bazar extends GamePanel {
         List<Bone> bones = new ArrayList<Bone>(Game.TOTALBONES);
         for (byte i = 0; i <= Game.MAXDOTS; i++) {
             for (byte j = i; j <= Game.MAXDOTS; j++) {
-                bones.add(new Bone(i, j));
+                bones.add(new Bone(i, j, domino));
             }
         }
         Collections.shuffle(bones);

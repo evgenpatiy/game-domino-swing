@@ -245,16 +245,16 @@ public final class Field extends GamePanel {
     private void addLeftToRight(Bone previous, Bone bone) {
         int angle = Game.Angle.A0.getAngle(); // если просто камень, горизонтально
 
-        boolean turnfromhorizontalduplet = (previous.isDuplet() == true)
+        boolean turnFromHorizontalDuplet = (previous.isDuplet() == true)
                 && ((previous.getAngle() == Game.Angle.A0.getAngle())
                         || (previous.getAngle() == Game.Angle.A180.getAngle()));
-        boolean turnfromverticalbone = (previous.isDuplet() == false)
+        boolean turnFromVerticalBone = (previous.isDuplet() == false)
                 && ((previous.getAngle() == Game.Angle.A90.getAngle())
                         || (previous.getAngle() == Game.Angle.A270.getAngle()));
-        boolean prevverticalduplet = (previous.isDuplet() == true)
+        boolean prevVerticalDuplet = (previous.isDuplet() == true)
                 && ((previous.getAngle() == Game.Angle.A90.getAngle())
                         || (previous.getAngle() == Game.Angle.A270.getAngle()));
-        boolean prevhorizontalbone = (previous.isDuplet() == false)
+        boolean prevHorizontalBone = (previous.isDuplet() == false)
                 && ((previous.getAngle() == Game.Angle.A0.getAngle())
                         || (previous.getAngle() == Game.Angle.A180.getAngle()));
 
@@ -270,11 +270,11 @@ public final class Field extends GamePanel {
 
         xLine = previous.getX() + previous.getWidth() + Game.OFFSET;
 
-        if ((prevverticalduplet) || (prevhorizontalbone) || (turnfromhorizontalduplet)) {
+        if ((prevVerticalDuplet) || (prevHorizontalBone) || (turnFromHorizontalDuplet)) {
             yLine = previous.getY() + (previous.getHeight() / 2) - (bone.getHeight() / 2);
         }
 
-        if (turnfromverticalbone) {
+        if (turnFromVerticalBone) {
             if (isTurnTopLeft == true) {
                 if (bone.isDuplet() == false) {
                     yLine = previous.getY();
@@ -310,18 +310,18 @@ public final class Field extends GamePanel {
     private void addDownToUp(Bone previous, Bone bone) {
         int angle = Game.Angle.A90.getAngle(); // переворачиваем на 90
 
-        boolean turnfromhorizontalbone = (previous.isDuplet() == false)
+        boolean turnFromHorizontalBone = (previous.isDuplet() == false)
                 && ((previous.getAngle() == Game.Angle.A0.getAngle())
                         || (previous.getAngle() == Game.Angle.A180.getAngle())); // крайний камень по
         // горизонтали
-        boolean turnfromhorizontalduplet = (previous.isDuplet() == true)
+        boolean turnFromHorizontalDuplet = (previous.isDuplet() == true)
                 && ((previous.getAngle() == Game.Angle.A90.getAngle())
                         || (previous.getAngle() == Game.Angle.A270.getAngle())); // крайний дупль по
         // горизонтали
-        boolean prevverticalbone = (previous.isDuplet() == false) && ((previous.getAngle() == Game.Angle.A90.getAngle())
+        boolean prevVerticalBone = (previous.isDuplet() == false) && ((previous.getAngle() == Game.Angle.A90.getAngle())
                 || (previous.getAngle() == Game.Angle.A270.getAngle())); // предыдущий камень по
         // вертикали
-        boolean prevverticalduplet = (previous.isDuplet() == true) && ((previous.getAngle() == Game.Angle.A0.getAngle())
+        boolean prevVerticalDuplet = (previous.isDuplet() == true) && ((previous.getAngle() == Game.Angle.A0.getAngle())
                 || (previous.getAngle() == Game.Angle.A180.getAngle())); // предыдущий дупль по
         // вертикали
 
@@ -338,16 +338,16 @@ public final class Field extends GamePanel {
 
         if (previous.equals(rightBone())) { // если работаем с правым концом
 
-            if (turnfromhorizontalbone) { // от не дупля по горизонтали поворачиваем вертикально
+            if (turnFromHorizontalBone) { // от не дупля по горизонтали поворачиваем вертикально
                 xLine = previous.getX() + previous.getWidth() / 2 + Game.OFFSET;
             }
 
-            if ((turnfromhorizontalduplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalDuplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
                                                                             // вертикально
                 xLine = previous.getX() + (previous.getWidth() / 2) - (bone.getWidth() / 2);
             }
 
-            if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
+            if ((prevVerticalBone) || (prevVerticalDuplet)) { // уже движемся по вертикали
                 xLine = previous.getX() + (previous.getWidth() / 2) - (bone.getWidth() / 2);
             }
             bone.setWorkSide(bone.getLeft());
@@ -356,22 +356,22 @@ public final class Field extends GamePanel {
 
         if (previous.equals(leftBone())) { // если работаем с левым концом
 
-            if ((turnfromhorizontalbone) && (bone.isDuplet() == false)) { // от не дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalBone) && (bone.isDuplet() == false)) { // от не дупля по горизонтали поворачиваем
                                                                           // вертикально и ставим не дупль
                 xLine = previous.getX();
             }
 
-            if ((turnfromhorizontalbone) && (bone.isDuplet() == true)) { // от не дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalBone) && (bone.isDuplet() == true)) { // от не дупля по горизонтали поворачиваем
                                                                          // вертикально и ставим дупль
                 xLine = previous.getX() - (bone.getWidth() / 2) - Game.OFFSET;
             }
 
-            if ((turnfromhorizontalduplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalDuplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
                                                                             // вертикально
                 xLine = previous.getX();
             }
 
-            if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
+            if ((prevVerticalBone) || (prevVerticalDuplet)) { // уже движемся по вертикали
                 xLine = previous.getX() + (previous.getWidth() / 2) - (bone.getWidth() / 2);
             }
 
@@ -384,18 +384,18 @@ public final class Field extends GamePanel {
     private void addUpToDown(Bone previous, Bone bone) {
         int angle = Game.Angle.A90.getAngle(); // переворачиваем на 90
 
-        boolean turnfromhorizontalbone = (previous.isDuplet() == false)
+        boolean turnFromHorizontalBone = (previous.isDuplet() == false)
                 && ((previous.getAngle() == Game.Angle.A0.getAngle())
                         || (previous.getAngle() == Game.Angle.A180.getAngle())); // крайний камень по
         // горизонтали
-        boolean turnfromhorizontalduplet = (previous.isDuplet() == true)
+        boolean turnFromHorizontalDuplet = (previous.isDuplet() == true)
                 && ((previous.getAngle() == Game.Angle.A90.getAngle())
                         || (previous.getAngle() == Game.Angle.A270.getAngle())); // крайний дупль по
         // горизонтали
-        boolean prevverticalbone = (previous.isDuplet() == false) && ((previous.getAngle() == Game.Angle.A90.getAngle())
+        boolean prevVerticalBone = (previous.isDuplet() == false) && ((previous.getAngle() == Game.Angle.A90.getAngle())
                 || (previous.getAngle() == Game.Angle.A270.getAngle())); // предыдущий камень по
         // вертикали
-        boolean prevverticalduplet = (previous.isDuplet() == true) && ((previous.getAngle() == Game.Angle.A0.getAngle())
+        boolean prevVerticalDuplet = (previous.isDuplet() == true) && ((previous.getAngle() == Game.Angle.A0.getAngle())
                 || (previous.getAngle() == Game.Angle.A180.getAngle())); // предыдущий дупль по
         // вертикали
 
@@ -412,16 +412,16 @@ public final class Field extends GamePanel {
 
         if (previous.equals(rightBone())) { // если работаем с правым концом
 
-            if (turnfromhorizontalbone) { // от не дупля по горизонтали поворачиваем вертикально
+            if (turnFromHorizontalBone) { // от не дупля по горизонтали поворачиваем вертикально
                 xLine = previous.getX() + previous.getWidth() / 2 + Game.OFFSET;
             }
 
-            if ((turnfromhorizontalduplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalDuplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
                                                                             // вертикально
                 xLine = previous.getX() + (previous.getWidth() / 2) - (bone.getWidth() / 2);
             }
 
-            if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
+            if ((prevVerticalBone) || (prevVerticalDuplet)) { // уже движемся по вертикали
                 xLine = previous.getX() + (previous.getWidth() / 2) - (bone.getWidth() / 2);
             }
 
@@ -431,22 +431,22 @@ public final class Field extends GamePanel {
 
         if (previous.equals(leftBone())) { // если работаем с левым концом
 
-            if ((turnfromhorizontalbone) && (bone.isDuplet() == false)) { // от не дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalBone) && (bone.isDuplet() == false)) { // от не дупля по горизонтали поворачиваем
                                                                           // вертикально и ставим не дупль
                 xLine = previous.getX();
             }
 
-            if ((turnfromhorizontalbone) && (bone.isDuplet() == true)) { // от не дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalBone) && (bone.isDuplet() == true)) { // от не дупля по горизонтали поворачиваем
                                                                          // вертикально и ставим дупль
                 xLine = previous.getX() - (bone.getWidth() / 2) - Game.OFFSET;
             }
 
-            if ((turnfromhorizontalduplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
+            if ((turnFromHorizontalDuplet) && (bone.isDuplet() == false)) { // от дупля по горизонтали поворачиваем
                                                                             // вертикально
                 xLine = previous.getX();
             }
 
-            if ((prevverticalbone) || (prevverticalduplet)) { // уже движемся по вертикали
+            if ((prevVerticalBone) || (prevVerticalDuplet)) { // уже движемся по вертикали
                 xLine = previous.getX() + (previous.getWidth() / 2) - (bone.getWidth() / 2);
             }
 

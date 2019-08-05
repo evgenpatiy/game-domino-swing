@@ -91,8 +91,7 @@ public final class Domino extends JFrame {
 
     private void initComponents() {
         field = new Field(enemyName);
-        bazar = new Bazar();
-        bazar.getBones().forEach(bone -> bone.setDomino(this));
+        bazar = new Bazar(this);
         you = new Player(enemyName, Game.ROBOT, this);
         me = new Player(myName, Game.HUMAN, this);
         log.info("Паєхалі! " + enemyName + " грає проти " + myName);
@@ -187,7 +186,7 @@ public final class Domino extends JFrame {
                 " " + nextPlayer().getName() + " : " + nextPlayer().properScoreString(nextPlayer().endScore()) + " ");
 
         JOptionPane.showMessageDialog(null, getFinalMessage(endCase), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
-        log.info(getFinalMessage(endCase));
+        log.info(System.lineSeparator() + getFinalMessage(endCase));
         System.exit(0);
     }
 

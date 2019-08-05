@@ -30,19 +30,18 @@ public final class Bone extends JButton {
     private int sum;
     @Getter
     @Setter
-    private boolean first;
+    private boolean isFirst;
     @Getter
     @Setter
-    private boolean duplet;
+    private boolean isDuplet;
     @Getter
-    private boolean selected;
+    private boolean isSelected;
     @Getter
     private int angle;
     private BufferedImage faceImage = null;
     private BufferedImage backImage = null;
     private ImageIcon face;
     private ImageIcon back;
-    @Setter
     private Domino domino;
 
     public boolean equals(Bone bone) {
@@ -85,11 +84,11 @@ public final class Bone extends JButton {
 
     @Override
     public String toString() {
-        return ((duplet == Game.DUPLET) ? "дупль " : "камінь ") + left + ":" + right;
+        return ((isDuplet == Game.DUPLET) ? "дупль " : "камінь ") + left + ":" + right;
     }
 
     public final boolean isDupletGoodtoMove(byte boneside) { // подходит ли дупль для хода
-        return (duplet == Game.DUPLET) && (left == boneside) && (right == boneside);
+        return (isDuplet == Game.DUPLET) && (left == boneside) && (right == boneside);
     }
 
     public final boolean isBoneGoodToMove(byte boneside) { // можно ли ходить костью
@@ -172,8 +171,6 @@ public final class Bone extends JButton {
             height = temp;
         }
 
-        String backPath = prefix + "back.png";
-
         if ((angle == Game.Angle.A270.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // при перевороте камней
                                                                                               // меняем местами
                                                                                               // лево-право
@@ -181,11 +178,9 @@ public final class Bone extends JButton {
         }
         setSize(new Dimension(width, height)); // ставим размеры камня
 
-        String leftPath = prefix + left + ".png";
-        String rightPath = prefix + right + ".png";
-        URL img1Url = getClass().getResource(leftPath);
-        URL img2Url = getClass().getResource(rightPath);
-        URL backUrl = getClass().getResource(backPath);
+        URL img1Url = getClass().getResource(prefix + left + ".png");
+        URL img2Url = getClass().getResource(prefix + right + ".png");
+        URL backUrl = getClass().getResource(prefix + "back.png");
 
         try {
             BufferedImage img1 = ImageIO.read(img1Url);
@@ -206,18 +201,18 @@ public final class Bone extends JButton {
 
     protected final void select() {
         draw(angle, Game.SELECTED);
-        selected = Game.SELECTED;
+        isSelected = Game.SELECTED;
         showBone();
     }
 
     public final void unselect() {
         draw(angle, Game.UNSELECTED);
-        selected = Game.UNSELECTED;
+        isSelected = Game.UNSELECTED;
         showBone();
     }
 
     public final void toggleBoneSelection() {
-        if (selected) {
+        if (isSelected) {
             unselect();
         } else {
             select();
@@ -240,7 +235,8 @@ public final class Bone extends JButton {
         setIcon(back);
     }
 
-    public Bone(byte left, byte right) { // конструктор класса, прописываем значения свойств
+    public Bone(byte left, byte right, Domino domino) { // конструктор класса, прописываем значения свойств
+        this.domino = domino;
         if ((new Random()).nextBoolean()) { // костяшки переворачиваются случайным образом, не 0:3, а 3:0 например
             this.left = left;
             this.right = right;
@@ -250,7 +246,7 @@ public final class Bone extends JButton {
         }
 
         sum = left + right; // сумма полей
-        duplet = (left == right); // сразу записываем, дупль или нет
+        isDuplet = (left == right); // сразу записываем, дупль или нет
 
         draw(Game.Angle.A0.getAngle(), Game.UNSELECTED); // для базара камни лежат ровно
         setPreferredSize(new Dimension(Game.BONEX, Game.BONEY));
