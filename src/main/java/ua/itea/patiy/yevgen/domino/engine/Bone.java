@@ -53,7 +53,7 @@ public final class Bone extends JButton {
     public MouseAdapter clickOnBazar = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            domino.setBazarSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+            domino.setIsBazarSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
             if (domino.isGet7bones()) {
                 domino.getStart7BonesFromBazar();
             }
@@ -67,8 +67,8 @@ public final class Bone extends JButton {
     public MouseAdapter clickOnHumanPlayer = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            domino.setPlayerSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
-            domino.getCurrentPlayer().selectPlayerBones(domino.getPlayerSelectedBone(),
+            domino.setIsPlayerSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+            domino.getCurrentPlayer().selectPlayerBones(domino.getIsPlayerSelectedBone(),
                     domino.getField().getSelectedLeft(), domino.getField().getSelectedRight());
             evt.consume();
         }
@@ -77,8 +77,8 @@ public final class Bone extends JButton {
     public MouseAdapter clickOnField = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            domino.setFieldSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
-            domino.getField().selectFieldBones(domino.getCurrentPlayer(), domino.getFieldSelectedBone());
+            domino.setIsFieldSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+            domino.getField().selectFieldBones(domino.getCurrentPlayer(), domino.getIsFieldSelectedBone());
             evt.consume();
         }
     };
@@ -88,11 +88,11 @@ public final class Bone extends JButton {
         return ((duplet == Game.DUPLET) ? "дупль " : "камінь ") + left + ":" + right;
     }
 
-    public final boolean dupletOKtoMove(byte boneside) { // подходит ли дупль для хода
+    public final boolean isDupletGoodtoMove(byte boneside) { // подходит ли дупль для хода
         return (duplet == Game.DUPLET) && (left == boneside) && (right == boneside);
     }
 
-    public final boolean okToMove(byte boneside) { // можно ли ходить костью
+    public final boolean isBoneGoodToMove(byte boneside) { // можно ли ходить костью
         return ((left == boneside) || (right == boneside));
     }
 

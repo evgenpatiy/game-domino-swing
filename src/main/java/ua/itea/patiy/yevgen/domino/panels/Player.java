@@ -29,23 +29,26 @@ public final class Player extends GamePanel {
 
     @Getter
     @Setter
-    private String playerName;
+    private boolean isHuman;
     @Getter
     @Setter
-    private boolean human;
-    @Getter
-    @Setter
-    private boolean goPressed;
+    private boolean isGoButtonPressed;
     private JButton go = new JButton();
     private int xPlayer;
     private int yPlayer;
-    @Setter
     private Domino domino;
+
+    public Player(String playerName, boolean human, Domino domino) {
+        this.setName(playerName);
+        this.isHuman = human;
+        this.domino = domino;
+        setTitle(" Поле гравця " + getName() + " ");
+    }
 
     protected MouseAdapter mouseAdapterGo = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent evt) {
-            goPressed = true;
+            isGoButtonPressed = true;
             if (domino.isFirstStep()) {
                 domino.firstMove();
             } else {
@@ -99,12 +102,14 @@ public final class Player extends GamePanel {
 
         for (Bone bone : getBones()) {
             if (leftBone != null) {
-                goodForLeft = isFirst ? bone.okToMove(leftBone.getLeft()) : bone.okToMove(leftBone.getWorkSide());
+                goodForLeft = isFirst ? bone.isBoneGoodToMove(leftBone.getLeft())
+                        : bone.isBoneGoodToMove(leftBone.getWorkSide());
             } else {
                 goodForLeft = false;
             }
             if (rightBone != null) {
-                goodForRight = isFirst ? bone.okToMove(rightBone.getRight()) : bone.okToMove(rightBone.getWorkSide());
+                goodForRight = isFirst ? bone.isBoneGoodToMove(rightBone.getRight())
+                        : bone.isBoneGoodToMove(rightBone.getWorkSide());
             } else {
                 goodForRight = false;
             }
@@ -128,9 +133,9 @@ public final class Player extends GamePanel {
             } else if (b.equals(bone)) {
                 b.toggleBoneSelection();
 
-                if (b.isSelected() && (leftBone != null) && b.okToMove(leftBone.getWorkSide())) {
+                if (b.isSelected() && (leftBone != null) && b.isBoneGoodToMove(leftBone.getWorkSide())) {
                     setSelectedLeft(b);
-                } else if (b.isSelected() && (rightBone != null) && b.okToMove(rightBone.getWorkSide())) {
+                } else if (b.isSelected() && (rightBone != null) && b.isBoneGoodToMove(rightBone.getWorkSide())) {
                     setSelectedRight(b);
                 }
             }
@@ -167,13 +172,12 @@ public final class Player extends GamePanel {
     }
 
     protected boolean hasProperDuplet(byte boneSide) { // есть ли годные дупли
-        return getBones().stream().anyMatch(bone -> bone.dupletOKtoMove(boneSide));
+        return getBones().stream().anyMatch(bone -> bone.isDupletGoodtoMove(boneSide));
     }
 
     protected boolean has2ProperDuplets(Bone leftBone, Bone rightBone) {
-        return getBones().stream().filter(
-                bone -> (bone.dupletOKtoMove(leftBone.getWorkSide())) || (bone.dupletOKtoMove(rightBone.getWorkSide())))
-                .count() == 2;
+        return getBones().stream().filter(bone -> (bone.isDupletGoodtoMove(leftBone.getWorkSide()))
+                || (bone.isDupletGoodtoMove(rightBone.getWorkSide()))).count() == 2;
     }
 
     public boolean hasDupletsAboveZero() { // есть ли дупли помимо 0:0
@@ -196,11 +200,11 @@ public final class Player extends GamePanel {
     }
 
     protected Bone properDuplet(byte boneSide) { // годный дупль
-        return getBones().stream().filter(bone -> bone.dupletOKtoMove(boneSide)).findFirst().orElse(null);
+        return getBones().stream().filter(bone -> bone.isDupletGoodtoMove(boneSide)).findFirst().orElse(null);
     }
 
     protected Bone maxProperBone(byte boneSide) { // максимально годный не-дупль для хода
-        return getBones().stream().filter(bone -> bone.okToMove(boneSide))
+        return getBones().stream().filter(bone -> bone.isBoneGoodToMove(boneSide))
                 .max((Bone b1, Bone b2) -> (b1.getSum() - b2.getSum())).orElse(null);
     }
 
@@ -259,8 +263,8 @@ public final class Player extends GamePanel {
     }
 
     public String playerMsg() { // Сообщение на панель поля
-        String s = " Ходить " + playerName + ". ";
-        return (human) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
+        String s = " Ходить " + getName() + ". ";
+        return (isHuman) ? s + "Оберіть камені на полі та свої камені, і зробіть хід "
                 : s + "Натисніть кнопку на його панелі ";
     }
 
@@ -277,7 +281,7 @@ public final class Player extends GamePanel {
             }
 
             bone.hideFrame();
-            if (human) {
+            if (isHuman) {
                 bone.showBone();
             } else {
                 bone.hideBone();
@@ -300,14 +304,14 @@ public final class Player extends GamePanel {
         bone.draw(Game.Angle.A90.getAngle(), Game.UNSELECTED);
         getBones().add(bone);
         disableBonesSelect();
-        setTitle(" " + playerName + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
+        setTitle(" " + getName() + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
     }
 
     @Override
     public void removeFromBones(Bone bone) { // вызываем папин метод и обновляем заголовок панели
         super.removeFromBones(bone);
         disableBonesSelect();
-        setTitle(" " + playerName + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
+        setTitle(" " + getName() + " має " + properBoneQtyString(getBones().size()) + " "); // обновляем заголовок панели
     }
 
     @Override

@@ -24,11 +24,16 @@ public final class Field extends GamePanel {
     private int spaceRight;
     private int spaceUp;
     private int spaceDown;
-    private boolean turnTopLeft;
-    private boolean turnTopRight;
-    private boolean turnBottomLeft;
-    private boolean turnBottomRight;
+    private boolean isTurnTopLeft;
+    private boolean isTurnTopRight;
+    private boolean isTurnBottomLeft;
+    private boolean isTurnBottomRight;
     private boolean random = new Random().nextBoolean();
+
+    public Field(String enemyName) {
+        setTitle(" Це ігрове поле. Для початку беріть з базара 7 каменів. Те ж саме зробить і супротивник " + enemyName
+                + " ");
+    }
 
     protected Bone leftBone() { // левый камень на панели
         return getBones().get(0);
@@ -83,7 +88,7 @@ public final class Field extends GamePanel {
             Bone temp = leftBone();
 
             for (Bone bone : player.getBones()) {
-                if ((bone.okToMove(temp.getLeft())) || (bone.okToMove(temp.getRight()))) { // если хоть один камень
+                if ((bone.isBoneGoodToMove(temp.getLeft())) || (bone.isBoneGoodToMove(temp.getRight()))) { // если хоть один камень
                     // игрока подходит, разрешаем
                     // щелкать по первому камню
                     // на поле
@@ -101,7 +106,7 @@ public final class Field extends GamePanel {
 
             Bone temp = leftBone(); // к левой
             for (Bone bone : player.getBones()) {
-                if (bone.okToMove(temp.getWorkSide())) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                if (bone.isBoneGoodToMove(temp.getWorkSide())) { // если хоть один камень игрока подходит, разрешаем щелкать по
                     // левому камню на поле
                     temp.addMouseListener(temp.clickOnField);
                     temp.showFrame();
@@ -112,7 +117,7 @@ public final class Field extends GamePanel {
 
             temp = rightBone(); // к правой
             for (Bone bone : player.getBones()) {
-                if (bone.okToMove(temp.getWorkSide())) { // если хоть один камень игрока подходит, разрешаем щелкать по
+                if (bone.isBoneGoodToMove(temp.getWorkSide())) { // если хоть один камень игрока подходит, разрешаем щелкать по
                     // левому камню на поле
                     temp.addMouseListener(temp.clickOnField);
                     temp.showFrame();
@@ -166,10 +171,10 @@ public final class Field extends GamePanel {
         spaceUp = (fieldHeight - bone.getHeight()) / 2; // свободное пространство сверху
         spaceDown = (fieldHeight - bone.getHeight()) / 2; // свободное пространство снизу
 
-        turnTopLeft = false;
-        turnTopRight = false;
-        turnBottomLeft = false;
-        turnBottomRight = false;
+        isTurnTopLeft = false;
+        isTurnTopRight = false;
+        isTurnBottomLeft = false;
+        isTurnBottomRight = false;
     }
 
     private void addRightToLeft(Bone previous, Bone bone) {
@@ -205,21 +210,21 @@ public final class Field extends GamePanel {
         }
 
         if (turnFromVerticalBone) {
-            if (turnTopRight == true) {
+            if (isTurnTopRight == true) {
                 if (bone.isDuplet() == false) {
                     yLine = previous.getY();
                 } else {
                     yLine = previous.getY() - (bone.getHeight() / 2) - (Game.OFFSET / 2);
                 }
-                turnTopRight = false;
+                isTurnTopRight = false;
             }
-            if (turnBottomRight == true) {
+            if (isTurnBottomRight == true) {
                 if (bone.isDuplet() == false) {
                     yLine = previous.getY() + previous.getHeight() - bone.getHeight();
                 } else {
                     yLine = previous.getY() + previous.getHeight() - (bone.getHeight() / 2);
                 }
-                turnBottomRight = false;
+                isTurnBottomRight = false;
             }
         }
 
@@ -270,21 +275,21 @@ public final class Field extends GamePanel {
         }
 
         if (turnfromverticalbone) {
-            if (turnTopLeft == true) {
+            if (isTurnTopLeft == true) {
                 if (bone.isDuplet() == false) {
                     yLine = previous.getY();
                 } else {
                     yLine = previous.getY() - (bone.getHeight() / 2) - Game.OFFSET;
                 }
-                turnTopLeft = false;
+                isTurnTopLeft = false;
             }
-            if (turnBottomLeft == true) {
+            if (isTurnBottomLeft == true) {
                 if (bone.isDuplet() == false) {
                     yLine = previous.getY() + previous.getHeight() - bone.getHeight();
                 } else {
                     yLine = previous.getY() + previous.getHeight() - (bone.getHeight() / 2);
                 }
-                turnBottomLeft = false;
+                isTurnBottomLeft = false;
             }
         }
 
@@ -460,14 +465,14 @@ public final class Field extends GamePanel {
                 if (spaceUp > Game.SPACELIMIT) {
                     addDownToUp(leftBone(), bone); // снизу вверх
                 } else {
-                    turnTopLeft = true;
+                    isTurnTopLeft = true;
                     addLeftToRight(leftBone(), bone); // слева направо
                 }
             } else {
                 if (spaceDown > Game.SPACELIMIT) {
                     addUpToDown(leftBone(), bone); // сверху вниз
                 } else {
-                    turnBottomLeft = true;
+                    isTurnBottomLeft = true;
                     addLeftToRight(leftBone(), bone); // слева направо
                 }
             }
@@ -482,14 +487,14 @@ public final class Field extends GamePanel {
                 if (spaceUp > Game.SPACELIMIT) {
                     addDownToUp(rightBone(), bone);
                 } else {
-                    turnTopRight = true;
+                    isTurnTopRight = true;
                     addRightToLeft(rightBone(), bone);
                 }
             } else {
                 if (spaceDown > Game.SPACELIMIT) {
                     addUpToDown(rightBone(), bone);
                 } else {
-                    turnBottomRight = true;
+                    isTurnBottomRight = true;
                     addRightToLeft(rightBone(), bone);
                 }
             }
