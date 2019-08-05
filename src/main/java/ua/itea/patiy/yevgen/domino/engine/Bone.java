@@ -49,36 +49,36 @@ public final class Bone extends JButton {
                 || ((this.left == bone.right) && (this.right == bone.left));
     }
 
-    public MouseAdapter clickOnBazar = new MouseAdapter() {
+    public final MouseAdapter clickOnBazar = new MouseAdapter() {
         @Override
-        public void mouseClicked(MouseEvent evt) {
-            domino.setIsBazarSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+        public void mouseClicked(MouseEvent event) {
+            domino.setIsBazarSelectedBone((Bone) event.getSource()); // нажатая костяшка;
             if (domino.isGet7bones()) {
                 domino.getStart7BonesFromBazar();
             }
             if (domino.isNeedMoreBones()) {
                 domino.getMoreBonesFromBazar();
             }
-            evt.consume();
+            event.consume();
         }
     };
 
-    public MouseAdapter clickOnHumanPlayer = new MouseAdapter() {
+    public final MouseAdapter clickOnHumanPlayer = new MouseAdapter() {
         @Override
-        public void mouseClicked(MouseEvent evt) {
-            domino.setIsPlayerSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+        public void mouseClicked(MouseEvent event) {
+            domino.setIsPlayerSelectedBone((Bone) event.getSource()); // нажатая костяшка;
             domino.getCurrentPlayer().selectPlayerBones(domino.getIsPlayerSelectedBone(),
                     domino.getField().getSelectedLeft(), domino.getField().getSelectedRight());
-            evt.consume();
+            event.consume();
         }
     };
 
-    public MouseAdapter clickOnField = new MouseAdapter() {
+    public final MouseAdapter clickOnField = new MouseAdapter() {
         @Override
-        public void mouseClicked(MouseEvent evt) {
-            domino.setIsFieldSelectedBone((Bone) evt.getSource()); // нажатая костяшка;
+        public void mouseClicked(MouseEvent event) {
+            domino.setIsFieldSelectedBone((Bone) event.getSource()); // нажатая костяшка;
             domino.getField().selectFieldBones(domino.getCurrentPlayer(), domino.getIsFieldSelectedBone());
-            evt.consume();
+            event.consume();
         }
     };
 
@@ -136,21 +136,21 @@ public final class Bone extends JButton {
         }
 
         BufferedImage boneImg = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = boneImg.createGraphics();
-        Color oldColor = g.getColor();
-        g.setPaint(Color.WHITE);
-        g.fillRect(0, 0, imgWidth, imgHeight);
-        g.setColor(oldColor);
+        Graphics2D graphics = boneImg.createGraphics();
+        Color oldColor = graphics.getColor();
+        graphics.setPaint(Color.WHITE);
+        graphics.fillRect(0, 0, imgWidth, imgHeight);
+        graphics.setColor(oldColor);
 
         if ((angle == Game.Angle.A0.getAngle()) || (angle == Game.Angle.A180.getAngle())) { // камень горизонтально
-            g.drawImage(img1, null, 0, 0);
-            g.drawImage(img2, null, Game.OFFSET + img2.getWidth(), 0);
+            graphics.drawImage(img1, null, 0, 0);
+            graphics.drawImage(img2, null, Game.OFFSET + img2.getWidth(), 0);
         } else if ((angle == Game.Angle.A90.getAngle()) || (angle == Game.Angle.A270.getAngle())) { // камень
                                                                                                     // вертикально
-            g.drawImage(img1, null, 0, 0);
-            g.drawImage(img2, null, 0, Game.OFFSET + img2.getHeight());
+            graphics.drawImage(img1, null, 0, 0);
+            graphics.drawImage(img2, null, 0, Game.OFFSET + img2.getHeight());
         }
-        g.dispose();
+        graphics.dispose();
         return boneImg;
     }
 
@@ -165,7 +165,6 @@ public final class Bone extends JButton {
         } else if ((angle == Game.Angle.A90.getAngle()) || (angle == Game.Angle.A270.getAngle())) { // если
                                                                                                     // вертикально
             prefix = "/img/bones/vertical/";
-
             int temp = width;
             width = height;
             height = temp;
@@ -177,21 +176,15 @@ public final class Bone extends JButton {
             invertBone();
         }
         setSize(new Dimension(width, height)); // ставим размеры камня
-
-        URL img1Url = getClass().getResource(prefix + left + ".png");
-        URL img2Url = getClass().getResource(prefix + right + ".png");
-        URL backUrl = getClass().getResource(prefix + "back.png");
-
         try {
+            URL img1Url = getClass().getResource(prefix + left + ".png");
+            URL img2Url = getClass().getResource(prefix + right + ".png");
+            URL backUrl = getClass().getResource(prefix + "back.png");
             BufferedImage img1 = ImageIO.read(img1Url);
             BufferedImage img2 = ImageIO.read(img2Url);
 
-            if (selected == Game.UNSELECTED) {
-                faceImage = createFaceImg(img1, img2);
-            } else {
-                faceImage = invertImg(createFaceImg(img1, img2));
-            }
-
+            faceImage = (selected == Game.UNSELECTED) ? createFaceImg(img1, img2)
+                    : invertImg(createFaceImg(img1, img2));
             backImage = ImageIO.read(backUrl);
         } catch (IOException ex) {
         }
@@ -235,18 +228,17 @@ public final class Bone extends JButton {
         setIcon(back);
     }
 
-    public Bone(byte left, byte right, Domino domino) { // конструктор класса, прописываем значения свойств
+    public Bone(byte left, byte right, Domino domino) {
         this.domino = domino;
-        if ((new Random()).nextBoolean()) { // костяшки переворачиваются случайным образом, не 0:3, а 3:0 например
+        if ((new Random()).nextBoolean()) { // костяшки переворачиваются случайным образом
             this.left = left;
             this.right = right;
         } else {
             this.left = right;
             this.right = left;
         }
-
-        sum = left + right; // сумма полей
-        isDuplet = (left == right); // сразу записываем, дупль или нет
+        sum = left + right;
+        isDuplet = (left == right);
 
         draw(Game.Angle.A0.getAngle(), Game.UNSELECTED); // для базара камни лежат ровно
         setPreferredSize(new Dimension(Game.BONEX, Game.BONEY));

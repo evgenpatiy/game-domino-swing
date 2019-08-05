@@ -279,14 +279,12 @@ public final class Player extends GamePanel {
             if (bone.isSelected()) {
                 bone.unselect();
             }
-
             bone.hideFrame();
             if (isHuman) {
                 bone.showBone();
             } else {
                 bone.hideBone();
             }
-
             bone.setLocation(xPlayer, yPlayer);
             add(bone, new AbsoluteConstraints(xPlayer, yPlayer, bone.getWidth(), bone.getHeight()));
             xPlayer += bone.getWidth() + Game.PLAYERSHIFT;

@@ -187,7 +187,6 @@ public final class Domino extends JFrame {
 
         JOptionPane.showMessageDialog(null, getFinalMessage(endCase), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
         log.info(System.lineSeparator() + getFinalMessage(endCase));
-        System.exit(0);
     }
 
     protected void getStart7BonesFromBazar() {

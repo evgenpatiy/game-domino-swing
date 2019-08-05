@@ -28,7 +28,7 @@ public final class Field extends GamePanel {
     private boolean isTurnTopRight;
     private boolean isTurnBottomLeft;
     private boolean isTurnBottomRight;
-    private boolean random = new Random().nextBoolean();
+    private boolean isRandomTurn = new Random().nextBoolean();
 
     public Field(String enemyName) {
         setTitle(" Це ігрове поле. Для початку беріть з базара 7 каменів. Те ж саме зробить і супротивник " + enemyName
@@ -62,7 +62,6 @@ public final class Field extends GamePanel {
                     setSelectedRight(fieldBone);
                 }
             }
-
         }
         player.enableBonesSelect(getSelectedLeft(), getSelectedRight());
         repaint();
@@ -143,14 +142,11 @@ public final class Field extends GamePanel {
     }
 
     public void addFirstBone(Bone bone) {
-
         int angle = Game.Angle.A0.getAngle();
-
         if (bone.isDuplet()) {
             angle = Game.Angle.A90.getAngle();
             bone.setWorkSide(bone.getRight());
         }
-
         bone.draw(angle, Game.UNSELECTED);
 
         fieldWidth = this.getWidth();
@@ -461,7 +457,7 @@ public final class Field extends GamePanel {
         if (spaceLeft > Game.SPACELIMIT) {
             addRightToLeft(leftBone(), bone); // справа налево
         } else {
-            if (random) {
+            if (isRandomTurn) {
                 if (spaceUp > Game.SPACELIMIT) {
                     addDownToUp(leftBone(), bone); // снизу вверх
                 } else {
@@ -483,7 +479,7 @@ public final class Field extends GamePanel {
         if (spaceRight > Game.SPACELIMIT) {
             addLeftToRight(rightBone(), bone);
         } else {
-            if (!random) {
+            if (!isRandomTurn) {
                 if (spaceUp > Game.SPACELIMIT) {
                     addDownToUp(rightBone(), bone);
                 } else {
@@ -508,6 +504,6 @@ public final class Field extends GamePanel {
     }
 
     @Override
-    protected void addToBones(Bone b) {
+    protected void addToBones(Bone bone) {
     }
 }
