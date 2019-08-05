@@ -1,6 +1,7 @@
 package ua.itea.patiy.yevgen.domino.engine;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +72,12 @@ public final class Domino extends JFrame {
         setTitle("Доміно " + Game.VERSION + ": " + myName + " грає проти " + enemyName);
         setIconImage((new ImageIcon(getClass().getResource("/img/logos/domino.png"))).getImage());
         initComponents();
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                log.info("Доміно закрито.");
+            }
+        });
 
         Arrays.stream(UIManager.getInstalledLookAndFeels()).filter(lf -> lf.getName().equalsIgnoreCase("metal"))
                 .forEach(lf -> {
