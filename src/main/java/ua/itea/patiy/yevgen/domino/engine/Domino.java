@@ -72,13 +72,13 @@ public final class Domino extends JFrame {
         setTitle("Доміно " + Game.VERSION + ": " + myName + " грає проти " + enemyName);
         setIconImage((new ImageIcon(getClass().getResource("/img/logos/domino.png"))).getImage());
         initComponents();
+
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                log.info("Доміно закрито.");
+                log.info("Game closed");
             }
         });
-
         Arrays.stream(UIManager.getInstalledLookAndFeels()).filter(lf -> lf.getName().equalsIgnoreCase("metal"))
                 .forEach(lf -> {
                     try {
@@ -101,7 +101,7 @@ public final class Domino extends JFrame {
         bazar = new Bazar(this);
         you = new Player(enemyName, Game.ROBOT, this);
         me = new Player(myName, Game.HUMAN, this);
-        log.info("Паєхалі! " + enemyName + " грає проти " + myName);
+        log.info("C'mon! " + enemyName + " fights with " + myName);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(Game.SIZEX, Game.SIZEY));
@@ -193,7 +193,7 @@ public final class Domino extends JFrame {
                 " " + nextPlayer().getName() + " : " + nextPlayer().properScoreString(nextPlayer().endScore()) + " ");
 
         JOptionPane.showMessageDialog(null, getFinalMessage(endCase), "Всьо!", JOptionPane.INFORMATION_MESSAGE);
-        log.info(System.lineSeparator() + getFinalMessage(endCase));
+        log.info("Game ended!");
     }
 
     protected void getStart7BonesFromBazar() {
@@ -224,14 +224,13 @@ public final class Domino extends JFrame {
 
         field.setTitle(" Першим ходить " + currentPlayer.getName() + ", у нього найменший "
                 + currentPlayer.firstBoneToStart() + ". Натисніть кнопку на панелі ");
-        log.info(
-                "Першим ходить " + currentPlayer.getName() + ", у нього найменший " + currentPlayer.firstBoneToStart());
+        log.info("First move from " + currentPlayer.getName() + ", he has minimal " + currentPlayer.firstBoneToStart());
     }
 
     public void firstMove() {
         if (currentPlayer.isGoButtonPressed()) {
             field.addFirstBone(currentPlayer.firstBoneToStart()); // ставим первый камень на поле
-            log.info(currentPlayer.getName() + " дав " + currentPlayer.firstBoneToStart() + " на перший хід");
+            log.info(currentPlayer.getName() + " put " + currentPlayer.firstBoneToStart() + " as first move");
             currentPlayer.removeFromBones(currentPlayer.firstBoneToStart());
 
             currentPlayer.hideGoButton(); // убираем кнопку хода у первого игрока
@@ -270,7 +269,7 @@ public final class Domino extends JFrame {
             while (!bazar.getBones().isEmpty()) {
                 isBazarSelectedBone = bazar.randomFromBones();
 
-                log.info(currentPlayer.getName() + " взяв з базара " + isBazarSelectedBone);
+                log.info(currentPlayer.getName() + " get from market " + isBazarSelectedBone);
                 currentPlayer.addToBones(isBazarSelectedBone);
                 bazar.removeFromBones(isBazarSelectedBone);
 
@@ -282,7 +281,7 @@ public final class Domino extends JFrame {
                 }
             }
         } else if (currentPlayer.isHuman() == Game.HUMAN) {
-            log.info(currentPlayer.getName() + " взяв з базара " + isBazarSelectedBone);
+            log.info(currentPlayer.getName() + " get from market " + isBazarSelectedBone);
             currentPlayer.addToBones(isBazarSelectedBone);
             bazar.removeFromBones(isBazarSelectedBone);
 
@@ -319,24 +318,24 @@ public final class Domino extends JFrame {
                 if (!bazar.getBones().isEmpty()) {
                     getMoreBonesFromBazar();
                 } else {
-                    log.info(currentPlayer.getName() + " пропускає хід");
+                    log.info(currentPlayer.getName() + " pass his move");
 
                     if ((nextPlayer().putBones(field).getLeft() == null)
                             && (nextPlayer().putBones(field).getRight() == null)) {
-                        log.info("РИБА!!!!");
+                        log.info("FISH!!!!");
                         gameEnd(Game.End.FISH);
                     }
                 }
             }
 
             if (left != null) {
-                log.info(currentPlayer.getName() + " дав зліва " + left);
+                log.info(currentPlayer.getName() + " put to left side " + left);
                 field.addToLeft(left);
                 currentPlayer.removeFromBones(left);
             }
 
             if (right != null) {
-                log.info(currentPlayer.getName() + " дав зправа " + right);
+                log.info(currentPlayer.getName() + " put to right side " + right);
                 field.addToRight(right);
                 currentPlayer.removeFromBones(right);
             }
@@ -360,10 +359,10 @@ public final class Domino extends JFrame {
                             field.disableBonesSelect();
                             isNeedMoreBones = true;
                         } else {
-                            log.info(currentPlayer.getName() + " пропускає хід");
+                            log.info(currentPlayer.getName() + " pass his move");
                             if ((nextPlayer().putBones(field).getLeft() == null)
                                     && (nextPlayer().putBones(field).getRight() == null)) {
-                                log.info("РИБА!!!!");
+                                log.info("FISH!!!!");
                                 gameEnd(Game.End.FISH);
                             }
                         }

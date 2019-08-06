@@ -1,4 +1,4 @@
-# Classic domino game (ukrainian language only)
+# Classic domino game (Swing AWT)
 
 Java-written application for playing classic domino
 

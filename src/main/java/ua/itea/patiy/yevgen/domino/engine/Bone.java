@@ -84,7 +84,7 @@ public final class Bone extends JButton {
 
     @Override
     public String toString() {
-        return ((isDuplet == Game.DUPLET) ? "дупль " : "камінь ") + left + ":" + right;
+        return ((isDuplet == Game.DUPLET) ? "douplet " : "bone ") + left + ":" + right;
     }
 
     public final boolean isDupletGoodtoMove(byte boneside) { // подходит ли дупль для хода
