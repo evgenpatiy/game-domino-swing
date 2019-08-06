@@ -1,4 +1,4 @@
-# Classic domino game (Swing AWT)
+# Classic domino game (made with Java 8 / Swing AWT)
 
 Java-written, minimal-size-driven application for playing classic domino
 
