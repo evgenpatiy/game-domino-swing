@@ -1,8 +1,8 @@
 # Classic domino game (Swing AWT)
 
-Java-written application for playing classic domino
+Java-written, minimal-size-driven application for playing classic domino
 
-## Installation and usage
+## Installation and usage (tested on Linux / Windows)
 
 * Clone current git repository to local machine
 
@@ -12,7 +12,8 @@ Java-written application for playing classic domino
    
 `mvn clean compile assembly:single` 
 
-* "target" directory will be created, find **domino-1.0-SNAPSHOT-jar-with-dependencies.jar** inside and run application as per below, or just double-click on it, if you're as lazy as I am.
+* "target" directory will be created, find **domino-1.0-SNAPSHOT-jar-with-dependencies.jar** inside and run application as per below, or just double-click on it, if your 
+operating environment enables it
 
 `java -jar domino-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
