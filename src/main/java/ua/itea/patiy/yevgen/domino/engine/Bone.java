@@ -43,6 +43,7 @@ public final class Bone extends JButton {
     private ImageIcon face;
     private ImageIcon back;
     private Domino domino;
+    private Random randomizer = new Random();
 
     public boolean equals(Bone bone) {
         return ((this.left == bone.left) && (this.right == bone.right))
@@ -230,7 +231,7 @@ public final class Bone extends JButton {
 
     public Bone(byte left, byte right, Domino domino) {
         this.domino = domino;
-        if ((new Random()).nextBoolean()) { // костяшки переворачиваются случайным образом
+        if (randomizer.nextBoolean()) { // костяшки переворачиваются случайным образом
             this.left = left;
             this.right = right;
         } else {
